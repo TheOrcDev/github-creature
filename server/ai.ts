@@ -88,7 +88,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
     const stats = await fetchGithubStats(username);
 
-    if (!stats.total_count) {
+    if (stats.total_count == null || Number.isNaN(stats.total_count)) {
         return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
     }
 

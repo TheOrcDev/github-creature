@@ -38,8 +38,6 @@ export function SubmitGithubForm() {
       } else if (result && !result.success) {
         toast.error(result.message);
       }
-
-      toast.success("Creature created successfully");
     } finally {
       setLoading(false);
     }
