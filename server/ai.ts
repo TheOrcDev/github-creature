@@ -8,7 +8,7 @@ import { saveCreature } from './creatures';
 export async function fetchGithubStats(username: string) {
     const response = await fetch(`https://api.github.com/search/commits?q=author:${username}`);
     const data = await response.json();
-    console.log(data.total_count);
+
     return data;
 }
 
