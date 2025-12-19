@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
+import { ModeSwitcher } from "./mode-switcher";
 
 export default function Header() {
   return (
@@ -14,7 +14,7 @@ export default function Header() {
         />
       </Link>
 
-      <ModeToggle />
+      <ModeSwitcher />
     </header>
   );
 }
