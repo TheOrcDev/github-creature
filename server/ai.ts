@@ -1,5 +1,6 @@
 "use server";
 
+import { db } from '@/db/drizzle';
 import { put } from '@vercel/blob';
 import { generateText } from 'ai';
 import { redirect } from 'next/navigation';
@@ -70,6 +71,15 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
 }
 
 export async function submitGithubForm(githubProfileUrl: string) {
+
+    const check = await db.query.creatures.findFirst({
+        where: (creatures, { eq }) => eq(creatures.githubProfileUrl, githubProfileUrl),
+    });
+
+    if (check) {
+        redirect(`/creature/${check.id}`);
+    }
+
     const username = githubProfileUrl.split("/").pop();
 
     if (!username) {

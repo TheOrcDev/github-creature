@@ -32,9 +32,8 @@ export function SubmitGithubForm() {
     try {
       setLoading(true);
       await submitGithubForm(data.githubProfileUrl);
+
       toast.success("Github stats fetched successfully");
-    } catch {
-      toast.error("Failed to fetch Github stats");
     } finally {
       setLoading(false);
     }
