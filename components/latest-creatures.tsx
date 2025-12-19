@@ -12,15 +12,9 @@ export default function LatestCreatures({ creatures }: LatestCreaturesProps) {
       <h2>Latest Creatures</h2>
       <div className="flex flex-wrap gap-2">
         {creatures.map((creature) => (
-          <Button
-            key={creature.id}
-            nativeButton={false}
-            render={
-              <Link href={`/creature/${creature.id}`}>
-                {creature.githubProfileUrl.split("/").pop()}
-              </Link>
-            }
-          />
+          <Link key={creature.id} href={`/creature/${creature.id}`}>
+            <Button>{creature.githubProfileUrl.split("/").pop()}</Button>
+          </Link>
         ))}
       </div>
     </div>
