@@ -46,9 +46,7 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
     return result;
 }
 
-// https://github.com/TheOrcDev
 export async function submitGithubForm(githubProfileUrl: string) {
-
     const username = githubProfileUrl.split("/").pop();
 
     if (!username) {
@@ -60,7 +58,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
     for (const result of image.content) {
         if (result.type === 'file') {
-            const blob = await put(`img4-${username}.png`, Buffer.from(result.file.uint8Array), {
+            const blob = await put(`generated-img-${username}.png`, Buffer.from(result.file.uint8Array), {
                 access: 'public',
             });
 
@@ -74,7 +72,5 @@ export async function submitGithubForm(githubProfileUrl: string) {
             redirect(`/creature/${creature.id}`);
         }
     }
-
-
 }
 

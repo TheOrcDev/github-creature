@@ -1,9 +1,30 @@
-import { BugReportForm } from "@/components/forms/github-form";
+import { SubmitGithubForm } from "@/components/forms/github-form";
+import LatestCreatures from "@/components/latest-creatures";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getSixLatestCreatures } from "@/server/creatures";
+import { Suspense } from "react";
 
-export default function Page() {
+export default async function Page() {
+  const creatures = await getSixLatestCreatures();
+
   return (
-    <main className="flex flex-col items-center justify-center h-screen">
-      <BugReportForm />
+    <main className="flex flex-col items-center justify-center h-screen gap-5">
+      <SubmitGithubForm />
+
+      <Suspense
+        fallback={
+          <div className="flex flex-wrap gap-2">
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-20" />
+          </div>
+        }
+      >
+        <LatestCreatures creatures={creatures} />
+      </Suspense>
     </main>
   );
 }

@@ -18,7 +18,7 @@ const formSchema = z.object({
   githubProfileUrl: z.string().startsWith("https://github.com/"),
 });
 
-export function BugReportForm() {
+export function SubmitGithubForm() {
   const [loading, setLoading] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,7 +41,7 @@ export function BugReportForm() {
   }
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-lg">
       <CardContent>
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
