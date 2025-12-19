@@ -12,7 +12,10 @@ export default function LatestCreatures({ creatures }: LatestCreaturesProps) {
       <h2 className="text-sm">Latest Creatures</h2>
       <div className="flex flex-wrap gap-2">
         {creatures.map((creature) => (
-          <Link key={creature.id} href={`/creature/${creature.id}`}>
+          <Link
+            key={creature.id}
+            href={`/creature/${creature.githubProfileUrl.split("/").pop()}`}
+          >
             <Button className="min-w-24">
               {creature.githubProfileUrl.split("/").pop()}
             </Button>

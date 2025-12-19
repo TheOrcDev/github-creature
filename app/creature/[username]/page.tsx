@@ -1,11 +1,11 @@
 import CreatureCard from "@/components/creature-card";
-import { getCreature } from "@/server/creatures";
+import { getCreatureByGithubUsername } from "@/server/creatures";
 
-type Params = Promise<{ creatureId: string }>;
+type Params = Promise<{ username: string }>;
 
 export default async function CreaturePage({ params }: { params: Params }) {
-  const { creatureId } = await params;
-  const creature = await getCreature(creatureId);
+  const { username } = await params;
+  const creature = await getCreatureByGithubUsername(username.toLowerCase());
 
   if (!creature) {
     return <div>Creature not found</div>;

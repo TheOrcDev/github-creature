@@ -77,7 +77,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
     });
 
     if (check) {
-        redirect(`/creature/${check.id}`);
+        return { success: true, message: "Creature already exists." };
     }
 
     const username = githubProfileUrl.split("/").pop();
@@ -87,6 +87,11 @@ export async function submitGithubForm(githubProfileUrl: string) {
     }
 
     const stats = await fetchGithubStats(username);
+
+    if (!stats.total_count) {
+        return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
+    }
+
     const image = await generateCreatureImage(githubProfileUrl, stats.total_count);
 
     for (const result of image.content) {
@@ -95,14 +100,14 @@ export async function submitGithubForm(githubProfileUrl: string) {
                 access: 'public',
             });
 
-            const creature = await saveCreature({
-                githubProfileUrl,
+            await saveCreature({
+                githubProfileUrl: githubProfileUrl.toLowerCase(),
                 contributions: stats.total_count,
                 image: blob.url,
                 description: image.text,
             });
 
-            redirect(`/creature/${creature.id}`);
+            redirect(`/creature/${username}`);
         }
     }
 }

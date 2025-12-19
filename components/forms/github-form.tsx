@@ -31,9 +31,15 @@ export function SubmitGithubForm() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      await submitGithubForm(data.githubProfileUrl);
+      const result = await submitGithubForm(data.githubProfileUrl);
 
-      toast.success("Github stats fetched successfully");
+      if (result && result.success) {
+        toast.success(result.message);
+      } else if (result && !result.success) {
+        toast.error(result.message);
+      }
+
+      toast.success("Creature created successfully");
     } finally {
       setLoading(false);
     }

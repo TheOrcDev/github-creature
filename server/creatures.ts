@@ -3,10 +3,12 @@
 import { db } from "@/db/drizzle";
 import { creatures, InsertCreature } from "@/db/schema";
 
-export async function getCreature(creatureId: string) {
+export async function getCreatureByGithubUsername(githubUsername: string) {
+    const githubUrl = `https://github.com/${githubUsername}`;
+    console.log(githubUrl);
     try {
         const creature = await db.query.creatures.findFirst({
-            where: (creatures, { eq }) => eq(creatures.id, creatureId),
+            where: (creatures, { eq }) => eq(creatures.githubProfileUrl, githubUrl),
         });
         return creature;
     } catch (error) {
