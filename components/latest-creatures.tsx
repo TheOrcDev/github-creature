@@ -8,12 +8,14 @@ type LatestCreaturesProps = {
 
 export default function LatestCreatures({ creatures }: LatestCreaturesProps) {
   return (
-    <div className="w-full sm:max-w-lg">
-      <h2>Latest Creatures</h2>
+    <div className="flex flex-col w-full sm:max-w-lg">
+      <h2 className="text-sm">Latest Creatures</h2>
       <div className="flex flex-wrap gap-2">
         {creatures.map((creature) => (
           <Link key={creature.id} href={`/creature/${creature.id}`}>
-            <Button>{creature.githubProfileUrl.split("/").pop()}</Button>
+            <Button className="min-w-24">
+              {creature.githubProfileUrl.split("/").pop()}
+            </Button>
           </Link>
         ))}
       </div>

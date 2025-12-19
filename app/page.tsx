@@ -9,6 +9,7 @@ export default async function Page() {
 
   return (
     <main className="flex flex-col items-center justify-center h-screen gap-5">
+      <h1>Summon the Creature Behind Your Code</h1>
       <SubmitGithubForm />
 
       <Suspense
