@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-
+import { Analytics } from "@vercel/analytics/next";
 const nunitoSans = Nunito_Sans({ variable: "--font-sans" });
 
 const geistSans = Geist({
@@ -40,6 +40,7 @@ export default function RootLayout({
         >
           <Header />
           {children}
+          <Analytics />
           <Toaster />
         </ThemeProvider>
       </body>
