@@ -35,15 +35,21 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
 
             Contributions determine base tier / strength:
 
-            - 0–9 contributions: Tiny, weak creatures (Rat, Slime, Goblin Hatchling, Shadow Sprite)
-            - 10–49 contributions: Weak creatures (Kobold, Small Goblin, Pixie, Nether Imp)
-            - 50–99 contributions: Low-tier beings (Apprentice, Forest Scout, Cave Lurker, Young Elemental)
-            - 100–499 contributions: Regular creatures (Villager, Footman, Ranger, Dungeon Bat, Woodland Spirit)
-            - 500–999 contributions: Notable creatures (Orc Warrior, Mage Apprentice, Griffin Hatchling, Fire Sprite)
-            - 1000–1999 contributions: Heroic creatures (Knight, Paladin, Battle Mage, Elite Archer, Storm Drake)
-            - 2000–2999 contributions: Elite creatures (Dragon Rider, Champion, Sorcerer, Beastmaster, Nether Fiend)
-            - 3000–4999 contributions: Legendary creatures (Dragon, Phoenix, Hydra, Ancient Elemental, Celestial Wyrm)
-            - 5000+ contributions: Godlike / Mythic beings (Titan, Archangel, Elder God, Primordial Dragon, Nether Lord)
+            Instead of using generic examples, select an appropriate creature from the D&D 5e Monster Manual based on Challenge Rating (CR).
+            - Pick a Monster Manual creature whose CR falls in the tier’s CR band.
+            - If you can't recall exact CRs, choose the closest plausible Monster Manual creature and make the visual power clearly match the tier anyway.
+            - Keep it recognizable as a Monster Manual-style monster, but you may add original cosmetic details (scars, armor style, aura, environment) to fit the dark fantasy vibe.
+
+            Contribution tier → suggested CR band:
+            - 0–9 contributions: CR 0 (harmless/vermin-tier)
+            - 10–49 contributions: CR 1/8–1/4 (minor threats)
+            - 50–99 contributions: CR 1/2–1 (trained/low-tier combatants)
+            - 100–499 contributions: CR 2–4 (dangerous but grounded threats)
+            - 500–999 contributions: CR 5–7 (notable foes; clearly deadly)
+            - 1000–1999 contributions: CR 8–10 (heroic-level threats)
+            - 2000–2999 contributions: CR 11–13 (elite threats; battlefield-warping)
+            - 3000–4999 contributions: CR 14–17 (legendary threats; apex monsters)
+            - 5000+ contributions: CR 18–30 (mythic-scale; world-ending)
 
             Visual Power Scaling Rules:
 
@@ -62,7 +68,7 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
             - Creature can come from any fantasy realm: forests, dungeons, nether, oceans, mountains, mythic planes
             - Include a short description of the creature for next prompt generation
             - Image should reflect creature tier, commander potential, and magical abilities
-            - Be creative — don’t limit to humans, knights, or dragons
+            - Be creative, but keep the base creature aligned to the D&D 5e Monster Manual choice for the tier
             - Make the creature visually striking, detailed, unique, and clearly tiered
             `,
     });
@@ -77,11 +83,24 @@ export async function generateCreatureDescriptionAndName(contributions: number, 
             name: z.string(),
             description: z.string(),
         }),
-        prompt: `Generate a name and a short description of the creature for this developer. Based on devs stats of his GitHub profile: 
+        prompt: `You are generating a "GitHub Creature" card.
 
-        Contribution: ${contributions}
+        Return:
+        - name: a unique fantasy creature name (2–5 words, title case, no quotes)
+        - description: a dev-friendly card blurb that explains what kind of developer this person seems to be, grounded in the stats + creature concept.
 
-        Description on which the creature is based: ${promptDescription}`,
+        Inputs:
+        - Contributions (activity signal): ${contributions}
+        - Creature notes (from the image prompt): ${promptDescription}
+
+        Description requirements:
+        - 2–4 sentences total, concise and punchy.
+        - Sentence 1: what the creature is / looks like (use the creature notes).
+        - Sentence 2: the developer archetype inferred from contributions (e.g., "steady shipper", "burst contributor", "marathon maintainer", etc.). Be honest and avoid over-claiming; use "seems/likely" when needed.
+        - Sentence 3 (optional): map creature traits → dev traits (e.g., "armored" → "reliable", "storm magic" → "fast iteration under pressure").
+        - Mention the contribution count once, naturally.
+        - Avoid: emojis, cringe marketing, judging language, and guessing specific languages/frameworks/companies.
+        `,
     });
 
     return result.object;
