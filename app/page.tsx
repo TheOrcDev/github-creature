@@ -1,11 +1,11 @@
 import { SubmitGithubForm } from "@/components/forms/github-form";
 import LatestCreatures from "@/components/latest-creatures";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSixLatestCreatures } from "@/server/creatures";
+import { getTenLatestCreatures } from "@/server/creatures";
 import { Suspense } from "react";
 
 export default async function Page() {
-  const creatures = await getSixLatestCreatures();
+  const creatures = await getTenLatestCreatures();
 
   return (
     <main className="flex flex-col items-center justify-center h-screen gap-5">
