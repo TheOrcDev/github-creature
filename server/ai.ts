@@ -23,7 +23,7 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
 
             Style & Tone (IMPORTANT):
 
-            Dark fantasy aesthetic: grim, moody, mystical, slightly ominous
+            Fantasy aesthetic: like from a D&D 5e Monster Manual, in natural habitat.
             Low-tier creatures should look pathetic, frail, cursed, or barely surviving
             Higher-tier creatures should progressively look more dominant, intimidating, majestic, and powerful
             Power must be visually obvious: posture, size, armor, aura, magic effects, environment

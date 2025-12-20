@@ -14,8 +14,10 @@ export default async function LatestCreatures() {
             key={creature.id}
             href={`/creature/${creature.githubProfileUrl.split("/").pop()}`}
           >
-            <Button className="min-w-24">
-              {creature.githubProfileUrl.split("/").pop()}
+            <Button className="w-24">
+              <span className="truncate">
+                {creature.githubProfileUrl.split("/").pop()}
+              </span>
             </Button>
           </Link>
         ))}
