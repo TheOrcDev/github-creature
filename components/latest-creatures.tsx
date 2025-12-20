@@ -1,12 +1,10 @@
-import { SelectCreature } from "@/db/schema";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { getTenLatestCreatures } from "@/server/creatures";
 
-type LatestCreaturesProps = {
-  creatures: SelectCreature[];
-};
+export default async function LatestCreatures() {
+  const creatures = await getTenLatestCreatures();
 
-export default function LatestCreatures({ creatures }: LatestCreaturesProps) {
   return (
     <div className="flex flex-col w-full sm:max-w-lg">
       <h2 className="text-sm">Latest Creatures</h2>
