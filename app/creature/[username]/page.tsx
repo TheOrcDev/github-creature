@@ -1,15 +1,15 @@
 import CreatureCard from "@/components/creature-card";
-import { getCreatureByGithubUsername } from "@/server/creatures";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 type Params = Promise<{ username: string }>;
 
 export default async function CreaturePage({ params }: { params: Params }) {
-  const { username } = await params;
-  const creature = await getCreatureByGithubUsername(username.toLowerCase());
-
-  if (!creature) {
-    return <div>Creature not found</div>;
-  }
-
-  return <CreatureCard creature={creature} />;
+  return (
+    <main className="flex p-5 max-w-2xl mt-10 w-full mx-auto border flex-col items-center justify-center gap-5">
+      <Suspense fallback={<Skeleton className="h-96 w-72" />}>
+        <CreatureCard params={params} />
+      </Suspense>
+    </main>
+  );
 }

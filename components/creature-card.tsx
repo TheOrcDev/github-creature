@@ -1,12 +1,19 @@
-import { SelectCreature } from "@/db/schema";
+import { getCreatureByGithubUsername } from "@/server/creatures";
 import Image from "next/image";
 
 type CreatureCardProps = {
-  creature: SelectCreature;
+  params: Promise<{ username: string }>;
 };
-export default function CreatureCard({ creature }: CreatureCardProps) {
+export default async function CreatureCard({ params }: CreatureCardProps) {
+  const { username } = await params;
+  const creature = await getCreatureByGithubUsername(username.toLowerCase());
+
+  if (!creature) {
+    return <div>Creature not found</div>;
+  }
+
   return (
-    <main className="flex p-5 max-w-2xl mt-10 w-full mx-auto border flex-col items-center justify-center gap-5">
+    <>
       <h1>
         {creature.githubProfileUrl.split("/").pop()} - {creature.name}
       </h1>
@@ -17,6 +24,6 @@ export default function CreatureCard({ creature }: CreatureCardProps) {
         height={350}
       />
       <p>{creature.description}</p>
-    </main>
+    </>
   );
 }
