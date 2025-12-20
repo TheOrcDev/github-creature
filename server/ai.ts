@@ -2,8 +2,9 @@
 
 import { db } from '@/db/drizzle';
 import { put } from '@vercel/blob';
-import { generateText } from 'ai';
+import { generateObject, generateText } from 'ai';
 import { redirect } from 'next/navigation';
+import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
 export async function fetchGithubStats(username: string) {
@@ -57,10 +58,9 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
             - Control their surroundings (storms, fire, void, light, shadows)
             - Appear confident, dominant, or terrifying
 
-            Requirements for image and description:
+            Requirements for the image:
             - Creature can come from any fantasy realm: forests, dungeons, nether, oceans, mountains, mythic planes
-            Include a fantasy name
-            - Include a short description reflecting contributions, followers, and stars
+            - Include a short description of the creature for next prompt generation
             - Image should reflect creature tier, commander potential, and magical abilities
             - Be creative — don’t limit to humans, knights, or dragons
             - Make the creature visually striking, detailed, unique, and clearly tiered
@@ -68,6 +68,23 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
     });
 
     return result;
+}
+
+export async function generateCreatureDescriptionAndName(contributions: number, promptDescription: string) {
+    const result = await generateObject({
+        model: 'google/gemini-2.5-flash',
+        schema: z.object({
+            name: z.string(),
+            description: z.string(),
+        }),
+        prompt: `Generate a name and a short description of the creature for this developer. Based on devs stats of his GitHub profile: 
+
+        Contribution: ${contributions}
+
+        Description on which the creature is based: ${promptDescription}`,
+    });
+
+    return result.object;
 }
 
 export async function submitGithubForm(githubProfileUrl: string) {
@@ -93,6 +110,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
     }
 
     const image = await generateCreatureImage(githubProfileUrl, stats.total_count);
+    const { name, description } = await generateCreatureDescriptionAndName(stats.total_count, image.text);
 
     for (const result of image.content) {
         if (result.type === 'file') {
@@ -104,7 +122,8 @@ export async function submitGithubForm(githubProfileUrl: string) {
                 githubProfileUrl: githubProfileUrl.toLowerCase(),
                 contributions: stats.total_count,
                 image: blob.url,
-                description: image.text,
+                description: description,
+                name: name,
             });
 
             redirect(`/creature/${username}`);

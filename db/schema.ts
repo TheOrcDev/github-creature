@@ -4,6 +4,7 @@ export const creatures = pgTable("creatures", {
     id: uuid("id").primaryKey().defaultRandom(),
     githubProfileUrl: text("github_profile_url").notNull(),
     description: text("description").notNull(),
+    name: text("name").notNull(),
     image: text("image").notNull(),
     contributions: integer("contributions").notNull().default(0),
     createdAt: timestamp("created_at").notNull().defaultNow(),
