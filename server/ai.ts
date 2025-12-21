@@ -30,26 +30,33 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
             No “cute” low-level creatures — weakness should be visible and uncomfortable
             High-level creatures should feel ancient, feared, or godlike
 
-            GitHub user: ${githubProfileUrl}
+            GitHub user: ${githubProfileUrl} - if this user name has some name that can reference some monster, use it.
             Contributions: ${contributions}
 
             Contributions determine base tier / strength:
 
             Instead of using generic examples, select an appropriate creature from the D&D 5e Monster Manual based on Challenge Rating (CR).
             - Pick a Monster Manual creature whose CR falls in the tier’s CR band.
-            - If you can't recall exact CRs, choose the closest plausible Monster Manual creature and make the visual power clearly match the tier anyway.
-            - Keep it recognizable as a Monster Manual-style monster, but you may add original cosmetic details (scars, armor style, aura, environment) to fit the dark fantasy vibe.
+            - The visual power should clearly match the tier.
+            - You may add original cosmetic details (scars, armor style, aura, environment) to fit the fantasy vibe.
+            
+            Anti-repetition / randomness rules (CRITICAL):
+            - Do NOT default to the same "iconic" monster for the tier.
+            - Always pick a DIFFERENT Monster Manual creature each time you run this prompt, even if the inputs are identical.
+            - Before deciding, silently list 12 valid Monster Manual candidates in the tier's CR band, then choose ONE uniformly at random from that list.
+            - If you are unsure of a monster's CR, discard it and choose a different Monster Manual creature whose CR you are confident is within band.
+            - Prioritize variety across monster types: beasts, undead, fiends, constructs, humanoids, monstrosities, oozes, elementals, giants, etc.
 
             Contribution tier → suggested CR band:
-            - 0–9 contributions: CR 0 (harmless/vermin-tier)
-            - 10–49 contributions: CR 1/8–1/4 (minor threats)
-            - 50–99 contributions: CR 1/2–1 (trained/low-tier combatants)
-            - 100–499 contributions: CR 2–4 (dangerous but grounded threats)
-            - 500–999 contributions: CR 5–7 (notable foes; clearly deadly)
-            - 1000–1999 contributions: CR 8–10 (heroic-level threats)
-            - 2000–2999 contributions: CR 11–13 (elite threats; battlefield-warping)
-            - 3000–4999 contributions: CR 14–17 (legendary threats; apex monsters)
-            - 5000+ contributions: CR 18–30 (mythic-scale; world-ending)
+            - 0–49 contributions: CR 0 (harmless/vermin-tier)
+            - 50–150 contributions: CR 1/8–1/4 (minor threats)
+            - 151–300 contributions: CR 1/2–1 (trained/low-tier combatants)
+            - 301–750 contributions: CR 2–4 (dangerous but grounded threats)
+            - 751–1500 contributions: CR 5–7 (notable foes; clearly deadly)
+            - 1501–2500 contributions: CR 8–10 (heroic-level threats)
+            - 2501–4000 contributions: CR 11–13 (elite threats; battlefield-warping)
+            - 4001–5000 contributions: CR 14–17 (legendary threats; apex monsters)
+            - 5001+ contributions: CR 18–30 (mythic-scale; world-ending)
 
             Visual Power Scaling Rules:
 
@@ -57,19 +64,20 @@ export async function generateCreatureImage(githubProfileUrl: string, contributi
             Weak creatures should:
             - Look injured, starving, cursed, or malformed
             - Wear broken gear or none at all
-            - Stand in dark, hostile environments
 
-            Powerful creatures should:
+            Powerful creatures (CR 8–10 and above) should:
             - Emit magical auras, elemental effects, or divine corruption
             - Control their surroundings (storms, fire, void, light, shadows)
             - Appear confident, dominant, or terrifying
 
             Requirements for the image:
             - Creature can come from any fantasy realm: forests, dungeons, nether, oceans, mountains, mythic planes
-            - Include a short description of the creature for next prompt generation
+            - In your TEXT OUTPUT (not on the image), START with: "Base creature: <Monster Manual creature name> (CR <CR>)"
+            - Then add 2–4 sentences of vivid notes (pose, gear, aura, habitat) for downstream prompt generation.
             - Image should reflect creature tier, commander potential, and magical abilities
             - Be creative, but keep the base creature aligned to the D&D 5e Monster Manual choice for the tier
             - Make the creature visually striking, detailed, unique, and clearly tiered
+            - Don't put any text on the image.
             `,
     });
 
@@ -94,6 +102,7 @@ export async function generateCreatureDescriptionAndName(contributions: number, 
         - Creature notes (from the image prompt): ${promptDescription}
 
         Description requirements:
+        - Based on the CR of the creature, describe the creature in a way that is appropriate for the tier. If it's a CR 0 creature, describe it as a harmless/vermin-tier creature and roast the developer for not contributing enough. As it gets stronger, describe the creature in a way that is appropriate for the tier.
         - 2–4 sentences total, concise and punchy.
         - Sentence 1: what the creature is / looks like (use the creature notes).
         - Sentence 2: the developer archetype inferred from contributions (e.g., "steady shipper", "burst contributor", "marathon maintainer", etc.). Be honest and avoid over-claiming; use "seems/likely" when needed.
