@@ -12,7 +12,7 @@ export default async function LatestCreatures() {
         {creatures.map((creature) => (
           <Link
             key={creature.id}
-            href={`/creature/${creature.githubProfileUrl.split("/").pop()}`}
+            href={`/${creature.githubProfileUrl.split("/").pop()}`}
           >
             <Button className="w-24">
               <span className="truncate">

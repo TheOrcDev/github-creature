@@ -153,7 +153,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
                 name: name,
             });
 
-            redirect(`/creature/${username}`);
+            redirect(`/${username}`);
         }
     }
 }
