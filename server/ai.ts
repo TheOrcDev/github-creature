@@ -107,7 +107,6 @@ export async function generateCreatureDescriptionAndName(contributions: number, 
 }
 
 export async function submitGithubForm(githubProfileUrl: string) {
-
     const check = await db.query.creatures.findFirst({
         where: (creatures, { eq }) => eq(creatures.githubProfileUrl, githubProfileUrl),
     });
@@ -133,7 +132,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
     for (const result of image.content) {
         if (result.type === 'file') {
-            const blob = await put(`generated-img-${username}.png`, Buffer.from(result.file.uint8Array), {
+            const blob = await put(`${username}.png`, Buffer.from(result.file.uint8Array), {
                 access: 'public',
             });
 
