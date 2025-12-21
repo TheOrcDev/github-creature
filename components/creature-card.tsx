@@ -42,7 +42,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   return (
     <Card
       className={cn(
-        "p-0 w-96 relative shadow-2xl",
+        "p-0 w-96 relative shadow-2xl rounded-xl",
         creature.powerLevel > 9 && "border-purple-500 shadow-purple-500/40",
         creature.powerLevel > 5 &&
           creature.powerLevel <= 8 &&
@@ -54,7 +54,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
     >
       <div
         className={cn(
-          "w-full absolute top-0 left-0 h-full border-2",
+          "w-full absolute top-0 left-0 h-full border-2 rounded-xl",
           creature.powerLevel > 9 && "border-purple-500",
           creature.powerLevel > 5 &&
             creature.powerLevel <= 8 &&
@@ -103,7 +103,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
           />
         )}
       </div>
-      <CardHeader className="p-0 flex flex-col gap-3 items-center justify-center">
+      <CardHeader className="p-0 flex flex-col gap-3">
         <Image
           src={creature.image}
           alt={creature.name}
@@ -111,9 +111,11 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
           height={350}
           className="w-full"
         />
-        <CardTitle>{creature.name}</CardTitle>
+        <CardTitle className="px-4 text-lg font-bold">
+          {creature.name}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="px-4 py-2">
+      <CardContent className="px-4 pb-2">
         <p>{creature.description}</p>
       </CardContent>
     </Card>
