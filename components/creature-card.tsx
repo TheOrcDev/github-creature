@@ -5,9 +5,8 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LiquidEther from "./liquid-ether";
 import { cn } from "@/lib/utils";
-import DarkVeil from "./dark-veil";
-import LightRays from "./light-rays";
 import Plasma from "./plasma";
+import LiquidChrome from "./liquid-chrome";
 
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
@@ -41,17 +40,31 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   }
 
   return (
-    <Card className="p-0 w-96 relative shadow-2xl shadow-purple-500/40">
+    <Card
+      className={cn(
+        "p-0 w-96 relative shadow-2xl",
+        creature.powerLevel > 9 && "border-purple-500 shadow-purple-500/40",
+        creature.powerLevel > 5 &&
+          creature.powerLevel <= 8 &&
+          "border-gray-500 shadow-gray-500/40",
+        creature.powerLevel > 2 &&
+          creature.powerLevel <= 5 &&
+          "border-orange-500 shadow-orange-500/40"
+      )}
+    >
       <div
         className={cn(
           "w-full absolute top-0 left-0 h-full border-2",
-          creature.powerLevel > 8 && "border-purple-500",
+          creature.powerLevel > 9 && "border-purple-500",
+          creature.powerLevel > 5 &&
+            creature.powerLevel <= 8 &&
+            "border-gray-500",
           creature.powerLevel > 2 &&
             creature.powerLevel <= 5 &&
             "border-orange-500"
         )}
       >
-        {creature.powerLevel > 8 && (
+        {creature.powerLevel > 9 && (
           <LiquidEther
             colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
             mouseForce={20}
@@ -78,6 +91,15 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             scale={1.1}
             opacity={0.4}
             mouseInteractive={true}
+          />
+        )}
+        {creature.powerLevel > 5 && creature.powerLevel <= 8 && (
+          <LiquidChrome
+            baseColor={[0.1, 0.1, 0.1]}
+            speed={0.5}
+            amplitude={0.6}
+            interactive={true}
+            opacity={0.5}
           />
         )}
       </div>
