@@ -2,6 +2,15 @@ import { getCreatureByGithubUsername } from "@/server/creatures";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
@@ -35,17 +44,20 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   }
 
   return (
-    <>
-      <h1>
-        {creature.githubProfileUrl.split("/").pop()} - {creature.name}
-      </h1>
-      <Image
-        src={creature.image}
-        alt={creature.name}
-        width={350}
-        height={350}
-      />
-      <p>{creature.description}</p>
-    </>
+    <Card className="p-0 w-96">
+      <CardHeader className="p-0 flex flex-col gap-3 items-center justify-center">
+        <Image
+          src={creature.image}
+          alt={creature.name}
+          width={350}
+          height={350}
+          className="w-full"
+        />
+        <CardTitle>{creature.name}</CardTitle>
+      </CardHeader>
+      <CardContent className="px-4 py-2">
+        <p>{creature.description}</p>
+      </CardContent>
+    </Card>
   );
 }
