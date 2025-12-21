@@ -14,7 +14,7 @@ export async function fetchGithubStats(username: string) {
     return data;
 }
 
-export async function generateCreature(githubProfileUrl: string, contributions: number) {
+export async function generateCreature(contributions: number) {
     const result = await generateObject({
         model: 'google/gemini-2.5-flash',
         schema: z.object({
@@ -26,7 +26,6 @@ export async function generateCreature(githubProfileUrl: string, contributions: 
         prompt: `
         Generate a fantasy creature based on a GitHub user's contributions. Use the following rules:
 
-        GitHub user: ${githubProfileUrl} - if this user name has some name that can reference some monster, use it.
         Contributions: ${contributions}
 
         Contributions determine base tier / strength:
@@ -54,6 +53,8 @@ export async function generateCreature(githubProfileUrl: string, contributions: 
         - 4001–5000 contributions: CR 14–17 (legendary threats; apex monsters)
         - 5001+ contributions: CR 18–30 (mythic-scale; world-ending)
 
+        Power level is a number between 1 and 10, based on the CR band.
+
         Visual Power Scaling Rules:
 
         Creature size, armor, weapons, wings, horns, glow, and environment must scale with tier
@@ -65,6 +66,12 @@ export async function generateCreature(githubProfileUrl: string, contributions: 
         - Emit magical auras, elemental effects, or divine corruption
         - Control their surroundings (storms, fire, void, light, shadows)
         - Appear confident, dominant, or terrifying
+
+        Requirements for the name:
+        - The name should be a creature name.
+
+        Requirements for the description:
+        - The description should be a short description of the creature, with some details about its abilities and powers.
 
         Requirements for the image prompt:
         - Creature can come from any fantasy realm: forests, dungeons, nether, oceans, mountains, mythic planes
@@ -135,7 +142,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
         return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
     }
 
-    const { name, description, imagePrompt, powerLevel } = await generateCreature(githubProfileUrl, stats.total_count);
+    const { name, description, imagePrompt, powerLevel } = await generateCreature(stats.total_count);
     const image = await generateCreatureImage(imagePrompt, powerLevel);
 
     for (const result of image.content) {

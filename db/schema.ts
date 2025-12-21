@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { integer, pgTable, real, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const creatures = pgTable("creatures", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -6,7 +6,7 @@ export const creatures = pgTable("creatures", {
     description: text("description").notNull(),
     name: text("name").notNull(),
     image: text("image").notNull(),
-    powerLevel: integer("power_level").notNull().default(0),
+    powerLevel: real("power_level").notNull().default(0),
     contributions: integer("contributions").notNull().default(0),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
