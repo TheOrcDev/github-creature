@@ -7,6 +7,7 @@ import LiquidEther from "./liquid-ether";
 import { cn } from "@/lib/utils";
 import Plasma from "./plasma";
 import LiquidChrome from "./liquid-chrome";
+import ThreeDCard from "./3d-card";
 
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
@@ -40,84 +41,86 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   }
 
   return (
-    <Card
-      className={cn(
-        "p-0 w-96 relative shadow-2xl rounded-xl",
-        creature.powerLevel > 9 && "border-purple-500 shadow-purple-500/40",
-        creature.powerLevel > 5 &&
-          creature.powerLevel <= 8 &&
-          "border-gray-500 shadow-gray-500/40",
-        creature.powerLevel > 2 &&
-          creature.powerLevel <= 5 &&
-          "border-orange-500 shadow-orange-500/40"
-      )}
-    >
-      <div
+    <ThreeDCard>
+      <Card
         className={cn(
-          "w-full absolute top-0 left-0 h-full border-2 rounded-xl",
-          creature.powerLevel > 9 && "border-purple-500",
+          "p-0 w-96 relative shadow-2xl rounded-xl",
+          creature.powerLevel > 9 && "border-purple-500 shadow-purple-500/40",
           creature.powerLevel > 5 &&
             creature.powerLevel <= 8 &&
-            "border-gray-500",
+            "border-gray-500 shadow-gray-500/40",
           creature.powerLevel > 2 &&
             creature.powerLevel <= 5 &&
-            "border-orange-500"
+            "border-orange-500 shadow-orange-500/40"
         )}
       >
-        {creature.powerLevel > 9 && (
-          <LiquidEther
-            colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
-            mouseForce={20}
-            cursorSize={100}
-            isViscous={false}
-            viscous={30}
-            iterationsViscous={32}
-            iterationsPoisson={32}
-            resolution={0.5}
-            isBounce={false}
-            autoDemo={true}
-            autoSpeed={0.5}
-            autoIntensity={2.2}
-            takeoverDuration={0.25}
-            autoResumeDelay={3000}
-            autoRampDuration={0.6}
+        <div
+          className={cn(
+            "w-full absolute top-0 left-0 h-full border-2 rounded-xl",
+            creature.powerLevel > 9 && "border-purple-500",
+            creature.powerLevel > 5 &&
+              creature.powerLevel <= 8 &&
+              "border-gray-500",
+            creature.powerLevel > 2 &&
+              creature.powerLevel <= 5 &&
+              "border-orange-500"
+          )}
+        >
+          {creature.powerLevel > 9 && (
+            <LiquidEther
+              colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+              mouseForce={20}
+              cursorSize={100}
+              isViscous={false}
+              viscous={30}
+              iterationsViscous={32}
+              iterationsPoisson={32}
+              resolution={0.5}
+              isBounce={false}
+              autoDemo={true}
+              autoSpeed={0.5}
+              autoIntensity={2.2}
+              takeoverDuration={0.25}
+              autoResumeDelay={3000}
+              autoRampDuration={0.6}
+            />
+          )}
+          {creature.powerLevel > 2 && creature.powerLevel <= 5 && (
+            <Plasma
+              color={"#ff6b35"}
+              speed={0.6}
+              direction="forward"
+              scale={1.1}
+              opacity={0.4}
+              mouseInteractive={true}
+            />
+          )}
+          {creature.powerLevel > 5 && creature.powerLevel <= 8 && (
+            <LiquidChrome
+              baseColor={[0.1, 0.1, 0.1]}
+              speed={0.5}
+              amplitude={0.6}
+              interactive={true}
+              opacity={0.5}
+            />
+          )}
+        </div>
+        <CardHeader className="p-0 flex flex-col gap-3">
+          <Image
+            src={creature.image}
+            alt={creature.name}
+            width={350}
+            height={350}
+            className="w-full"
           />
-        )}
-        {creature.powerLevel > 2 && creature.powerLevel <= 5 && (
-          <Plasma
-            color={"#ff6b35"}
-            speed={0.6}
-            direction="forward"
-            scale={1.1}
-            opacity={0.4}
-            mouseInteractive={true}
-          />
-        )}
-        {creature.powerLevel > 5 && creature.powerLevel <= 8 && (
-          <LiquidChrome
-            baseColor={[0.1, 0.1, 0.1]}
-            speed={0.5}
-            amplitude={0.6}
-            interactive={true}
-            opacity={0.5}
-          />
-        )}
-      </div>
-      <CardHeader className="p-0 flex flex-col gap-3">
-        <Image
-          src={creature.image}
-          alt={creature.name}
-          width={350}
-          height={350}
-          className="w-full"
-        />
-        <CardTitle className="px-4 text-lg font-bold">
-          {creature.name}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="px-4 pb-2">
-        <p>{creature.description}</p>
-      </CardContent>
-    </Card>
+          <CardTitle className="px-4 text-lg font-bold">
+            {creature.name}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-4 pb-2">
+          <p>{creature.description}</p>
+        </CardContent>
+      </Card>
+    </ThreeDCard>
   );
 }
