@@ -44,19 +44,20 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
     <ThreeDCard>
       <Card
         className={cn(
-          "p-0 w-96 relative shadow-2xl rounded-xl",
-          creature.powerLevel > 9 && "border-purple-500 shadow-purple-500/40",
+          "p-0 w-96 relative rounded-xl",
+          creature.powerLevel > 9 &&
+            "border-purple-500 dark:bg-purple-500/30 bg-purple-500/40",
           creature.powerLevel > 5 &&
             creature.powerLevel <= 8 &&
-            "border-gray-500 shadow-gray-500/40",
+            "border-gray-500 dark:bg-gray-500/30 bg-gray-500/40",
           creature.powerLevel > 2 &&
             creature.powerLevel <= 5 &&
-            "border-orange-500 shadow-orange-500/40"
+            "border-orange-500  dark:bg-orange-500/30 bg-orange-500/40"
         )}
       >
         <div
           className={cn(
-            "w-full absolute top-0 left-0 h-full border-2 rounded-xl",
+            "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
             creature.powerLevel > 9 && "border-purple-500",
             creature.powerLevel > 5 &&
               creature.powerLevel <= 8 &&
@@ -118,7 +119,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="px-4 pb-2">
-          <p>{creature.description}</p>
+          <p className="text-sm text-balance">{creature.description}</p>
         </CardContent>
       </Card>
     </ThreeDCard>
