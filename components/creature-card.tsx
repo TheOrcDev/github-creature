@@ -4,6 +4,10 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LiquidEther from "./liquid-ether";
+import { cn } from "@/lib/utils";
+import DarkVeil from "./dark-veil";
+import LightRays from "./light-rays";
+import Plasma from "./plasma";
 
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
@@ -38,24 +42,44 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
 
   return (
     <Card className="p-0 w-96 relative shadow-2xl shadow-purple-500/40">
-      <div className="w-full absolute top-0 left-0 h-full border-2 border-purple-500">
-        <LiquidEther
-          colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
-          mouseForce={20}
-          cursorSize={100}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo={true}
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={3000}
-          autoRampDuration={0.6}
-        />
+      <div
+        className={cn(
+          "w-full absolute top-0 left-0 h-full border-2",
+          creature.powerLevel > 8 && "border-purple-500",
+          creature.powerLevel > 2 &&
+            creature.powerLevel <= 5 &&
+            "border-orange-500"
+        )}
+      >
+        {creature.powerLevel > 8 && (
+          <LiquidEther
+            colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+            mouseForce={20}
+            cursorSize={100}
+            isViscous={false}
+            viscous={30}
+            iterationsViscous={32}
+            iterationsPoisson={32}
+            resolution={0.5}
+            isBounce={false}
+            autoDemo={true}
+            autoSpeed={0.5}
+            autoIntensity={2.2}
+            takeoverDuration={0.25}
+            autoResumeDelay={3000}
+            autoRampDuration={0.6}
+          />
+        )}
+        {creature.powerLevel > 2 && creature.powerLevel <= 5 && (
+          <Plasma
+            color={"#ff6b35"}
+            speed={0.6}
+            direction="forward"
+            scale={1.1}
+            opacity={0.4}
+            mouseInteractive={true}
+          />
+        )}
       </div>
       <CardHeader className="p-0 flex flex-col gap-3 items-center justify-center">
         <Image
