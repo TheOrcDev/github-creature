@@ -4,7 +4,7 @@ import { ModeSwitcher } from "./mode-switcher";
 
 export default function Header() {
   return (
-    <header className="absolute top-0 p-4 w-full flex items-center justify-between">
+    <header className="absolute top-0 p-4 w-full flex justify-between">
       <Link href="/">
         <Image
           src="/github-creature-logo.png"
