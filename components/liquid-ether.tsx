@@ -610,6 +610,7 @@ export default function LiquidEther({
         this.uniforms = this.props.material?.uniforms;
       }
       init(..._args: any[]) {
+        void _args;
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
         if (this.uniforms) {
@@ -620,6 +621,7 @@ export default function LiquidEther({
         }
       }
       update(..._args: any[]) {
+        void _args;
         if (!Common.renderer || !this.scene || !this.camera) return;
         Common.renderer.setRenderTarget(this.props.output || null);
         Common.renderer.render(this.scene, this.camera);

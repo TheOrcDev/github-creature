@@ -20,6 +20,7 @@ interface ThreeDCardProps {
   enableGlow?: boolean;
   enableShadow?: boolean;
   enableParallax?: boolean;
+  hoverPadding?: number;
 }
 
 function ThreeDCard({
@@ -34,6 +35,7 @@ function ThreeDCard({
   enableGlow = true,
   enableShadow = true,
   enableParallax = true,
+  hoverPadding = 12,
 }: ThreeDCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -54,8 +56,11 @@ function ThreeDCard({
       const rect = cardRef.current.getBoundingClientRect();
       const { width, height, left, top } = rect;
 
-      const mouseX = e.clientX - left;
-      const mouseY = e.clientY - top;
+      // Mouse events are attached to a padded "hit area" wrapper to avoid
+      // enter/leave jitter when the card tilts away from the cursor.
+      // Clamp so motion in the padding doesn't create extreme rotations.
+      const mouseX = Math.min(width, Math.max(0, e.clientX - left));
+      const mouseY = Math.min(height, Math.max(0, e.clientY - top));
 
       const xPct = mouseX / width - 0.5;
       const yPct = mouseY / height - 0.5;
@@ -127,12 +132,15 @@ function ThreeDCard({
     : {};
 
   return (
-    <div style={{ perspective: "1000px" }} className={className}>
+    <div
+      style={{ perspective: "1000px", padding: hoverPadding }}
+      className={className}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div
         ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         style={cardStyle}
         className="relative bg-gray-800 rounded-2xl overflow-hidden"
         role="img"
