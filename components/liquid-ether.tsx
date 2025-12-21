@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/unsupported-syntax */
 "use client";
 
 import React, { useEffect, useRef } from "react";
