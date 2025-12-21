@@ -6,6 +6,7 @@ export const creatures = pgTable("creatures", {
     description: text("description").notNull(),
     name: text("name").notNull(),
     image: text("image").notNull(),
+    powerLevel: integer("power_level").notNull().default(0),
     contributions: integer("contributions").notNull().default(0),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
