@@ -1,8 +1,30 @@
 import CreatureCard from "@/components/creature-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCreatureByGithubUsername } from "@/server/creatures";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 type Params = Promise<{ username: string }>;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { username } = await params;
+
+  const creature = await getCreatureByGithubUsername(username.toLowerCase());
+
+  return {
+    title: `${creature?.name} - ${creature?.githubProfileUrl
+      .split("/")
+      .pop()}'s GitHub Creature`,
+    description: creature?.description,
+    openGraph: {
+      images: [creature?.image ?? "/github-creature-logo.png"],
+    },
+  };
+}
 
 export default async function CreaturePage({ params }: { params: Params }) {
   return (
