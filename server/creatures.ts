@@ -53,3 +53,29 @@ export async function getLeaderboard() {
         throw new Error("Failed to get leaderboard");
     }
 }
+
+export async function getFollowersLeaderboard() {
+    try {
+        const creatures = await db.query.creatures.findMany({
+            orderBy: (creatures, { desc }) => desc(creatures.followers),
+            limit: 10,
+        });
+        return creatures;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to get followers leaderboard");
+    }
+}
+
+export async function getStarsLeaderboard() {
+    try {
+        const creatures = await db.query.creatures.findMany({
+            orderBy: (creatures, { desc }) => desc(creatures.stars),
+            limit: 10,
+        });
+        return creatures;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to get stars leaderboard");
+    }
+}
