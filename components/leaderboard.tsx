@@ -15,7 +15,8 @@ export default async function Leaderboard() {
             key={creature.id}
           >
             <p>
-              {index + 1}. {creature.name}
+              {index + 1}. {creature.name} ({creature.contributions}{" "}
+              contributions)
             </p>
             <Link href={`/${creature.githubProfileUrl.split("/").pop()}`}>
               <Button>View</Button>
