@@ -10,18 +10,18 @@ export default async function Leaderboard() {
       <h1>Leaderboard</h1>
       <div className="flex flex-col gap-2">
         {leaderboard.map((creature, index) => (
-          <div
-            className="bg-primary/10 p-4 flex gap-2 items-center justify-between"
+          <Link
             key={creature.id}
+            href={`/${creature.githubProfileUrl.split("/").pop()}`}
           >
-            <p>
-              {index + 1}. {creature.name} ({creature.contributions}{" "}
-              contributions)
-            </p>
-            <Link href={`/${creature.githubProfileUrl.split("/").pop()}`}>
+            <div className="bg-primary/10 hover:bg-primary/20 transition-all duration-300 p-4 flex gap-2 items-center justify-between">
+              <p>
+                {index + 1}. {creature.name} ({creature.contributions}{" "}
+                contributions)
+              </p>
               <Button>View</Button>
-            </Link>
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
