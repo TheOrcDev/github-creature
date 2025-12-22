@@ -8,14 +8,18 @@ import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
 export async function fetchGithubStats(username: string) {
-    const [commits, user] = await Promise.all([
+    const [commits, user, repos] = await Promise.all([
         await fetch(`https://api.github.com/search/commits?q=author:${username}`),
         await fetch(`https://api.github.com/users/${username}`),
+        await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=1`),
     ]);
+
+    const totalStars = (await repos.json()).reduce((acc: number, repo: { stargazers_count: number }) => acc + repo.stargazers_count, 0);
 
     return {
         commits: (await commits.json()).total_count,
         followers: (await user.json()).followers,
+        stars: totalStars,
     };
 }
 
@@ -63,6 +67,12 @@ export async function generateCreature(contributions: number) {
         * 100–499 followers: Moderate chance of being a squad leader, pack alpha, or small commander
         * 500–999 followers: High chance of being a commander, captain, or elite leader
         * 1000+ followers: Very high chance of being a legendary commander, general, or godlike leader
+
+        Stars increase chance the creature has magical or supernatural abilities:
+        * 0–49 stars: Mostly natural abilities; minor magic possible
+        * 50–199 stars: Moderate chance of magical abilities (fire, ice, elemental skills)
+        * 200–499 stars: High chance of strong magical powers (arcane, necromancy, elemental mastery)
+        * 1000+ stars: Very high chance of unique, godlike magical abilities (reality-warping, ancient spells, legendary artifacts)
 
         Power level is a number between 1 and 10, based on the CR band.
 

@@ -45,7 +45,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
       <Card
         className={cn(
           "p-0 w-96 relative rounded-xl",
-          creature.powerLevel > 9 &&
+          creature.powerLevel >= 9 &&
             "border-purple-500 dark:bg-purple-500/30 bg-purple-500/40",
           creature.powerLevel > 5 &&
             creature.powerLevel <= 8 &&
@@ -58,7 +58,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
         <div
           className={cn(
             "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
-            creature.powerLevel > 9 && "border-purple-500",
+            creature.powerLevel >= 9 && "border-purple-500",
             creature.powerLevel > 5 &&
               creature.powerLevel <= 8 &&
               "border-gray-500",
@@ -67,7 +67,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
               "border-orange-500"
           )}
         >
-          {creature.powerLevel > 9 && (
+          {creature.powerLevel >= 9 && (
             <LiquidEther
               colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
               mouseForce={20}
