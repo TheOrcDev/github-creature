@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LeaderboardPage() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen gap-5 max-w-2xl mx-auto">
+    <main className="flex flex-col items-center justify-center h-screen gap-5 max-w-2xl mx-auto px-2">
       <Suspense
         fallback={
           <div className="flex flex-col gap-2 w-full mt-14">
