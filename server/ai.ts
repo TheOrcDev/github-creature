@@ -8,10 +8,15 @@ import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
 export async function fetchGithubStats(username: string) {
-    const response = await fetch(`https://api.github.com/search/commits?q=author:${username}`);
-    const data = await response.json();
+    const [commits, user] = await Promise.all([
+        await fetch(`https://api.github.com/search/commits?q=author:${username}`),
+        await fetch(`https://api.github.com/users/${username}`),
+    ]);
 
-    return data;
+    return {
+        commits: (await commits.json()).total_count,
+        followers: (await user.json()).followers,
+    };
 }
 
 export async function generateCreature(contributions: number) {
@@ -52,6 +57,12 @@ export async function generateCreature(contributions: number) {
         - 2501–4000 contributions: CR 11–13 (elite threats; battlefield-warping)
         - 4001–5000 contributions: CR 14–17 (legendary threats; apex monsters)
         - 5001+ contributions: CR 18–30 (mythic-scale; world-ending)
+
+        Followers increase chance the creature is a commander / leader:
+        * 0–99 followers: Most creatures are solo or minor; very small chance of being a commander
+        * 100–499 followers: Moderate chance of being a squad leader, pack alpha, or small commander
+        * 500–999 followers: High chance of being a commander, captain, or elite leader
+        * 1000+ followers: Very high chance of being a legendary commander, general, or godlike leader
 
         Power level is a number between 1 and 10, based on the CR band.
 
@@ -138,11 +149,11 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
     const stats = await fetchGithubStats(username);
 
-    if (stats.total_count == null || Number.isNaN(stats.total_count)) {
+    if (stats.commits == null || Number.isNaN(stats.commits)) {
         return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
     }
 
-    const { name, description, imagePrompt, powerLevel } = await generateCreature(stats.total_count);
+    const { name, description, imagePrompt, powerLevel } = await generateCreature(stats.commits);
     const image = await generateCreatureImage(imagePrompt, powerLevel);
 
     for (const result of image.content) {
@@ -153,9 +164,10 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
             await saveCreature({
                 githubProfileUrl: githubProfileUrl.toLowerCase(),
-                contributions: stats.total_count,
+                contributions: stats.commits,
                 image: blob.url,
                 description: description,
+                followers: stats.followers,
                 name: name,
                 powerLevel: +powerLevel,
             });
