@@ -40,3 +40,16 @@ export async function getTenLatestCreatures() {
         throw new Error("Failed to get creatures");
     }
 }
+
+export async function getLeaderboard() {
+    try {
+        const creatures = await db.query.creatures.findMany({
+            orderBy: (creatures, { desc }) => desc(creatures.contributions),
+            limit: 10,
+        });
+        return creatures;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to get leaderboard");
+    }
+}
