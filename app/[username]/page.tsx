@@ -15,13 +15,41 @@ export async function generateMetadata({
 
   const creature = await getCreatureByGithubUsername(username.toLowerCase());
 
+  const ogImage = creature?.image ?? "/github-creature-logo.png";
+  const title = creature?.name
+    ? `${creature.name} - ${creature.githubProfileUrl
+        .split("/")
+        .pop()}'s GitHub Creature`
+    : "GitHub Creature";
+
   return {
-    title: `${creature?.name} - ${creature?.githubProfileUrl
-      .split("/")
-      .pop()}'s GitHub Creature`,
-    description: creature?.description,
+    title,
+    description:
+      creature?.description ??
+      "Generate a creature based on your GitHub profile.",
     openGraph: {
-      images: [creature?.image ?? "/github-creature-logo.png"],
+      title,
+      description:
+        creature?.description ??
+        "Generate a creature based on your GitHub profile.",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: creature?.name
+            ? `${creature.name} (GitHub Creature)`
+            : "GitHub Creature",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description:
+        creature?.description ??
+        "Generate a creature based on your GitHub profile.",
+      images: [ogImage],
     },
   };
 }
