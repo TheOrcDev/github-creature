@@ -8,8 +8,11 @@ import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
 export async function fetchGithubStats(username: string) {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
     const [commits, user, repos] = await Promise.all([
-        await fetch(`https://api.github.com/search/commits?q=author:${username}`),
+        await fetch(`https://api.github.com/search/commits?q=author:${username}+committer-date:%3E=${oneYearAgo.toISOString()}`),
         await fetch(`https://api.github.com/users/${username}`),
         await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=1`),
     ]);
