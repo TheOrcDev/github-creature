@@ -42,10 +42,21 @@ export async function fetchGithubStats(username: string) {
 
     const json = await res.json();
 
-    const totalStars = json.data.user.repositories.nodes.reduce(
-        (acc: number, repo: { stargazerCount: number }) =>
-            acc + repo.stargazerCount,
-        0
+    if (!res.ok || json?.errors?.length) {
+        const details =
+            json?.errors?.map((e: { message?: string }) => e?.message).filter(Boolean).join("; ") ||
+            `HTTP ${res.status}`;
+        throw new Error(`Failed to fetch GitHub stats for "${username}": ${details}`);
+    }
+
+    if (!json?.data?.user) {
+        throw new Error(`GitHub user "${username}" not found (or inaccessible).`);
+    }
+
+    const repos = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=1`);
+
+    const totalStars = (await repos.json()).reduce(
+        (acc: number, repo: { stargazers_count: number }) => acc + repo.stargazers_count, 0
     );
 
     return {
@@ -183,13 +194,21 @@ export async function submitGithubForm(githubProfileUrl: string) {
         return { success: true, message: "Creature already exists." };
     }
 
-    const username = githubProfileUrl.split("/").pop();
+    const username = githubProfileUrl.split("/").filter(Boolean).pop();
 
     if (!username) {
         throw new Error("Invalid GitHub profile URL");
     }
 
-    const stats = await fetchGithubStats(username);
+    let stats: { contributions: number; followers: number; stars: number };
+    try {
+        stats = await fetchGithubStats(username);
+    } catch (err) {
+        return {
+            success: false,
+            message: err instanceof Error ? err.message : "Failed to fetch GitHub stats.",
+        };
+    }
 
 
     if (stats.contributions == null || Number.isNaN(stats.contributions)) {
@@ -211,6 +230,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
                 image: blob.url,
                 description: description,
                 followers: stats.followers,
+                stars: stats.stars,
                 name: name,
                 powerLevel: +powerLevel,
             });
