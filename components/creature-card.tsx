@@ -176,14 +176,14 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             height={350}
             className="w-full"
           />
-          <CardTitle className="px-4 text-xl sm:text-2xl font-semibold tracking-tight leading-tight">
+          <CardTitle className="px-4 text-2xl sm:text-3xl font-hand font-bold tracking-normal leading-tight">
             <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
               {creature.name}
             </span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="px-4 pb-2">
-          <p className="text-sm leading-relaxed text-balance text-foreground/80">
+        <CardContent className="px-4 pb-4">
+          <p className="leading-relaxed text-balance text-foreground/80">
             {creature.description}
           </p>
         </CardContent>
