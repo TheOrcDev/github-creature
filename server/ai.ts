@@ -8,20 +8,49 @@ import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
 export async function fetchGithubStats(username: string) {
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const query = `
+      query($login: String!) {
+        user(login: $login) {
+          contributionsCollection {
+            contributionCalendar {
+              totalContributions
+            }
+          }
+          followers {
+            totalCount
+          }
+          repositories(first: 100, ownerAffiliations: OWNER) {
+            nodes {
+              stargazerCount
+            }
+          }
+        }
+      }
+    `;
 
-    const [commits, user, repos] = await Promise.all([
-        await fetch(`https://api.github.com/search/commits?q=author:${username}+committer-date:%3E=${oneYearAgo.toISOString()}`),
-        await fetch(`https://api.github.com/users/${username}`),
-        await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=1`),
-    ]);
+    const res = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        },
+        body: JSON.stringify({
+            query,
+            variables: { login: username },
+        }),
+    });
 
-    const totalStars = (await repos.json()).reduce((acc: number, repo: { stargazers_count: number }) => acc + repo.stargazers_count, 0);
+    const json = await res.json();
+
+    const totalStars = json.data.user.repositories.nodes.reduce(
+        (acc: number, repo: { stargazerCount: number }) =>
+            acc + repo.stargazerCount,
+        0
+    );
 
     return {
-        commits: (await commits.json()).total_count,
-        followers: (await user.json()).followers,
+        contributions: json.data.user.contributionsCollection.contributionCalendar.totalContributions,
+        followers: json.data.user.followers.totalCount,
         stars: totalStars,
     };
 }
@@ -161,6 +190,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
     }
 
     const stats = await fetchGithubStats(username);
+
 
     if (stats.commits == null || Number.isNaN(stats.commits)) {
         return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
