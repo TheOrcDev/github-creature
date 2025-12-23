@@ -192,11 +192,11 @@ export async function submitGithubForm(githubProfileUrl: string) {
     const stats = await fetchGithubStats(username);
 
 
-    if (stats.commits == null || Number.isNaN(stats.commits)) {
+    if (stats.contributions == null || Number.isNaN(stats.contributions)) {
         return { success: false, message: "Failed to fetch GitHub stats. Is the username valid?" };
     }
 
-    const { name, description, imagePrompt, powerLevel } = await generateCreature(stats.commits);
+    const { name, description, imagePrompt, powerLevel } = await generateCreature(stats.contributions);
     const image = await generateCreatureImage(imagePrompt, powerLevel);
 
     for (const result of image.content) {
@@ -207,7 +207,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
             await saveCreature({
                 githubProfileUrl: githubProfileUrl.toLowerCase(),
-                contributions: stats.commits,
+                contributions: stats.contributions,
                 image: blob.url,
                 description: description,
                 followers: stats.followers,

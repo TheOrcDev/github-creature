@@ -19,7 +19,7 @@ function LeaderboardSkeleton() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2 w-full">
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 10 }, (_, index) => (
             <Skeleton key={index} className="h-9 w-full" />
           ))}
         </div>
