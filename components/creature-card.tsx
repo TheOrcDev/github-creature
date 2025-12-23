@@ -163,7 +163,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   const stats = <CreatureStats creature={creature} />;
 
   const card = (
-    <ThreeDCard>
+    <ThreeDCard enableShadow={false}>
       <Card className={cn("p-0 w-96 relative rounded-xl", theme.cardClassName)}>
         <div
           className={cn(
