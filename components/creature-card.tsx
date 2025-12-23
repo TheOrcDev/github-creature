@@ -12,7 +12,9 @@ import Balatro from "./balatro";
 import LightPillar from "./light-pillar";
 import type { ReactNode } from "react";
 import CreatureStats from "./creature-stats";
-import CreatureStatsReveal from "./creature-stats-reveal";
+import CreatureStatsDialog from "@/components/creature-stats-dialog";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 
 function getPowerLevelTheme(powerLevel: number): {
   cardClassName: string;
@@ -159,48 +161,101 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   }
 
   const theme = getPowerLevelTheme(creature.powerLevel);
-
-  const stats = <CreatureStats creature={creature} />;
-
-  const card = (
-    <ThreeDCard enableShadow={false}>
-      <Card className={cn("p-0 w-96 relative rounded-xl", theme.cardClassName)}>
-        <div
-          className={cn(
-            "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
-            theme.frameClassName
-          )}
-        >
-          {theme.effects}
-        </div>
-        <CardHeader className="p-0 flex flex-col gap-3">
-          <Image
-            src={creature.image}
-            alt={creature.name}
-            width={350}
-            height={350}
-            className="w-full"
-          />
-          <CardTitle className="px-4 text-2xl sm:text-3xl font-hand font-bold tracking-normal leading-tight">
-            <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-              {creature.name}
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="px-4 pb-4">
-          <p className="leading-relaxed text-balance text-foreground/80">
-            {creature.description}
-          </p>
-        </CardContent>
-      </Card>
-    </ThreeDCard>
-  );
+  const toggleId = `stats-toggle-${username.toLowerCase()}`;
 
   return (
-    <CreatureStatsReveal
-      creatureName={creature.name}
-      card={card}
-      stats={stats}
-    />
+    <div className="flex flex-col items-center">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
+        <input id={toggleId} type="checkbox" className="peer sr-only" />
+
+        <div
+          className={cn(
+            "relative transition-transform duration-500 ease-out",
+            "peer-checked:sm:-translate-x-1",
+            "peer-checked:**:data-[state=reveal]:hidden",
+            "peer-checked:**:data-[state=hide]:inline",
+            "peer-checked:**:data-[slot=arrow]:rotate-180"
+          )}
+        >
+          <div className="absolute -top-10 right-0 z-10 flex justify-end">
+            <div className="lg:hidden w-full">
+              <CreatureStatsDialog triggerText="View stats">
+                <CreatureStats creature={creature} />
+              </CreatureStatsDialog>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden lg:inline-flex mr-3"
+              nativeButton={false}
+              render={<label htmlFor={toggleId} />}
+            >
+              <span data-state="reveal">Reveal stats</span>
+              <span data-state="hide" className="hidden">
+                Hide stats
+              </span>
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                className="transition-transform duration-300"
+                data-slot="arrow"
+              />
+            </Button>
+          </div>
+
+          <ThreeDCard enableShadow={false}>
+            <Card
+              className={cn(
+                "p-0 w-96 relative rounded-xl",
+                theme.cardClassName
+              )}
+            >
+              <div
+                className={cn(
+                  "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
+                  theme.frameClassName
+                )}
+              >
+                {theme.effects}
+              </div>
+              <CardHeader className="p-0 flex flex-col gap-3">
+                <Image
+                  src={creature.image}
+                  alt={creature.name}
+                  width={350}
+                  height={350}
+                  className="w-full"
+                />
+                <CardTitle className="px-4 text-2xl sm:text-3xl font-hand font-bold tracking-normal leading-tight">
+                  <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                    {creature.name}
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-4">
+                <p className="leading-relaxed text-balance text-foreground/80">
+                  {creature.description}
+                </p>
+              </CardContent>
+            </Card>
+          </ThreeDCard>
+        </div>
+
+        {/* Desktop slide-in panel */}
+        <div
+          className={cn(
+            "hidden lg:block overflow-hidden",
+            "transition-[max-width,opacity,transform] duration-500 ease-out will-change-[max-width,opacity,transform]",
+            "max-w-0 opacity-0 translate-x-2 pointer-events-none",
+            "peer-checked:max-w-[24rem] peer-checked:opacity-100 peer-checked:translate-x-0 peer-checked:pointer-events-auto"
+          )}
+        >
+          {/* Match `ThreeDCard` hoverPadding so the two panels align */}
+          <div className="p-3">
+            <CreatureStats creature={creature} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
