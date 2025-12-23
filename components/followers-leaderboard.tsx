@@ -9,7 +9,7 @@ export default async function FollowersLeaderboard() {
   return (
     <Card size="sm" className="w-full">
       <CardHeader className="border-b">
-        <CardTitle>Followers Leaderboard</CardTitle>
+        <CardTitle>Followers</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">

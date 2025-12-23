@@ -9,7 +9,7 @@ export default async function ContributionLeaderboard() {
   return (
     <Card size="sm" className="w-full">
       <CardHeader className="border-b">
-        <CardTitle>Contributions Leaderboard</CardTitle>
+        <CardTitle>Contributions</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">

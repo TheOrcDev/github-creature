@@ -31,6 +31,7 @@ function LeaderboardSkeleton() {
 export default function LeaderboardPage() {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen gap-6 max-w-6xl mx-auto px-2 py-10 w-full mt-20">
+      <h1 className="text-2xl font-bold">GitHub Creature Leaderboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-start">
         <Suspense fallback={<LeaderboardSkeleton />}>
           <ContributionLeaderboard />
