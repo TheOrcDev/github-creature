@@ -13,12 +13,17 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ShareOnXButton from "@/components/share-on-x-button";
+import DownloadCardButton from "@/components/download-card-button";
 
 type CreatureStatsProps = {
   creature: SelectCreature;
+  downloadTargetId?: string;
 };
 
-export default async function CreatureStats({ creature }: CreatureStatsProps) {
+export default async function CreatureStats({
+  creature,
+  downloadTargetId,
+}: CreatureStatsProps) {
   const topPercentage = await getCreatureTopPercentage(creature.id);
 
   return (
@@ -69,9 +74,17 @@ export default async function CreatureStats({ creature }: CreatureStatsProps) {
       </CardContent>
 
       <CardFooter className="justify-between gap-3">
-        <ShareOnXButton
-          text={`Check out ${creature.name} — my GitHub Creature`}
-        />
+        <div className="flex items-center gap-2">
+          <ShareOnXButton
+            text={`Check out ${creature.name} — my GitHub Creature`}
+          />
+          {downloadTargetId ? (
+            <DownloadCardButton
+              targetId={downloadTargetId}
+              fileName={`${creature.name}.png`}
+            />
+          ) : null}
+        </div>
         <Link href={creature.githubProfileUrl} target="_blank" rel="noreferrer">
           <Button variant="outline" size="sm">
             View GitHub profile

@@ -162,6 +162,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
 
   const theme = getPowerLevelTheme(creature.powerLevel);
   const toggleId = `stats-toggle-${username.toLowerCase()}`;
+  const cardDomId = `creature-card-${username.toLowerCase()}`;
 
   return (
     <div className="flex flex-col items-center">
@@ -180,7 +181,10 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
           <div className="absolute -top-10 right-0 z-10 flex justify-end">
             <div className="lg:hidden w-full">
               <CreatureStatsDialog triggerText="View stats">
-                <CreatureStats creature={creature} />
+                <CreatureStats
+                  creature={creature}
+                  downloadTargetId={cardDomId}
+                />
               </CreatureStatsDialog>
             </div>
 
@@ -203,7 +207,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             </Button>
           </div>
 
-          <ThreeDCard enableShadow={false}>
+          <ThreeDCard enableShadow={false} innerId={cardDomId}>
             <Card
               className={cn(
                 "p-0 w-96 relative rounded-xl",
@@ -224,9 +228,13 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
                   alt={creature.name}
                   width={350}
                   height={350}
+                  crossOrigin="anonymous"
                   className="w-full"
                 />
-                <CardTitle className="px-4 text-2xl sm:text-3xl font-hand font-bold tracking-normal leading-tight">
+                <CardTitle
+                  data-export="title"
+                  className="px-4 text-2xl sm:text-2xl font-bold tracking-normal leading-tight"
+                >
                   <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
                     {creature.name}
                   </span>
@@ -252,7 +260,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
         >
           {/* Match `ThreeDCard` hoverPadding so the two panels align */}
           <div className="p-3">
-            <CreatureStats creature={creature} />
+            <CreatureStats creature={creature} downloadTargetId={cardDomId} />
           </div>
         </div>
       </div>

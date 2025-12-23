@@ -11,6 +11,7 @@ import React, {
 interface ThreeDCardProps {
   children: ReactNode;
   className?: string;
+  innerId?: string;
   maxRotation?: number;
   glowOpacity?: number;
   shadowBlur?: number;
@@ -26,6 +27,7 @@ interface ThreeDCardProps {
 function ThreeDCard({
   children,
   className = "",
+  innerId,
   maxRotation = 10,
   glowOpacity = 0.2,
   shadowBlur = 30,
@@ -141,6 +143,7 @@ function ThreeDCard({
     >
       <div
         ref={cardRef}
+        id={innerId}
         style={cardStyle}
         className="relative bg-gray-800 rounded-2xl overflow-hidden"
         role="img"
