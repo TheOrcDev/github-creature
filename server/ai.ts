@@ -19,11 +19,6 @@ export async function fetchGithubStats(username: string) {
           followers {
             totalCount
           }
-          repositories(first: 100, ownerAffiliations: OWNER) {
-            nodes {
-              stargazerCount
-            }
-          }
         }
       }
     `;
