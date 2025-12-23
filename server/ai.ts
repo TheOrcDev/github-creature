@@ -215,7 +215,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
 
     for (const result of image.content) {
         if (result.type === 'file') {
-            const blob = await put(`${username}.png`, Buffer.from(result.file.uint8Array), {
+            const blob = await put(`${username}-creature.png`, Buffer.from(result.file.uint8Array), {
                 access: 'public',
             });
 
