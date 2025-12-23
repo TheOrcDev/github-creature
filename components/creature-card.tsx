@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Plasma from "./plasma";
 import LiquidChrome from "./liquid-chrome";
 import ThreeDCard from "./3d-card";
+import Balatro from "./balatro";
 
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
@@ -50,6 +51,9 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
           creature.powerLevel > 5 &&
             creature.powerLevel <= 8 &&
             "border-gray-500 dark:bg-gray-500/30 bg-gray-500/40",
+          creature.powerLevel > 3 &&
+            creature.powerLevel <= 5 &&
+            "dark:bg-red-500/30 bg-red-500/40 border-red-500",
           creature.powerLevel > 2 &&
             creature.powerLevel <= 5 &&
             "border-orange-500  dark:bg-orange-500/30 bg-orange-500/40"
@@ -62,6 +66,9 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             creature.powerLevel > 5 &&
               creature.powerLevel <= 8 &&
               "border-gray-500",
+            creature.powerLevel > 3 &&
+              creature.powerLevel <= 5 &&
+              "border-red-500",
             creature.powerLevel > 2 &&
               creature.powerLevel <= 5 &&
               "border-orange-500"
@@ -86,7 +93,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
               autoRampDuration={0.6}
             />
           )}
-          {creature.powerLevel > 2 && creature.powerLevel <= 5 && (
+          {creature.powerLevel > 2 && creature.powerLevel <= 3 && (
             <Plasma
               color={"#ff6b35"}
               speed={0.6}
@@ -94,6 +101,14 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
               scale={1.1}
               opacity={0.4}
               mouseInteractive={true}
+            />
+          )}
+          {creature.powerLevel > 3 && creature.powerLevel <= 5 && (
+            <Balatro
+              isRotate={false}
+              mouseInteraction={true}
+              pixelFilter={700}
+              opacity={0.3}
             />
           )}
           {creature.powerLevel > 5 && creature.powerLevel <= 8 && (
