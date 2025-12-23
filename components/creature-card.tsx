@@ -92,7 +92,7 @@ function getPowerLevelTheme(powerLevel: number): {
     };
   }
 
-  if (powerLevel >= 3) {
+  if (powerLevel >= 2) {
     return {
       cardClassName:
         "border-emerald-900 dark:bg-emerald-900/30 bg-emerald-900/40",
