@@ -2,6 +2,7 @@
 
 import { db } from "@/db/drizzle";
 import { creatures, InsertCreature } from "@/db/schema";
+import { count, gt } from "drizzle-orm";
 
 export async function getCreatureByGithubUsername(githubUsername: string) {
     const githubUrl = `https://github.com/${githubUsername}`;
@@ -77,5 +78,37 @@ export async function getStarsLeaderboard() {
     } catch (error) {
         console.error(error);
         throw new Error("Failed to get stars leaderboard");
+    }
+}
+
+export async function getCreatureTopPercentage(id: string) {
+    try {
+        const creature = await db.query.creatures.findFirst({
+            where: (creatures, { eq }) => eq(creatures.id, id),
+        });
+
+        if (!creature) {
+            throw new Error("Creature not found");
+        }
+
+        const [{ count: totalCreaturesRaw }] = await db
+            .select({ count: count() })
+            .from(creatures);
+
+        const totalCreatures = Number(totalCreaturesRaw ?? 0);
+        if (totalCreatures === 0) return 0;
+
+        const [{ count: betterCreaturesRaw }] = await db
+            .select({ count: count() })
+            .from(creatures)
+            .where(gt(creatures.contributions, creature.contributions));
+
+        const betterCreatures = Number(betterCreaturesRaw ?? 0);
+        const rank = betterCreatures + 1;
+
+        return Math.round((rank / totalCreatures) * 100);
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to get creature top percentage");
     }
 }

@@ -11,6 +11,8 @@ import ThreeDCard from "./3d-card";
 import Balatro from "./balatro";
 import LightPillar from "./light-pillar";
 import type { ReactNode } from "react";
+import CreatureStats from "./creature-stats";
+import CreatureStatsReveal from "./creature-stats-reveal";
 
 function getPowerLevelTheme(powerLevel: number): {
   cardClassName: string;
@@ -129,6 +131,7 @@ type CreatureCardProps = {
 };
 export default async function CreatureCard({ params }: CreatureCardProps) {
   const { username } = await params;
+
   const creature = await getCreatureByGithubUsername(username.toLowerCase());
 
   if (!creature) {
@@ -157,7 +160,9 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
 
   const theme = getPowerLevelTheme(creature.powerLevel);
 
-  return (
+  const stats = <CreatureStats creature={creature} />;
+
+  const card = (
     <ThreeDCard>
       <Card className={cn("p-0 w-96 relative rounded-xl", theme.cardClassName)}>
         <div
@@ -189,5 +194,13 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
         </CardContent>
       </Card>
     </ThreeDCard>
+  );
+
+  return (
+    <CreatureStatsReveal
+      creatureName={creature.name}
+      card={card}
+      stats={stats}
+    />
   );
 }

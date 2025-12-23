@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Nunito_Sans, Island_Moments } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Nunito_Sans,
+  Island_Moments,
+} from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
