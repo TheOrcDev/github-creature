@@ -30,13 +30,9 @@ export default function CreatureStatsReveal({
             open ? "sm:-translate-x-1" : "sm:translate-x-0"
           )}
         >
-          {/* Button sits above the card's top-right corner (doesn't affect layout height) */}
           <div className="absolute -top-10 right-0 z-10 flex justify-end">
             <div className="lg:hidden w-full">
-              <CreatureStatsDialog
-                title={`${creatureName} stats`}
-                triggerText="View stats"
-              >
+              <CreatureStatsDialog triggerText="View stats">
                 {stats}
               </CreatureStatsDialog>
             </div>

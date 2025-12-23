@@ -22,7 +22,7 @@ export default async function CreatureStats({ creature }: CreatureStatsProps) {
   const topPercentage = await getCreatureTopPercentage(creature.id);
 
   return (
-    <Card className="w-92 border-primary/20 bg-linear-to-b from-primary/6 to-background flex flex-col justify-between">
+    <Card className="w-92  bg-linear-to-b from-primary/6 to-background flex flex-col justify-between">
       <CardHeader className="border-b">
         <CardTitle className="text-lg sm:text-xl font-bold tracking-tight">
           {creature.name}

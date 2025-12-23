@@ -2,25 +2,17 @@
 
 import * as React from "react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Analytics01Icon } from "@hugeicons/core-free-icons";
 
 type CreatureStatsDialogProps = {
-  title?: string;
   triggerText?: string;
   children: React.ReactNode;
 };
 
 export default function CreatureStatsDialog({
-  title = "Creature stats",
   triggerText = "Stats",
   children,
 }: CreatureStatsDialogProps) {
@@ -35,12 +27,9 @@ export default function CreatureStatsDialog({
         }
       />
       <DialogContent className="sm:max-w-md p-0">
-        <div className="p-4 border-b">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
+        <div className="p-4 flex flex-col gap-4 justify-center items-center">
+          {children}
         </div>
-        <div className="p-4">{children}</div>
       </DialogContent>
     </Dialog>
   );
