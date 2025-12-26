@@ -59,48 +59,58 @@ export function SubmitGithubForm() {
   }
 
   return (
-    <Card className="w-full sm:max-w-lg">
-      <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Controller
-              name="githubProfileUrl"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-github-profile-url"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="https://github.com/username"
-                      autoComplete="off"
-                    />
-                    <Button
-                      type="submit"
-                      form="form-rhf-demo"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <HugeiconsIcon
-                          className="animate-spin"
-                          icon={Loading03Icon}
-                        />
-                      ) : (
-                        "Submit"
-                      )}
-                    </Button>
-                  </div>
+    <>
+      {loading ? (
+        <>
+          <h2>Summoning your code creature</h2>
+          <HugeiconsIcon className="animate-spin" icon={Loading03Icon} />
+        </>
+      ) : (
+        <h1>Summon the Creature Behind Your Code</h1>
+      )}
+      <Card className="w-full sm:max-w-lg">
+        <CardContent>
+          <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="githubProfileUrl"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        {...field}
+                        id="form-rhf-demo-github-profile-url"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="https://github.com/username"
+                        autoComplete="off"
+                      />
+                      <Button
+                        type="submit"
+                        form="form-rhf-demo"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <HugeiconsIcon
+                            className="animate-spin"
+                            icon={Loading03Icon}
+                          />
+                        ) : (
+                          "Submit"
+                        )}
+                      </Button>
+                    </div>
 
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </>
   );
 }
