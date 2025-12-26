@@ -7,6 +7,39 @@ import { redirect } from 'next/navigation';
 import z from 'zod/v3';
 import { saveCreature } from './creatures';
 
+const GITHUB_HOSTS = new Set(["github.com", "www.github.com"]);
+// GitHub username rules (practical subset):
+// - 1..39 chars
+// - alphanumeric or hyphen
+// - cannot start or end with hyphen
+const GITHUB_USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/;
+
+function parseGithubUsernameFromProfileUrl(input: string): string {
+    let url: URL;
+    try {
+        url = new URL(input);
+    } catch {
+        throw new Error("Invalid GitHub profile URL");
+    }
+
+    if (!GITHUB_HOSTS.has(url.hostname)) {
+        throw new Error("Invalid GitHub profile URL (must be github.com)");
+    }
+
+    const segments = url.pathname.split("/").filter(Boolean);
+    // Only allow `https://github.com/<username>` (optional trailing slash is fine)
+    if (segments.length !== 1) {
+        throw new Error("Invalid GitHub profile URL (must be a profile URL like https://github.com/username)");
+    }
+
+    const username = decodeURIComponent(segments[0] ?? "").trim();
+    if (!username || !GITHUB_USERNAME_REGEX.test(username)) {
+        throw new Error("Invalid GitHub username");
+    }
+
+    return username.toLowerCase();
+}
+
 export async function fetchGithubStats(username: string) {
     const query = `
       query($login: String!) {
@@ -48,7 +81,9 @@ export async function fetchGithubStats(username: string) {
         throw new Error(`GitHub user "${username}" not found (or inaccessible).`);
     }
 
-    const repos = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=1`);
+    const repos = await fetch(
+        `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&page=1`
+    );
 
     const totalStars = (await repos.json()).reduce(
         (acc: number, repo: { stargazers_count: number }) => acc + repo.stargazers_count, 0
@@ -181,18 +216,24 @@ export async function generateCreatureImage(imagePrompt: string, powerLevel: num
 }
 
 export async function submitGithubForm(githubProfileUrl: string) {
+    let username: string;
+    try {
+        username = parseGithubUsernameFromProfileUrl(githubProfileUrl);
+    } catch (err) {
+        return {
+            success: false,
+            message: err instanceof Error ? err.message : "Invalid GitHub profile URL",
+        };
+    }
+
+    const canonicalGithubProfileUrl = `https://github.com/${username}`;
+
     const check = await db.query.creatures.findFirst({
-        where: (creatures, { eq }) => eq(creatures.githubProfileUrl, githubProfileUrl),
+        where: (creatures, { eq }) => eq(creatures.githubProfileUrl, canonicalGithubProfileUrl),
     });
 
     if (check) {
         return { success: true, message: "Creature already exists." };
-    }
-
-    const username = githubProfileUrl.split("/").filter(Boolean).pop();
-
-    if (!username) {
-        throw new Error("Invalid GitHub profile URL");
     }
 
     let stats: { contributions: number; followers: number; stars: number };
@@ -220,7 +261,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
             });
 
             await saveCreature({
-                githubProfileUrl: githubProfileUrl.toLowerCase(),
+                githubProfileUrl: canonicalGithubProfileUrl,
                 contributions: stats.contributions,
                 image: blob.url,
                 description: description,

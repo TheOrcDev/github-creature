@@ -15,7 +15,22 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 
 const formSchema = z.object({
-  githubProfileUrl: z.string().startsWith("https://github.com/"),
+  githubProfileUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .refine((value) => {
+      try {
+        const url = new URL(value);
+        if (url.hostname !== "github.com" && url.hostname !== "www.github.com")
+          return false;
+        const segments = url.pathname.split("/").filter(Boolean);
+        if (segments.length !== 1) return false;
+        const username = decodeURIComponent(segments[0] ?? "").trim();
+        return /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(username);
+      } catch {
+        return false;
+      }
+    }, "Please enter a GitHub profile URL like https://github.com/username"),
 });
 
 export function SubmitGithubForm() {
