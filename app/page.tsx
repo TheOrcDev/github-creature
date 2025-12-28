@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 export default async function Page() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen gap-5">
+    <main className="flex flex-col items-center justify-center h-screen gap-5 px-2">
       <SubmitGithubForm />
 
       <Suspense

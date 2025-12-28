@@ -258,7 +258,6 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             "peer-checked:max-w-[24rem] peer-checked:opacity-100 peer-checked:translate-x-0 peer-checked:pointer-events-auto"
           )}
         >
-          {/* Match `ThreeDCard` hoverPadding so the two panels align */}
           <div className="p-3">
             <CreatureStats creature={creature} downloadTargetId={cardDomId} />
           </div>
