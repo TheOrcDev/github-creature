@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GitHub Creature
 
-## Getting Started
+Generate a **shareable fantasy creature card** from a GitHub profile.
 
-First, run the development server:
+You paste a GitHub profile URL, the app fetches your GitHub stats (contributions, followers, stars), uses an AI model to **invent a creature + generate an image**, then saves it so you get a permanent page at `/<username>` with rich OpenGraph/Twitter previews. There’s also a **leaderboard** for top creatures by contributions, followers, and stars.
+
+## Screenshot
+
+<!-- TODO: Add one screenshot (recommended: 1200×630) -->
+<!-- ![GitHub Creature screenshot](docs/screenshot.png) -->
+
+## What you can do
+
+- **Summon** a creature from a GitHub profile URL
+- **Share** a `/<username>` link with nice social previews
+- **Download** the creature card
+- **Browse leaderboards** (contributions / followers / stars)
+
+## Running locally (short)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env.local` (or `.env`) with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`DATABASE_URL`**: Postgres connection string (used by Drizzle)
+- **`GITHUB_TOKEN`**: GitHub token for the GraphQL API (to read contributions/followers)
+- **`BLOB_READ_WRITE_TOKEN`**: Vercel Blob token (needed to upload generated images when running locally)
+- **AI provider key**: this project uses the Vercel AI SDK (`ai`) with Gemini model IDs (`google/gemini-2.5-flash` + `google/gemini-2.5-flash-image`). Configure the appropriate API key for your setup (see [Vercel AI SDK docs](https://sdk.vercel.ai/docs)).
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Then open `http://localhost:3000`.
