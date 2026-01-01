@@ -2,7 +2,7 @@
 
 Generate a **shareable fantasy creature card** from a GitHub profile.
 
-You paste a GitHub profile URL, the app fetches your GitHub stats (contributions, followers, stars), uses an AI model to **invent a creature + generate an image**, then saves it so you get a permanent page at `/<username>` with rich OpenGraph/Twitter previews. There’s also a **leaderboard** for top creatures by contributions, followers, and stars.
+You paste a GitHub profile URL, the app fetches your GitHub stats (contributions, followers, stars), uses an AI model to **invent a creature + generate an image**, then saves it so you get a permanent page at `/<username>`. There’s also a **leaderboard** for top creatures by contributions, followers, and stars.
 
 ## Screenshot
 
