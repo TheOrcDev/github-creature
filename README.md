@@ -16,10 +16,10 @@ You paste a GitHub profile URL, the app fetches your GitHub stats (contributions
 - **Download** the creature card
 - **Browse leaderboards** (contributions / followers / stars)
 
-## Running locally (short)
+## Running locally
 
 ```bash
-pnpm install
+pnpm i
 pnpm dev
 ```
 
@@ -27,9 +27,9 @@ pnpm dev
 
 Create `.env.local` (or `.env`) with:
 
-- **`DATABASE_URL`**: Postgres connection string (used by Drizzle)
-- **`GITHUB_TOKEN`**: GitHub token for the GraphQL API (to read contributions/followers)
+- **`DATABASE_URL`**: Postgres connection string (Neon)
+- **`GITHUB_TOKEN`**: GitHub token for the API (to read contributions/followers)
 - **`BLOB_READ_WRITE_TOKEN`**: Vercel Blob token (needed to upload generated images when running locally)
-- **AI provider key**: this project uses the Vercel AI SDK (`ai`) with Gemini model IDs (`google/gemini-2.5-flash` + `google/gemini-2.5-flash-image`). Configure the appropriate API key for your setup (see [Vercel AI SDK docs](https://sdk.vercel.ai/docs)).
+- **AI provider key**: this project uses the Vercel AI Gateway
 
 Then open `http://localhost:3000`.
