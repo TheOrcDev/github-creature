@@ -178,7 +178,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             "peer-checked:**:data-[slot=arrow]:rotate-180"
           )}
         >
-          <div className="absolute -top-10 right-0 z-10 flex justify-end">
+          <div className="absolute -top-10 right-0 z-10 flex justify-end mr-6">
             <div className="lg:hidden w-full">
               <CreatureStatsDialog triggerText="View stats">
                 <CreatureStats
@@ -191,7 +191,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             <Button
               variant="outline"
               size="sm"
-              className="hidden lg:inline-flex mr-3"
+              className="hidden lg:inline-flex"
               nativeButton={false}
               render={<label htmlFor={toggleId} />}
             >
@@ -207,7 +207,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             </Button>
           </div>
 
-          <ThreeDCard enableShadow={false} innerId={cardDomId}>
+          <ThreeDCard enableShadow={false} innerId={cardDomId} className="m-3">
             <Card
               className={cn(
                 "p-0 w-96 relative rounded-xl",
