@@ -9,7 +9,6 @@
     "public/**",
     "components/ui/**",
     "lib/utils.ts",
-    ".source/**",
-    "README.md"
+    ".source/**"
   ]
 }
