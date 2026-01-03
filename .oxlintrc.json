@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "ultracite/oxlint/core",
+    "ultracite/oxlint/react",
+    "ultracite/oxlint/next"
+  ],
+  "ignorePatterns": [
+    "public/**",
+    "components/ui/**",
+    "lib/utils.ts",
+    ".source/**",
+    "README.md"
+  ]
+}

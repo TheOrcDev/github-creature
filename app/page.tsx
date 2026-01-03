@@ -1,7 +1,8 @@
+import { Suspense } from "react";
+
 import { SubmitGithubForm } from "@/components/forms/github-form";
 import LatestCreatures from "@/components/latest-creatures";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
 
 export default async function Page() {
   return (

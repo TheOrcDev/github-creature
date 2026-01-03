@@ -1,6 +1,9 @@
-import { SelectCreature } from "@/db/schema";
-import { getCreatureTopPercentage } from "@/server/creatures";
 import Link from "next/link";
+
+import DownloadCardButton from "@/components/download-card-button";
+import ShareOnXButton from "@/components/share-on-x-button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -10,10 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import ShareOnXButton from "@/components/share-on-x-button";
-import DownloadCardButton from "@/components/download-card-button";
+import { SelectCreature } from "@/db/schema";
+import { getCreatureTopPercentage } from "@/server/creatures";
 
 type CreatureStatsProps = {
   creature: SelectCreature;

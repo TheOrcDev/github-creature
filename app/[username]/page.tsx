@@ -1,8 +1,9 @@
+import { Metadata } from "next";
+import { Suspense } from "react";
+
 import CreatureCard from "@/components/creature-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCreatureByGithubUsername } from "@/server/creatures";
-import { Metadata } from "next";
-import { Suspense } from "react";
 
 type Params = Promise<{ username: string }>;
 

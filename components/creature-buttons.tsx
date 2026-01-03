@@ -1,7 +1,8 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Button } from "./ui/button";
 import { Github } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+
+import { Button } from "./ui/button";
 
 type CreatureButtonsProps = {
   githubProfileUrl: string;

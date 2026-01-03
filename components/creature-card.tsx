@@ -1,20 +1,23 @@
-import { getCreatureByGithubUsername } from "@/server/creatures";
+import type { ReactNode } from "react";
+
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "./ui/button";
+
+import CreatureStatsDialog from "@/components/creature-stats-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LiquidEther from "./liquid-ether";
 import { cn } from "@/lib/utils";
-import Plasma from "./plasma";
-import LiquidChrome from "./liquid-chrome";
+import { getCreatureByGithubUsername } from "@/server/creatures";
+
 import ThreeDCard from "./3d-card";
 import Balatro from "./balatro";
-import LightPillar from "./light-pillar";
-import type { ReactNode } from "react";
 import CreatureStats from "./creature-stats";
-import CreatureStatsDialog from "@/components/creature-stats-dialog";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import LightPillar from "./light-pillar";
+import LiquidChrome from "./liquid-chrome";
+import LiquidEther from "./liquid-ether";
+import Plasma from "./plasma";
+import { Button } from "./ui/button";
 
 function getPowerLevelTheme(powerLevel: number): {
   cardClassName: string;

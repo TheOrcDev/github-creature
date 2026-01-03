@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
+import React, { useRef, useEffect } from "react";
 
 interface LiquidChromeProps extends React.HTMLAttributes<HTMLDivElement> {
   baseColor?: [number, number, number];

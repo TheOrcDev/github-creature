@@ -1,10 +1,10 @@
 "use client";
 
+import { NewTwitterFreeIcons } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { NewTwitterFreeIcons } from "@hugeicons/core-free-icons";
 
 type ShareOnXButtonProps = {
   text: string;

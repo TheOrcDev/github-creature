@@ -1,6 +1,8 @@
-import { Button } from "./ui/button";
 import Link from "next/link";
+
 import { getTenLatestCreatures } from "@/server/creatures";
+
+import { Button } from "./ui/button";
 
 export default async function LatestCreatures() {
   const creatures = await getTenLatestCreatures();

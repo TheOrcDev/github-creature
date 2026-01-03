@@ -1,10 +1,11 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useCallback } from "react";
-import { Button } from "@/components/ui/button";
 import { Moon02Icon, Sun02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTheme } from "next-themes";
+import { useCallback } from "react";
+
+import { Button } from "@/components/ui/button";
 
 export function ModeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();

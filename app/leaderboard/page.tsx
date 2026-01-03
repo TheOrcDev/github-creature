@@ -1,10 +1,11 @@
+import { Metadata } from "next";
+import { Suspense } from "react";
+
 import ContributionLeaderboard from "@/components/contribution-leaderboard";
 import FollowersLeaderboard from "@/components/followers-leaderboard";
 import StarsLeaderboard from "@/components/stars-leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Metadata } from "next";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "GitHub Creature - Leaderboard",

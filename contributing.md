@@ -12,10 +12,10 @@ If you need any help, feel free to reach out to [@theorcdev](https://twitter.com
 
 ## Structure
 
-| Path             | Description                              |
-| ---------------- | ---------------------------------------- |
-| `/app`           | The Next.js application for the website. |
-| `/components`    | The React components for the website.    |
+| Path          | Description                              |
+| ------------- | ---------------------------------------- |
+| `/app`        | The Next.js application for the website. |
+| `/components` | The React components for the website.    |
 
 ## Development
 

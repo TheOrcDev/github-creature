@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
+import { Download01Icon, Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { toPng } from "html-to-image";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Download01Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 
 type DownloadCardButtonProps = {
   targetId: string;

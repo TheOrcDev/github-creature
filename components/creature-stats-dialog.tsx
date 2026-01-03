@@ -1,11 +1,11 @@
 "use client";
 
+import { Analytics01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import * as React from "react";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Analytics01Icon } from "@hugeicons/core-free-icons";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 type CreatureStatsDialogProps = {
   triggerText?: string;

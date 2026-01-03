@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
+
+import { Analytics } from "@vercel/analytics/next";
+
+import "./globals.css";
 import {
   Geist,
   Geist_Mono,
   Nunito_Sans,
   Island_Moments,
 } from "next/font/google";
-import "./globals.css";
+
+import { Footer } from "@/components/footer";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/next";
-import { Footer } from "@/components/footer";
 const nunitoSans = Nunito_Sans({ variable: "--font-sans" });
 const islandMoments = Island_Moments({
   variable: "--font-handwritten",

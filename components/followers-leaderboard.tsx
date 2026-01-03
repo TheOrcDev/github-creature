@@ -1,7 +1,9 @@
-import { getFollowersLeaderboard } from "@/server/creatures";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+
+import { getFollowersLeaderboard } from "@/server/creatures";
+
 import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export default async function FollowersLeaderboard() {
   const leaderboard = await getFollowersLeaderboard();

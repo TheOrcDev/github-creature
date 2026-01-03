@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
+import React, { useEffect, useRef } from "react";
 
 interface PlasmaProps {
   color?: string;
