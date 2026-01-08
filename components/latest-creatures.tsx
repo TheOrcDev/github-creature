@@ -7,6 +7,14 @@ import { Button } from "./ui/button";
 export default async function LatestCreatures() {
   const creatures = await getTenLatestCreatures();
 
+  if (creatures.length === 0) {
+    return (
+      <div className="flex flex-col w-full sm:max-w-lg min-h-30">
+        <h2 className="text-sm">No creatures yet</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col w-full sm:max-w-lg min-h-30">
       <h2 className="text-sm">Latest Creatures</h2>

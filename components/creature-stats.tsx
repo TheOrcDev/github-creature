@@ -1,3 +1,5 @@
+import { Github } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 import DownloadCardButton from "@/components/download-card-button";
@@ -45,6 +47,20 @@ export default async function CreatureStats({
 
       <CardContent className="pt-4">
         <div className="flex flex-col gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            nativeButton={false}
+            render={
+              <Link
+                href={creature.githubProfileUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <HugeiconsIcon icon={Github} />
+              </Link>
+            }
+          />
           <div className="rounded-none border border-border/70 bg-background/40 p-3">
             <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
               Contributions
@@ -75,6 +91,7 @@ export default async function CreatureStats({
       </CardContent>
 
       <CardFooter className="justify-between gap-3">
+        <p className="text-sm text-muted-foreground">Share:</p>
         <div className="flex items-center gap-2">
           <ShareOnXButton
             text={`Check out ${creature.name} — my GitHub Creature`}
@@ -86,11 +103,6 @@ export default async function CreatureStats({
             />
           ) : null}
         </div>
-        <Link href={creature.githubProfileUrl} target="_blank" rel="noreferrer">
-          <Button variant="outline" size="sm">
-            View GitHub profile
-          </Button>
-        </Link>
       </CardFooter>
     </Card>
   );
