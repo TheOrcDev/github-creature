@@ -131,13 +131,85 @@ function getPowerLevelTheme(powerLevel: number): {
   };
 }
 
+function getEmblemTheme(powerLevel: number): {
+  ringClassName: string;
+  glowClassName: string;
+  dotClassName: string;
+  textClassName: string;
+} {
+  if (powerLevel >= 10) {
+    return {
+      ringClassName:
+        "bg-linear-to-r from-purple-600 via-fuchsia-500 to-cyan-400",
+      glowClassName: "shadow-[0_0_28px_rgba(168,85,247,0.55)]",
+      dotClassName:
+        "bg-linear-to-r from-fuchsia-300 via-purple-300 to-cyan-200",
+      textClassName:
+        "bg-linear-to-r from-purple-200 via-white to-cyan-200 bg-clip-text text-transparent",
+    };
+  }
+
+  if (powerLevel >= 9) {
+    return {
+      ringClassName: "bg-linear-to-r from-zinc-200 via-slate-400 to-zinc-200",
+      glowClassName: "shadow-[0_0_18px_rgba(148,163,184,0.35)]",
+      dotClassName: "bg-linear-to-r from-zinc-200 via-slate-300 to-zinc-100",
+      textClassName:
+        "bg-linear-to-r from-zinc-100 via-white to-zinc-200 bg-clip-text text-transparent",
+    };
+  }
+
+  if (powerLevel >= 6) {
+    return {
+      ringClassName: "bg-linear-to-r from-red-600 via-rose-500 to-amber-400",
+      glowClassName: "shadow-[0_0_18px_rgba(239,68,68,0.35)]",
+      dotClassName: "bg-linear-to-r from-red-400 via-rose-400 to-amber-300",
+      textClassName:
+        "bg-linear-to-r from-red-200 via-white to-amber-200 bg-clip-text text-transparent",
+    };
+  }
+
+  if (powerLevel >= 4) {
+    return {
+      ringClassName:
+        "bg-linear-to-r from-orange-600 via-amber-400 to-yellow-300",
+      glowClassName: "shadow-[0_0_16px_rgba(249,115,22,0.35)]",
+      dotClassName:
+        "bg-linear-to-r from-orange-400 via-amber-300 to-yellow-200",
+      textClassName:
+        "bg-linear-to-r from-orange-200 via-white to-yellow-200 bg-clip-text text-transparent",
+    };
+  }
+
+  if (powerLevel >= 2) {
+    return {
+      ringClassName: "bg-linear-to-r from-emerald-500 via-lime-400 to-cyan-300",
+      glowClassName: "shadow-[0_0_16px_rgba(16,185,129,0.35)]",
+      dotClassName: "bg-linear-to-r from-emerald-300 via-lime-300 to-cyan-200",
+      textClassName:
+        "bg-linear-to-r from-emerald-200 via-white to-cyan-200 bg-clip-text text-transparent",
+    };
+  }
+
+  return {
+    ringClassName: "bg-linear-to-r from-slate-500 via-slate-400 to-slate-300",
+    glowClassName: "shadow-[0_0_12px_rgba(148,163,184,0.25)]",
+    dotClassName: "bg-linear-to-r from-slate-300 via-slate-200 to-slate-100",
+    textClassName:
+      "bg-linear-to-r from-slate-100 via-white to-slate-200 bg-clip-text text-transparent",
+  };
+}
+
 type CreatureCardProps = {
   params: Promise<{ username: string }>;
 };
 export default async function CreatureCard({ params }: CreatureCardProps) {
   const { username } = await params;
 
-  const creature = await getCreatureByGithubUsername(username.toLowerCase());
+  const usernameLower = username.toLowerCase();
+  const githubProfileUrl = `https://github.com/${usernameLower}`;
+
+  const creature = await getCreatureByGithubUsername(usernameLower);
 
   if (!creature) {
     return (
@@ -164,8 +236,9 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
   }
 
   const theme = getPowerLevelTheme(creature.powerLevel);
-  const toggleId = `stats-toggle-${username.toLowerCase()}`;
-  const cardDomId = `creature-card-${username.toLowerCase()}`;
+  const emblemTheme = getEmblemTheme(creature.powerLevel);
+  const toggleId = `stats-toggle-${usernameLower}`;
+  const cardDomId = `creature-card-${usernameLower}`;
 
   return (
     <div className="flex flex-col items-center dark">
@@ -217,6 +290,32 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
                 theme.cardClassName
               )}
             >
+              <div className="absolute left-3 top-3 z-20">
+                <Link
+                  href={githubProfileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(
+                    "group relative inline-flex rounded-full p-px",
+                    emblemTheme.ringClassName,
+                    emblemTheme.glowClassName
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "pointer-events-none absolute -inset-1 rounded-full blur opacity-35 transition-opacity group-hover:opacity-60",
+                      emblemTheme.ringClassName
+                    )}
+                  />
+                  <span className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs font-semibold backdrop-blur supports-backdrop-filter:bg-background/50">
+                    <span
+                      className={cn("font-mono", emblemTheme.textClassName)}
+                    >
+                      @{usernameLower}
+                    </span>
+                  </span>
+                </Link>
+              </div>
               <div
                 className={cn(
                   "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
