@@ -13,6 +13,7 @@ import { getCreatureByGithubUsername } from "@/server/creatures";
 import ThreeDCard from "./3d-card";
 import Balatro from "./balatro";
 import CreatureStats from "./creature-stats";
+import { serializeFormSearchParams } from "./forms/github-form";
 import LightPillar from "./light-pillar";
 import LiquidChrome from "./liquid-chrome";
 import LiquidEther from "./liquid-ether";
@@ -228,7 +229,9 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
         <p className="text-gray-500">
           The creature you are looking for does not exist.
         </p>
-        <Link href={"/"}>
+        <Link
+          href={serializeFormSearchParams("/", { username: usernameLower })}
+        >
           <Button variant={"outline"}>Summon it</Button>
         </Link>
       </div>

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { createSerializer, parseAsString, useQueryStates } from "nuqs";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -13,6 +14,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { submitGithubForm } from "@/server/ai";
+
+const searchParams = {
+  username: parseAsString,
+};
+
+export const serializeFormSearchParams = createSerializer(searchParams);
 
 const formSchema = z.object({
   githubProfileUrl: z
@@ -35,11 +42,12 @@ const formSchema = z.object({
 
 export function SubmitGithubForm() {
   const [loading, setLoading] = React.useState(false);
+  const [{ username }] = useQueryStates(searchParams);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      githubProfileUrl: "",
+      githubProfileUrl: username ? `https://github.com/${username}` : "",
     },
   });
 
