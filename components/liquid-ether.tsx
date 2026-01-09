@@ -141,8 +141,8 @@ export default function LiquidEther({
         this.renderer = new THREE.WebGLRenderer({
           antialias: true,
           alpha: true,
+          preserveDrawingBuffer: true,
         });
-        // Always transparent
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
         this.renderer.setPixelRatio(this.pixelRatio);
@@ -1072,6 +1072,8 @@ export default function LiquidEther({
       render() {
         if (!Common.renderer) return;
         Common.renderer.setRenderTarget(null);
+        // Clear the canvas with transparent black before rendering
+        Common.renderer.clear();
         Common.renderer.render(this.scene, this.camera);
       }
       update() {
