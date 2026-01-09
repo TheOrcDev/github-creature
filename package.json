@@ -19,7 +19,7 @@
     "@types/three": "^0.182.0",
     "@vercel/analytics": "^1.6.1",
     "@vercel/blob": "^2.0.0",
-    "ai": "^6.0.24",
+    "ai": "^6.0.25",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
