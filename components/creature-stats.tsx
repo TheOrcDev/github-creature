@@ -1,5 +1,3 @@
-import { Github } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 import DownloadCardButton from "@/components/download-card-button";
@@ -57,7 +55,7 @@ export default async function CreatureStats({
                 target="_blank"
                 rel="noreferrer"
               >
-                <HugeiconsIcon icon={Github} />
+                View on GitHub
               </Link>
             }
           />
