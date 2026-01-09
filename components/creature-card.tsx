@@ -13,7 +13,7 @@ import { getCreatureByGithubUsername } from "@/server/creatures";
 import ThreeDCard from "./3d-card";
 import Balatro from "./balatro";
 import CreatureStats from "./creature-stats";
-import { serializeFormSearchParams } from "./forms/github-form";
+import { serializeFormSearchParams } from "./forms/github-form-url-state";
 import LightPillar from "./light-pillar";
 import LiquidChrome from "./liquid-chrome";
 import LiquidEther from "./liquid-ether";
