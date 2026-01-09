@@ -1,6 +1,6 @@
 "use server";
 
-import { count, gt } from "drizzle-orm";
+import { count, gt, ilike } from "drizzle-orm";
 
 import { db } from "@/db/drizzle";
 import { creatures, InsertCreature } from "@/db/schema";
@@ -114,5 +114,26 @@ export async function getCreatureTopPercentage(id: string) {
   } catch (error) {
     console.error(error);
     throw new Error("Failed to get creature top percentage");
+  }
+}
+
+export async function searchCreaturesByUsername(query: string) {
+  if (!query || query.length < 1) return [];
+
+  try {
+    const results = await db.query.creatures.findMany({
+      where: ilike(creatures.githubProfileUrl, `%github.com/${query}%`),
+      limit: 5,
+      orderBy: (creatures, { desc }) => desc(creatures.contributions),
+    });
+
+    return results.map((c) => ({
+      username: c.githubProfileUrl.split("/").pop() ?? "",
+      name: c.name,
+      image: c.image,
+    }));
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }

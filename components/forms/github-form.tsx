@@ -16,23 +16,36 @@ import { submitGithubForm } from "@/server/ai";
 
 import { useInitialUsername } from "./github-form-url-state";
 
+const usernameRegex = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/;
+
 const formSchema = z.object({
   githubProfileUrl: z
     .string()
-    .url("Please enter a valid URL")
+    .min(1, "Please enter a GitHub username or profile URL")
     .refine((value) => {
-      try {
-        const url = new URL(value);
-        if (url.hostname !== "github.com" && url.hostname !== "www.github.com")
+      const trimmed = value.trim();
+
+      // Check if it's a URL
+      if (trimmed.includes("://")) {
+        try {
+          const url = new URL(trimmed);
+          if (
+            url.hostname !== "github.com" &&
+            url.hostname !== "www.github.com"
+          )
+            return false;
+          const segments = url.pathname.split("/").filter(Boolean);
+          if (segments.length !== 1) return false;
+          const username = decodeURIComponent(segments[0] ?? "").trim();
+          return usernameRegex.test(username);
+        } catch {
           return false;
-        const segments = url.pathname.split("/").filter(Boolean);
-        if (segments.length !== 1) return false;
-        const username = decodeURIComponent(segments[0] ?? "").trim();
-        return /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(username);
-      } catch {
-        return false;
+        }
       }
-    }, "Please enter a GitHub profile URL like https://github.com/username"),
+
+      // Otherwise validate as a username
+      return usernameRegex.test(trimmed);
+    }, "Please enter a valid GitHub username or profile URL"),
 });
 
 export function SubmitGithubForm() {
@@ -92,7 +105,7 @@ export function SubmitGithubForm() {
                     {...field}
                     id="form-rhf-demo-github-profile-url"
                     aria-invalid={fieldState.invalid}
-                    placeholder="https://github.com/username"
+                    placeholder="username or https://github.com/username"
                     autoComplete="off"
                   />
                   <Button type="submit" form="form-rhf-demo" disabled={loading}>

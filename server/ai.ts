@@ -16,32 +16,44 @@ const GITHUB_HOSTS = new Set(["github.com", "www.github.com"]);
 // - cannot start or end with hyphen
 const GITHUB_USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/;
 
-function parseGithubUsernameFromProfileUrl(input: string): string {
-  let url: URL;
-  try {
-    url = new URL(input);
-  } catch {
-    throw new Error("Invalid GitHub profile URL");
+function parseGithubUsernameFromInput(input: string): string {
+  const trimmed = input.trim();
+
+  // Check if it's a URL
+  if (trimmed.includes("://")) {
+    let url: URL;
+    try {
+      url = new URL(trimmed);
+    } catch {
+      throw new Error("Invalid GitHub profile URL");
+    }
+
+    if (!GITHUB_HOSTS.has(url.hostname)) {
+      throw new Error("Invalid GitHub profile URL (must be github.com)");
+    }
+
+    const segments = url.pathname.split("/").filter(Boolean);
+    // Only allow `https://github.com/<username>` (optional trailing slash is fine)
+    if (segments.length !== 1) {
+      throw new Error(
+        "Invalid GitHub profile URL (must be a profile URL like https://github.com/username)"
+      );
+    }
+
+    const username = decodeURIComponent(segments[0] ?? "").trim();
+    if (!username || !GITHUB_USERNAME_REGEX.test(username)) {
+      throw new Error("Invalid GitHub username");
+    }
+
+    return username.toLowerCase();
   }
 
-  if (!GITHUB_HOSTS.has(url.hostname)) {
-    throw new Error("Invalid GitHub profile URL (must be github.com)");
-  }
-
-  const segments = url.pathname.split("/").filter(Boolean);
-  // Only allow `https://github.com/<username>` (optional trailing slash is fine)
-  if (segments.length !== 1) {
-    throw new Error(
-      "Invalid GitHub profile URL (must be a profile URL like https://github.com/username)"
-    );
-  }
-
-  const username = decodeURIComponent(segments[0] ?? "").trim();
-  if (!username || !GITHUB_USERNAME_REGEX.test(username)) {
+  // Otherwise treat as a username
+  if (!trimmed || !GITHUB_USERNAME_REGEX.test(trimmed)) {
     throw new Error("Invalid GitHub username");
   }
 
-  return username.toLowerCase();
+  return trimmed.toLowerCase();
 }
 
 export async function fetchGithubStats(username: string) {
@@ -235,7 +247,7 @@ export async function generateCreatureImage(
 export async function submitGithubForm(githubProfileUrl: string) {
   let username: string;
   try {
-    username = parseGithubUsernameFromProfileUrl(githubProfileUrl);
+    username = parseGithubUsernameFromInput(githubProfileUrl);
   } catch (err) {
     return {
       success: false,
