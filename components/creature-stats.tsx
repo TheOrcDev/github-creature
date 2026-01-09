@@ -45,20 +45,15 @@ export default async function CreatureStats({
 
       <CardContent className="pt-4">
         <div className="flex flex-col gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={
-              <Link
-                href={creature.githubProfileUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on GitHub
-              </Link>
-            }
-          />
+          <Link
+            href={creature.githubProfileUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button variant="outline" size="sm">
+              View on GitHub
+            </Button>
+          </Link>
           <div className="rounded-none border border-border/70 bg-background/40 p-3">
             <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
               Contributions
