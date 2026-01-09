@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import DownloadCardButton from "@/components/download-card-button";
+import DownloadDropdown from "@/components/download-dropdown";
 import ShareOnXButton from "@/components/share-on-x-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,9 +90,10 @@ export default async function CreatureStats({
             text={`Check out ${creature.name} — my GitHub Creature`}
           />
           {downloadTargetId ? (
-            <DownloadCardButton
+            <DownloadDropdown
               targetId={downloadTargetId}
-              fileName={`${creature.name}.png`}
+              originalImageUrl={creature.image}
+              fileName={creature.name}
             />
           ) : null}
         </div>
