@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { redirect } from "next/navigation";
 import { createSerializer, parseAsString, useQueryStates } from "nuqs";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -58,6 +59,9 @@ export function SubmitGithubForm() {
 
       if (result && result.success) {
         toast.success(result.message);
+        if (result.redirectUrl) {
+          redirect(result.redirectUrl);
+        }
       } else if (result && !result.success) {
         toast.error(result.message);
       }

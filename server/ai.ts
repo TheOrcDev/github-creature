@@ -90,7 +90,9 @@ export async function fetchGithubStats(username: string) {
   }
 
   const repos = await fetch(
-    `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&page=1`
+    `https://api.github.com/users/${encodeURIComponent(
+      username
+    )}/repos?per_page=100&page=1`
   );
 
   const totalStars = (await repos.json()).reduce(
@@ -250,7 +252,11 @@ export async function submitGithubForm(githubProfileUrl: string) {
   });
 
   if (check) {
-    return { success: true, message: "Creature already exists." };
+    return {
+      success: true,
+      message: "Creature already exists.",
+      redirectUrl: `/${username}`,
+    };
   }
 
   let stats: { contributions: number; followers: number; stars: number };
