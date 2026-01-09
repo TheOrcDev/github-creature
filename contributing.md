@@ -49,7 +49,7 @@ pnpm i
 
 #### Examples
 
-1. To run the `8bitcn.com` website:
+1. To run the website:
 
 ```bash
 pnpm dev
