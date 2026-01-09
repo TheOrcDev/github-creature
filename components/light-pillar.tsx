@@ -46,17 +46,6 @@ const LightPillar: React.FC<LightPillarProps> = ({
   const [webGLSupported, setWebGLSupported] = useState<boolean>(true);
 
   useEffect(() => {
-    // Check WebGL support on the client only
-    const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-    if (!gl) {
-      console.warn("WebGL is not supported in this browser");
-      setWebGLSupported(false);
-    }
-  }, []);
-
-  useEffect(() => {
     if (!containerRef.current || !webGLSupported) return;
 
     const container = containerRef.current;
