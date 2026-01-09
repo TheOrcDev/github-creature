@@ -16,11 +16,7 @@ import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { submitGithubForm } from "@/server/ai";
 
-const searchParams = {
-  username: parseAsString,
-};
-
-export const serializeFormSearchParams = createSerializer(searchParams);
+import { useInitialUsername } from "./github-form-url-state";
 
 const formSchema = z.object({
   githubProfileUrl: z
@@ -44,7 +40,7 @@ const formSchema = z.object({
 export function SubmitGithubForm() {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
-  const [{ username }] = useQueryStates(searchParams);
+  const username = useInitialUsername();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
