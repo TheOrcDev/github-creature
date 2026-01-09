@@ -1,7 +1,10 @@
+import { Github } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { ModeSwitcher } from "./mode-switcher";
+import { Button } from "./ui/button";
 
 const navItems = [
   {
@@ -34,7 +37,18 @@ export default function Header() {
         ))}
       </div>
 
-      <ModeSwitcher />
+      <div className="flex items-center gap-2">
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/theorcdev/github-creature"
+        >
+          <Button variant="ghost" size="icon">
+            <HugeiconsIcon icon={Github} />
+          </Button>
+        </Link>
+        <ModeSwitcher />
+      </div>
     </header>
   );
 }
