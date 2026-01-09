@@ -24,7 +24,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
-    "html-to-image": "^1.11.13",
+    "modern-screenshot": "^4.6.7",
     "next": "16.1.1",
     "next-themes": "^0.4.6",
     "nuqs": "^2.8.6",

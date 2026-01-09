@@ -29,7 +29,27 @@ export const LiquidChrome: React.FC<LiquidChromeProps> = ({
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    const renderer = new Renderer({ antialias: true, alpha: true });
+
+    const canvas = document.createElement("canvas");
+    const glContext =
+      canvas.getContext("webgl2", {
+        alpha: true,
+        antialias: true,
+        preserveDrawingBuffer: true,
+      }) ||
+      canvas.getContext("webgl", {
+        alpha: true,
+        antialias: true,
+        preserveDrawingBuffer: true,
+      });
+    if (!glContext) return;
+
+    const renderer = new Renderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      webgl: 2,
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     const opacityClamped = Math.max(0, Math.min(1, opacity));

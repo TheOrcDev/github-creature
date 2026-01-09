@@ -142,7 +142,20 @@ export default function Balatro({
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
-    const renderer = new Renderer();
+
+    const canvas = document.createElement("canvas");
+    const glContext =
+      canvas.getContext("webgl2", {
+        alpha: true,
+        preserveDrawingBuffer: true,
+      }) ||
+      canvas.getContext("webgl", {
+        alpha: true,
+        preserveDrawingBuffer: true,
+      });
+    if (!glContext) return;
+
+    const renderer = new Renderer({ canvas, webgl: 2, alpha: true });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
 
