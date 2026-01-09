@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useRouter } from "next/navigation";
+import { createSerializer, parseAsString, useQueryStates } from "nuqs";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,6 +38,7 @@ const formSchema = z.object({
 });
 
 export function SubmitGithubForm() {
+  const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const username = useInitialUsername();
 
@@ -53,6 +56,9 @@ export function SubmitGithubForm() {
 
       if (result && result.success) {
         toast.success(result.message);
+        if (result.redirectUrl) {
+          router.push(result.redirectUrl);
+        }
       } else if (result && !result.success) {
         toast.error(result.message);
       }
