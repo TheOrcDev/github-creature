@@ -7,7 +7,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default async function Page() {
   return (
     <main className="flex flex-col items-center justify-center h-screen gap-5 px-2">
-      <SubmitGithubForm />
+      <Suspense>
+        <SubmitGithubForm />
+      </Suspense>
 
       <Suspense
         fallback={
