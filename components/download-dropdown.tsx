@@ -2,7 +2,7 @@
 
 import { Download01Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { toPng } from "html-to-image";
+import { domToPng } from "modern-screenshot";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -40,38 +40,16 @@ export default function DownloadDropdown({
         // ignore
       }
 
-      const options = {
-        cacheBust: true,
-        pixelRatio,
-        skipFonts: true,
-        fontEmbedCSS: "",
-        onClone: (doc: Document) => {
-          const cloned = doc.getElementById(targetId) as HTMLElement | null;
-          if (!cloned) return;
-
-          cloned.style.transform = "none";
-          cloned.style.transformStyle = "flat";
-          cloned.style.boxShadow = "none";
-
-          const transformed = cloned.querySelectorAll<HTMLElement>(
-            '[style*="translateZ"], [style*="perspective"], [style*="rotateX"], [style*="rotateY"]'
-          );
-          transformed.forEach((el) => {
-            el.style.transform = "none";
-            el.style.transformStyle = "flat";
-          });
-
-          const clonedTitle = cloned.querySelector<HTMLElement>(
-            '[data-export="title"]'
-          );
-          if (clonedTitle) clonedTitle.style.whiteSpace = "nowrap";
+      const dataUrl = await domToPng(node, {
+        scale: pixelRatio,
+        onCloneNode: (cloned) => {
+          if (cloned instanceof HTMLElement) {
+            cloned.style.transform = "none";
+            cloned.style.transformStyle = "flat";
+            cloned.style.boxShadow = "none";
+          }
         },
-      };
-
-      const dataUrl = await toPng(
-        node,
-        options as unknown as Parameters<typeof toPng>[1]
-      );
+      });
 
       const link = document.createElement("a");
       link.href = dataUrl;
