@@ -326,7 +326,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
               </div>
               <div
                 className={cn(
-                  "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
+                  "w-full absolute top-0 left-0 h-full border-3 rounded-[calc(var(--radius)+7px)]",
                   theme.frameClassName
                 )}
               >
