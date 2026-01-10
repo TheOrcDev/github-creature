@@ -286,7 +286,12 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
             </Button>
           </div>
 
-          <ThreeDCard enableShadow={false} innerId={cardDomId} className="m-3">
+          <ThreeDCard
+            enableShadow={false}
+            innerId={cardDomId}
+            trackOnWindow
+            className="m-3"
+          >
             <Card
               className={cn(
                 "p-0 w-96 relative rounded-xl",
@@ -321,7 +326,7 @@ export default async function CreatureCard({ params }: CreatureCardProps) {
               </div>
               <div
                 className={cn(
-                  "w-full absolute top-0 left-0 h-full border-3 rounded-xl",
+                  "w-full absolute top-0 left-0 h-full border-3 rounded-[calc(var(--radius)+7px)]",
                   theme.frameClassName
                 )}
               >
