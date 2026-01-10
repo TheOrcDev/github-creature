@@ -125,7 +125,7 @@ function ThreeDCard({
       shadowX: enableShadow ? newRotateY * 0.8 : 0,
       shadowY: enableShadow ? 20 - newRotateX * 0.6 : 20,
     }));
-  }, []);
+  }, [maxRotation, enableShadow]);
 
   useEffect(() => {
     if (!trackOnWindow) return;
