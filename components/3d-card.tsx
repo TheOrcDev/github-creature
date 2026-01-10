@@ -6,6 +6,7 @@ import React, {
   useCallback,
   ReactNode,
   CSSProperties,
+  useEffect,
 } from "react";
 
 interface ThreeDCardProps {
@@ -22,6 +23,7 @@ interface ThreeDCardProps {
   enableShadow?: boolean;
   enableParallax?: boolean;
   hoverPadding?: number;
+  trackOnWindow?: boolean;
 }
 
 function ThreeDCard({
@@ -38,6 +40,7 @@ function ThreeDCard({
   enableShadow = true,
   enableParallax = true,
   hoverPadding = 12,
+  trackOnWindow = false,
 }: ThreeDCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +56,7 @@ function ThreeDCard({
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (trackOnWindow) return;
       if (!cardRef.current) return;
 
       const rect = cardRef.current.getBoundingClientRect();
@@ -80,7 +84,7 @@ function ThreeDCard({
         shadowY: enableShadow ? 20 - newRotateX * 0.6 : 20,
       }));
     },
-    [maxRotation, enableShadow]
+    [maxRotation, enableShadow, trackOnWindow]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -98,6 +102,36 @@ function ThreeDCard({
       isHovered: false,
     });
   }, []);
+
+  const handleWindowMouseMove = useCallback((e: MouseEvent) => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const mouseX = Math.min(width, Math.max(0, e.clientX));
+    const mouseY = Math.min(height, Math.max(0, e.clientY));
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    const newRotateX = yPct * -1 * maxRotation;
+    const newRotateY = xPct * maxRotation;
+
+    setTransform((prev) => ({
+      ...prev,
+      rotateX: newRotateX,
+      rotateY: newRotateY,
+      glowX: (mouseX / width) * 100,
+      glowY: (mouseY / height) * 100,
+      shadowX: enableShadow ? newRotateY * 0.8 : 0,
+      shadowY: enableShadow ? 20 - newRotateX * 0.6 : 20,
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (!trackOnWindow) return;
+    window.addEventListener("mousemove", handleWindowMouseMove);
+    return () => window.removeEventListener("mousemove", handleWindowMouseMove);
+  }, [trackOnWindow, handleWindowMouseMove]);
 
   const cardStyle: CSSProperties = {
     transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) scale3d(1, 1, 1)`,
