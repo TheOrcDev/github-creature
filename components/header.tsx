@@ -9,7 +9,7 @@ import { Button } from "./ui/button";
 const navItems = [
   {
     label: "Summon",
-    href: "/",
+    href: "/summon",
   },
   {
     label: "Leaderboard",
