@@ -4,6 +4,12 @@ import { SubmitGithubForm } from "@/components/forms/github-form";
 import LatestCreatures from "@/components/latest-creatures";
 import { Skeleton } from "@/components/ui/skeleton";
 
+export const metadata: Metadata = {
+  title: "GitHub Creature - Summon your code creature",
+  description:
+    "Generate a creature based on your GitHub profile. Just enter your GitHub profile URL and get your inner creature.",
+};
+
 export default async function Page() {
   return (
     <main className="flex flex-col items-center justify-center h-screen gap-5 px-2">
