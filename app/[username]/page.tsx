@@ -56,10 +56,12 @@ export async function generateMetadata({
 }
 
 export default async function CreaturePage({ params }: { params: Params }) {
+  const { username } = await params;
+
   return (
     <main className="flex p-5 max-w-2xl mt-20 w-full mx-auto flex-col items-center justify-center gap-5 h-[90vh]">
       <Suspense fallback={<Skeleton className="h-96 w-72" />}>
-        <CreatureCard params={params} />
+        <CreatureCard username={username} />
       </Suspense>
     </main>
   );

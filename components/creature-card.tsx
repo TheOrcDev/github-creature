@@ -202,11 +202,10 @@ function getEmblemTheme(powerLevel: number): {
 }
 
 type CreatureCardProps = {
-  params: Promise<{ username: string }>;
+  username: string;
 };
-export default async function CreatureCard({ params }: CreatureCardProps) {
-  const { username } = await params;
 
+export default async function CreatureCard({ username }: CreatureCardProps) {
   const usernameLower = username.toLowerCase();
   const githubProfileUrl = `https://github.com/${usernameLower}`;
 
