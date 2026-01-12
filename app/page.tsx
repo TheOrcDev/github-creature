@@ -17,7 +17,7 @@ export default async function Page() {
           </div>
           <CreatureCard username={"shadcn"} />
           <div className="hidden xl:block">
-            <CreatureCard username={"jnsahaj"} />
+            <CreatureCard username={"franky47"} />
           </div>
         </div>
       </Suspense>
