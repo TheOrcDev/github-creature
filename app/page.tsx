@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import CreatureCard from "@/components/creature-card";
+import CreaturesShowcase from "@/components/creatures-showcase";
 import { SubmitGithubForm } from "@/components/forms/github-form";
 
 export default async function Page() {
@@ -10,17 +10,7 @@ export default async function Page() {
         <SubmitGithubForm />
       </Suspense>
 
-      <Suspense>
-        <div className="flex flex-wrap gap-2">
-          <div className="hidden lg:block">
-            <CreatureCard username={"webdevcody"} />
-          </div>
-          <CreatureCard username={"shadcn"} />
-          <div className="hidden xl:block">
-            <CreatureCard username={"franky47"} />
-          </div>
-        </div>
-      </Suspense>
+      <CreaturesShowcase />
     </main>
   );
 }
