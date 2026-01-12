@@ -95,7 +95,7 @@ export function SubmitGithubForm() {
       )}
 
       <form
-        className="w-full max-w-lg"
+        className="w-full max-w-md"
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -120,7 +120,7 @@ export function SubmitGithubForm() {
                         icon={Loading03Icon}
                       />
                     ) : (
-                      "Submit"
+                      "Summon"
                     )}
                   </Button>
                 </ButtonGroup>
