@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="hidden md:block fixed bottom-4 left-4 rounded-md bg-background p-2">
+    <footer className="hidden sm:block fixed bottom-4 left-4 rounded-md bg-background p-2">
       Made with 🪓 by{" "}
       <Link
         className="underline"
