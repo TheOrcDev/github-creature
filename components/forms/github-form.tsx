@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import * as z from "zod/v3";
 
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { submitGithubForm } from "@/server/ai";
@@ -104,7 +105,7 @@ export function SubmitGithubForm() {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <div className="flex items-center gap-2">
+                <ButtonGroup>
                   <Input
                     {...field}
                     id="form-rhf-demo-github-profile-url"
@@ -122,7 +123,7 @@ export function SubmitGithubForm() {
                       "Submit"
                     )}
                   </Button>
-                </div>
+                </ButtonGroup>
 
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
