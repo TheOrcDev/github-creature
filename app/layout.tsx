@@ -33,7 +33,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GitHub Creature - Generate a creature based on your GitHub profile",
+  title: "GitHub Creature - Summon the Creature Behind Your Code",
   description:
     "It's a fun way to showcase your skills and contributions to the open source community. Just enter your GitHub profile URL and get your inner creature.",
   icons: {
