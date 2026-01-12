@@ -86,7 +86,9 @@ export function SubmitGithubForm() {
           <HugeiconsIcon className="animate-spin" icon={Loading03Icon} />
         </>
       ) : (
-        <h1>Summon the Creature Behind Your Code</h1>
+        <h1 className="lg:text-4xl text-2xl font-bold">
+          Summon the Creature Behind Your Code
+        </h1>
       )}
 
       <form

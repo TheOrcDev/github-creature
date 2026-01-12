@@ -1,39 +1,25 @@
 import { Suspense } from "react";
 
+import CreatureCard from "@/components/creature-card";
 import { SubmitGithubForm } from "@/components/forms/github-form";
-import LatestCreatures from "@/components/latest-creatures";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function Page() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen gap-5 px-2">
+    <main className="flex flex-col items-center justify-center gap-5 px-2 mt-20">
       <Suspense>
         <SubmitGithubForm />
       </Suspense>
 
-      <Suspense
-        fallback={
-          <div className="flex flex-col gap-2 min-h-30">
-            <Skeleton className="h-2 w-20 mt-3" />
-            <div className="flex flex-wrap gap-2">
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-              <Skeleton className="h-7 w-24" />
-            </div>
+      <Suspense>
+        <div className="flex flex-wrap gap-2">
+          <div className="hidden lg:block">
+            <CreatureCard username={"webdevcody"} />
           </div>
-        }
-      >
-        <LatestCreatures />
+          <CreatureCard username={"shadcn"} />
+          <div className="hidden xl:block">
+            <CreatureCard username={"jnsahaj"} />
+          </div>
+        </div>
       </Suspense>
     </main>
   );

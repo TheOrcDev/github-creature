@@ -203,9 +203,13 @@ function getEmblemTheme(powerLevel: number): {
 
 type CreatureCardProps = {
   username: string;
+  stats?: boolean;
 };
 
-export default async function CreatureCard({ username }: CreatureCardProps) {
+export default async function CreatureCard({
+  username,
+  stats,
+}: CreatureCardProps) {
   const usernameLower = username.toLowerCase();
   const githubProfileUrl = `https://github.com/${usernameLower}`;
 
@@ -256,34 +260,36 @@ export default async function CreatureCard({ username }: CreatureCardProps) {
             "peer-checked:**:data-[slot=arrow]:rotate-180"
           )}
         >
-          <div className="absolute -top-10 right-0 z-10 flex justify-end mr-6">
-            <div className="lg:hidden w-full">
-              <CreatureStatsDialog triggerText="View stats">
-                <CreatureStats
-                  creature={creature}
-                  downloadTargetId={cardDomId}
-                />
-              </CreatureStatsDialog>
-            </div>
+          {stats && (
+            <div className="absolute -top-10 right-0 z-10 flex justify-end mr-6">
+              <div className="lg:hidden w-full">
+                <CreatureStatsDialog triggerText="View stats">
+                  <CreatureStats
+                    creature={creature}
+                    downloadTargetId={cardDomId}
+                  />
+                </CreatureStatsDialog>
+              </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden lg:inline-flex"
-              nativeButton={false}
-              render={<label htmlFor={toggleId} />}
-            >
-              <span data-state="reveal">Reveal stats</span>
-              <span data-state="hide" className="hidden">
-                Hide stats
-              </span>
-              <HugeiconsIcon
-                icon={ArrowRight01Icon}
-                className="transition-transform duration-300"
-                data-slot="arrow"
-              />
-            </Button>
-          </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden lg:inline-flex"
+                nativeButton={false}
+                render={<label htmlFor={toggleId} />}
+              >
+                <span data-state="reveal">Reveal stats</span>
+                <span data-state="hide" className="hidden">
+                  Hide stats
+                </span>
+                <HugeiconsIcon
+                  icon={ArrowRight01Icon}
+                  className="transition-transform duration-300"
+                  data-slot="arrow"
+                />
+              </Button>
+            </div>
+          )}
 
           <ThreeDCard
             enableShadow={false}
@@ -358,19 +364,20 @@ export default async function CreatureCard({ username }: CreatureCardProps) {
           </ThreeDCard>
         </div>
 
-        {/* Desktop slide-in panel */}
-        <div
-          className={cn(
-            "hidden lg:block overflow-hidden",
-            "transition-[max-width,opacity,transform] duration-500 ease-out will-change-[max-width,opacity,transform]",
-            "max-w-0 opacity-0 translate-x-2 pointer-events-none",
-            "peer-checked:max-w-[24rem] peer-checked:opacity-100 peer-checked:translate-x-0 peer-checked:pointer-events-auto"
-          )}
-        >
-          <div className="p-3">
-            <CreatureStats creature={creature} downloadTargetId={cardDomId} />
+        {stats && (
+          <div
+            className={cn(
+              "hidden lg:block overflow-hidden",
+              "transition-[max-width,opacity,transform] duration-500 ease-out will-change-[max-width,opacity,transform]",
+              "max-w-0 opacity-0 translate-x-2 pointer-events-none",
+              "peer-checked:max-w-[24rem] peer-checked:opacity-100 peer-checked:translate-x-0 peer-checked:pointer-events-auto"
+            )}
+          >
+            <div className="p-3">
+              <CreatureStats creature={creature} downloadTargetId={cardDomId} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

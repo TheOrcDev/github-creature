@@ -57,7 +57,7 @@ export async function generateMetadata({
 
 async function CreatureCardWrapper({ params }: { params: Params }) {
   const { username } = await params;
-  return <CreatureCard username={username} />;
+  return <CreatureCard username={username} stats={true} />;
 }
 
 export default function CreaturePage({ params }: { params: Params }) {
