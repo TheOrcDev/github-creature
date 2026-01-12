@@ -81,10 +81,12 @@ export function SubmitGithubForm() {
   return (
     <>
       {loading ? (
-        <>
-          <h2>Summoning your code creature</h2>
+        <div className="flex gap-2 items-center">
+          <h2 className="lg:text-4xl text-2xl font-bold">
+            Summoning your code creature
+          </h2>
           <HugeiconsIcon className="animate-spin" icon={Loading03Icon} />
-        </>
+        </div>
       ) : (
         <h1 className="lg:text-4xl text-2xl font-bold">
           Summon the Creature Behind Your Code
