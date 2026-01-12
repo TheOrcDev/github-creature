@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "/github-creature-logo.png",
+        url: "/github-creature-og.png",
         width: 1200,
         height: 630,
         alt: "GitHub Creature",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/github-creature-logo.png"],
+    images: ["/github-creature-og.png"],
   },
 };
 
