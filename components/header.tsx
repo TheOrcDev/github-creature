@@ -12,6 +12,10 @@ const navItems = [
     href: "/summon",
   },
   {
+    label: "Duel",
+    href: "/duel",
+  },
+  {
     label: "Leaderboard",
     href: "/leaderboard",
   },

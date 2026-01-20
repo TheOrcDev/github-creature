@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import ContributionLeaderboard from "@/components/contribution-leaderboard";
 import FollowersLeaderboard from "@/components/followers-leaderboard";
 import StarsLeaderboard from "@/components/stars-leaderboard";
+import WinsLeaderboard from "@/components/wins-leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -33,7 +34,7 @@ export default function LeaderboardPage() {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen gap-6 max-w-6xl mx-auto px-2 py-10 w-full mt-20">
       <h1 className="text-2xl font-bold">GitHub Creature Leaderboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full items-start">
         <Suspense fallback={<LeaderboardSkeleton />}>
           <ContributionLeaderboard />
         </Suspense>
@@ -44,6 +45,10 @@ export default function LeaderboardPage() {
 
         <Suspense fallback={<LeaderboardSkeleton />}>
           <StarsLeaderboard />
+        </Suspense>
+
+        <Suspense fallback={<LeaderboardSkeleton />}>
+          <WinsLeaderboard />
         </Suspense>
       </div>
     </main>
