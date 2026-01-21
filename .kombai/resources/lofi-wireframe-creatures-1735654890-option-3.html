@@ -1,689 +1,745 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wireframe Option 3: Tabbed Gallery with Featured</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive;
-      background: #fff;
-      color: #333;
-      line-height: 1.6;
-    }
-    
-    .hero-section {
-      padding: 50px 40px;
-      text-align: center;
-      background: #f5f5f5;
-      border-bottom: 3px solid #333;
-    }
-    
-    .hero-section h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
-    
-    .hero-section p {
-      font-size: 16px;
-      color: #666;
-      margin-bottom: 25px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .search-bar {
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      gap: 10px;
-    }
-    
-    .search-bar input {
-      font-family: 'Comic Sans MS', cursive;
-      flex: 1;
-      padding: 14px 20px;
-      border: 3px solid #333;
-      font-size: 16px;
-      background: #fff;
-    }
-    
-    .search-bar button {
-      font-family: 'Comic Sans MS', cursive;
-      padding: 14px 30px;
-      border: 3px solid #333;
-      background: #333;
-      color: #fff;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px;
-    }
-    
-    .featured-section {
-      margin-bottom: 50px;
-    }
-    
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 12px;
-      border-bottom: 3px solid #333;
-    }
-    
-    .section-header h2 {
-      font-size: 28px;
-    }
-    
-    .section-header a {
-      color: #333;
-      text-decoration: underline;
-      font-size: 14px;
-    }
-    
-    .carousel-wrapper {
-      position: relative;
-      padding: 10px 60px;
-    }
-    
-    .featured-carousel {
-      display: flex;
-      gap: 20px;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      padding: 10px 0;
-    }
-    
-    .carousel-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px;
-      height: 50px;
-      border: 3px solid #333;
-      background: #fff;
-      font-family: 'Comic Sans MS', cursive;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-    
-    .carousel-nav:hover {
-      background: #f5f5f5;
-    }
-    
-    .carousel-nav-prev {
-      left: 0;
-    }
-    
-    .carousel-nav-next {
-      right: 0;
-    }
-    
-    .carousel-indicators {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 15px;
-    }
-    
-    .carousel-dot {
-      width: 12px;
-      height: 12px;
-      border: 2px solid #333;
-      background: #fff;
-      cursor: pointer;
-    }
-    
-    .carousel-dot.active {
-      background: #333;
-    }
-    
-    .featured-card {
-      min-width: 380px;
-      flex-shrink: 0;
-      border: 3px solid #333;
-      background: #fff;
-      position: relative;
-    }
-    
-    .featured-image {
-      width: 100%;
-      height: 250px;
-      background: #e0e0e0;
-      border-bottom: 3px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      position: relative;
-    }
-    
-    .featured-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #333;
-      color: #fff;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: bold;
-      border: 2px solid #fff;
-    }
-    
-    .power-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: #666;
-      color: #fff;
-      padding: 6px 14px;
-      border: 2px solid #333;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    
-    .featured-content {
-      padding: 20px;
-    }
-    
-    .featured-title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-    
-    .featured-stats {
-      display: flex;
-      gap: 15px;
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 12px;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    
-    .stat-box {
-      border: 2px solid #333;
-      padding: 20px;
-      text-align: center;
-      background: #fafafa;
-    }
-    
-    .stat-box .label {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 8px;
-    }
-    
-    .stat-box .value {
-      font-size: 28px;
-      font-weight: bold;
-    }
-    
-    .tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 30px;
-      border-bottom: 3px solid #333;
-    }
-    
-    .tab {
-      font-family: 'Comic Sans MS', cursive;
-      padding: 12px 30px;
-      border: 3px solid #333;
-      border-bottom: none;
-      background: #f5f5f5;
-      cursor: pointer;
-      font-size: 16px;
-      position: relative;
-      top: 3px;
-    }
-    
-    .tab.active {
-      background: #fff;
-      font-weight: bold;
-      z-index: 1;
-    }
-    
-    .tab-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-    
-    .inline-filters {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    
-    .inline-filters label {
-      font-size: 14px;
-    }
-    
-    .inline-filters select {
-      font-family: 'Comic Sans MS', cursive;
-      padding: 8px 12px;
-      border: 2px solid #333;
-      background: #fff;
-      font-size: 14px;
-    }
-    
-    .results-count {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    
-    .creatures-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-    
-    .creature-card {
-      border: 2px solid #333;
-      background: #fff;
-      position: relative;
-      transition: transform 0.2s;
-    }
-    
-    .creature-card:hover {
-      transform: translateY(-4px);
-    }
-    
-    .creature-image {
-      width: 100%;
-      height: 200px;
-      background: #e0e0e0;
-      border-bottom: 2px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: #999;
-      position: relative;
-    }
-    
-    .creature-content {
-      padding: 16px;
-    }
-    
-    .creature-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    .creature-username {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 10px;
-    }
-    
-    .creature-description {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-    
-    .creature-stats {
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
-      color: #666;
-      margin-bottom: 12px;
-      padding-top: 8px;
-      border-top: 1px solid #ccc;
-    }
-    
-    .creature-actions {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .btn {
-      font-family: 'Comic Sans MS', cursive;
-      padding: 8px 14px;
-      border: 2px solid #333;
-      background: #f5f5f5;
-      cursor: pointer;
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-    }
-    
-    .btn-primary {
-      background: #333;
-      color: #fff;
-    }
-    
-    .btn-icon {
-      flex: 0 0 auto;
-      padding: 8px 10px;
-    }
-    
-    .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 40px;
-    }
-    
-    .pagination button {
-      font-family: 'Comic Sans MS', cursive;
-      padding: 10px 16px;
-      border: 2px solid #333;
-      background: #fff;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    
-    .pagination button.active {
-      background: #333;
-      color: #fff;
-    }
-    
-    .badge {
-      position: absolute;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-size: 10px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      z-index: 10;
-      color: white;
-    }
-    
-    .badge-reuse {
-      background: #4CAF50;
-    }
-    
-    .badge-new {
-      background: #FF9800;
-    }
-  </style>
-</head>
-<body>
-  <!-- Hero Section with Search -->
-  <!-- NEW COMPONENT: HeroSearch -->
-  <div style="position: relative;">
-    <span class="badge badge-new" style="top: 15px; right: 40px;" title="To be created at components/hero-search.tsx">[NEW] HeroSearch</span>
-    <div class="hero-section">
-      <h1>Discover GitHub Creatures</h1>
-      <p>Explore the mystical beings forged from code and creativity. Search, filter, and discover your next favorite developer's creature.</p>
-      <div class="search-bar">
-        <!-- REUSABLE: Input from components/ui/input.tsx -->
-        <span class="badge badge-reuse" style="position: relative; top: -25px; left: 10px;" title="components/ui/input.tsx">[REUSE] Input</span>
-        <input type="text" placeholder="Search by creature name or username...">
-        <!-- REUSABLE: Button from components/ui/button.tsx -->
-        <span class="badge badge-reuse" style="position: relative; top: -25px; right: 40px;" title="components/ui/button.tsx">[REUSE] Button</span>
-        <button>Search</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wireframe Option 3: Tabbed Gallery with Featured</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+        background: #fff;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .hero-section {
+        padding: 50px 40px;
+        text-align: center;
+        background: #f5f5f5;
+        border-bottom: 3px solid #333;
+      }
+
+      .hero-section h1 {
+        font-size: 42px;
+        margin-bottom: 12px;
+      }
+
+      .hero-section p {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 25px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .search-bar {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        gap: 10px;
+      }
+
+      .search-bar input {
+        font-family: "Comic Sans MS", cursive;
+        flex: 1;
+        padding: 14px 20px;
+        border: 3px solid #333;
+        font-size: 16px;
+        background: #fff;
+      }
+
+      .search-bar button {
+        font-family: "Comic Sans MS", cursive;
+        padding: 14px 30px;
+        border: 3px solid #333;
+        background: #333;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px;
+      }
+
+      .featured-section {
+        margin-bottom: 50px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #333;
+      }
+
+      .section-header h2 {
+        font-size: 28px;
+      }
+
+      .section-header a {
+        color: #333;
+        text-decoration: underline;
+        font-size: 14px;
+      }
+
+      .carousel-wrapper {
+        position: relative;
+        padding: 10px 60px;
+      }
+
+      .featured-carousel {
+        display: flex;
+        gap: 20px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 10px 0;
+      }
+
+      .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border: 3px solid #333;
+        background: #fff;
+        font-family: "Comic Sans MS", cursive;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .carousel-nav:hover {
+        background: #f5f5f5;
+      }
+
+      .carousel-nav-prev {
+        left: 0;
+      }
+
+      .carousel-nav-next {
+        right: 0;
+      }
+
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .carousel-dot {
+        width: 12px;
+        height: 12px;
+        border: 2px solid #333;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .carousel-dot.active {
+        background: #333;
+      }
+
+      .featured-card {
+        min-width: 380px;
+        flex-shrink: 0;
+        border: 3px solid #333;
+        background: #fff;
+        position: relative;
+      }
+
+      .featured-image {
+        width: 100%;
+        height: 250px;
+        background: #e0e0e0;
+        border-bottom: 3px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        position: relative;
+      }
+
+      .featured-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #333;
+        color: #fff;
+        padding: 6px 14px;
+        font-size: 12px;
+        font-weight: bold;
+        border: 2px solid #fff;
+      }
+
+      .power-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #666;
+        color: #fff;
+        padding: 6px 14px;
+        border: 2px solid #333;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .featured-content {
+        padding: 20px;
+      }
+
+      .featured-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .featured-stats {
+        display: flex;
+        gap: 15px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 12px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .stat-box {
+        border: 2px solid #333;
+        padding: 20px;
+        text-align: center;
+        background: #fafafa;
+      }
+
+      .stat-box .label {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+
+      .stat-box .value {
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 30px;
+        border-bottom: 3px solid #333;
+      }
+
+      .tab {
+        font-family: "Comic Sans MS", cursive;
+        padding: 12px 30px;
+        border: 3px solid #333;
+        border-bottom: none;
+        background: #f5f5f5;
+        cursor: pointer;
+        font-size: 16px;
+        position: relative;
+        top: 3px;
+      }
+
+      .tab.active {
+        background: #fff;
+        font-weight: bold;
+        z-index: 1;
+      }
+
+      .tab-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .inline-filters {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .inline-filters label {
+        font-size: 14px;
+      }
+
+      .inline-filters select {
+        font-family: "Comic Sans MS", cursive;
+        padding: 8px 12px;
+        border: 2px solid #333;
+        background: #fff;
+        font-size: 14px;
+      }
+
+      .results-count {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .creatures-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+
+      .creature-card {
+        border: 2px solid #333;
+        background: #fff;
+        position: relative;
+        transition: transform 0.2s;
+      }
+
+      .creature-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .creature-image {
+        width: 100%;
+        height: 200px;
+        background: #e0e0e0;
+        border-bottom: 2px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #999;
+        position: relative;
+      }
+
+      .creature-content {
+        padding: 16px;
+      }
+
+      .creature-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .creature-username {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 10px;
+      }
+
+      .creature-description {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+
+      .creature-stats {
+        display: flex;
+        gap: 12px;
+        font-size: 11px;
+        color: #666;
+        margin-bottom: 12px;
+        padding-top: 8px;
+        border-top: 1px solid #ccc;
+      }
+
+      .creature-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        font-family: "Comic Sans MS", cursive;
+        padding: 8px 14px;
+        border: 2px solid #333;
+        background: #f5f5f5;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .btn-primary {
+        background: #333;
+        color: #fff;
+      }
+
+      .btn-icon {
+        flex: 0 0 auto;
+        padding: 8px 10px;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 40px;
+      }
+
+      .pagination button {
+        font-family: "Comic Sans MS", cursive;
+        padding: 10px 16px;
+        border: 2px solid #333;
+        background: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .pagination button.active {
+        background: #333;
+        color: #fff;
+      }
+
+      .badge {
+        position: absolute;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        z-index: 10;
+        color: white;
+      }
+
+      .badge-reuse {
+        background: #4caf50;
+      }
+
+      .badge-new {
+        background: #ff9800;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section with Search -->
+    <!-- NEW COMPONENT: HeroSearch -->
+    <div style="position: relative">
+      <span
+        class="badge badge-new"
+        style="top: 15px; right: 40px"
+        title="To be created at components/hero-search.tsx"
+        >[NEW] HeroSearch</span
+      >
+      <div class="hero-section">
+        <h1>Discover GitHub Creatures</h1>
+        <p>
+          Explore the mystical beings forged from code and creativity. Search,
+          filter, and discover your next favorite developer's creature.
+        </p>
+        <div class="search-bar">
+          <!-- REUSABLE: Input from components/ui/input.tsx -->
+          <span
+            class="badge badge-reuse"
+            style="position: relative; top: -25px; left: 10px"
+            title="components/ui/input.tsx"
+            >[REUSE] Input</span
+          >
+          <input
+            type="text"
+            placeholder="Search by creature name or username..."
+          />
+          <!-- REUSABLE: Button from components/ui/button.tsx -->
+          <span
+            class="badge badge-reuse"
+            style="position: relative; top: -25px; right: 40px"
+            title="components/ui/button.tsx"
+            >[REUSE] Button</span
+          >
+          <button>Search</button>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div class="container">
-    <!-- Featured Creatures Carousel -->
-    <!-- NEW COMPONENT: FeaturedCarousel -->
-    <section style="position: relative;" class="featured-section">
-      <span class="badge badge-new" style="top: 8px; right: 8px;" title="To be created at components/featured-carousel.tsx">[NEW] FeaturedCarousel</span>
-      <div class="section-header">
-        <h2>⭐ Featured Creatures</h2>
-        <a href="#">View all featured →</a>
-      </div>
-      
-      <!-- Carousel Wrapper with Navigation -->
-      <div class="carousel-wrapper">
-        <!-- Left Navigation Arrow -->
-        <button class="carousel-nav carousel-nav-prev">‹</button>
-        
-        <!-- Carousel Container -->
-        <div class="featured-carousel">
-          <div class="featured-card">
-            <div class="featured-image">
-              <span class="featured-badge">FEATURED</span>
-              <span class="power-badge">⚡ 10.0</span>
-              [Featured Creature 380x250]
+
+    <div class="container">
+      <!-- Featured Creatures Carousel -->
+      <!-- NEW COMPONENT: FeaturedCarousel -->
+      <section style="position: relative" class="featured-section">
+        <span
+          class="badge badge-new"
+          style="top: 8px; right: 8px"
+          title="To be created at components/featured-carousel.tsx"
+          >[NEW] FeaturedCarousel</span
+        >
+        <div class="section-header">
+          <h2>⭐ Featured Creatures</h2>
+          <a href="#">View all featured →</a>
+        </div>
+
+        <!-- Carousel Wrapper with Navigation -->
+        <div class="carousel-wrapper">
+          <!-- Left Navigation Arrow -->
+          <button class="carousel-nav carousel-nav-prev">‹</button>
+
+          <!-- Carousel Container -->
+          <div class="featured-carousel">
+            <div class="featured-card">
+              <div class="featured-image">
+                <span class="featured-badge">FEATURED</span>
+                <span class="power-badge">⚡ 10.0</span>
+                [Featured Creature 380x250]
+              </div>
+              <div class="featured-content">
+                <div class="featured-title">Legendary Dragon</div>
+                <div class="featured-stats">
+                  <span>👥 1,234</span>
+                  <span>⭐ 567</span>
+                  <span>📊 15,890</span>
+                </div>
+              </div>
             </div>
-            <div class="featured-content">
-              <div class="featured-title">Legendary Dragon</div>
-              <div class="featured-stats">
-                <span>👥 1,234</span>
-                <span>⭐ 567</span>
-                <span>📊 15,890</span>
+            <div class="featured-card">
+              <div class="featured-image">
+                <span class="featured-badge">FEATURED</span>
+                <span class="power-badge">⚡ 9.8</span>
+                [Featured Creature 380x250]
+              </div>
+              <div class="featured-content">
+                <div class="featured-title">Cosmic Phoenix</div>
+                <div class="featured-stats">
+                  <span>👥 890</span>
+                  <span>⭐ 432</span>
+                  <span>📊 12,340</span>
+                </div>
+              </div>
+            </div>
+            <div class="featured-card">
+              <div class="featured-image">
+                <span class="featured-badge">FEATURED</span>
+                <span class="power-badge">⚡ 9.5</span>
+                [Featured Creature 380x250]
+              </div>
+              <div class="featured-content">
+                <div class="featured-title">Shadow Assassin</div>
+                <div class="featured-stats">
+                  <span>👥 654</span>
+                  <span>⭐ 289</span>
+                  <span>📊 9,876</span>
+                </div>
+              </div>
+            </div>
+            <div class="featured-card" style="opacity: 0.7">
+              <div class="featured-image">
+                <span class="power-badge">⚡ 9.2</span>
+                [Featured Creature 380x250]
+              </div>
+              <div class="featured-content">
+                <div class="featured-title">Frost Titan</div>
+                <div class="featured-stats">
+                  <span>👥 543</span>
+                  <span>⭐ 234</span>
+                  <span>📊 8,765</span>
+                </div>
+              </div>
+            </div>
+            <div class="featured-card" style="opacity: 0.5">
+              <div class="featured-image">[More featured...]</div>
+            </div>
+          </div>
+
+          <!-- Right Navigation Arrow -->
+          <button class="carousel-nav carousel-nav-next">›</button>
+        </div>
+
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+          <div class="carousel-dot active"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+        </div>
+      </section>
+
+      <!-- Stats Grid -->
+      <!-- REUSABLE: Card from components/ui/card.tsx -->
+      <div style="position: relative">
+        <span
+          class="badge badge-new"
+          style="top: 8px; right: 8px"
+          title="components/creatures-stats-summary.tsx"
+          >[NEW] StatsCard</span
+        >
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="label">Total Creatures</div>
+            <div class="value">782</div>
+          </div>
+          <div class="stat-box">
+            <div class="label">Avg Power Level</div>
+            <div class="value">5.1</div>
+          </div>
+          <div class="stat-box">
+            <div class="label">New This Week</div>
+            <div class="value">47</div>
+          </div>
+          <div class="stat-box">
+            <div class="label">Top Contributor</div>
+            <div class="value" style="font-size: 16px">seanpm2001</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <!-- NEW COMPONENT: TabNavigation -->
+      <div style="position: relative">
+        <span
+          class="badge badge-new"
+          style="top: 8px; right: 8px; z-index: 20"
+          title="To be created at components/tab-navigation.tsx"
+          >[NEW] TabNavigation</span
+        >
+        <div class="tabs">
+          <button class="tab active">All Creatures (782)</button>
+          <button class="tab">Top Power (100)</button>
+          <button class="tab">Recent (50)</button>
+          <button class="tab">Most Active (75)</button>
+        </div>
+      </div>
+
+      <!-- Tab Content Controls -->
+      <div class="tab-controls">
+        <div class="results-count">Showing 20 of 782 creatures</div>
+        <div class="inline-filters">
+          <label>Sort:</label>
+          <!-- REUSABLE: Select from components/ui/select.tsx -->
+          <span
+            class="badge badge-reuse"
+            style="position: relative; top: -20px; right: -90px"
+            title="components/ui/select.tsx"
+            >[REUSE] Select</span
+          >
+          <select>
+            <option>Power Level (High to Low)</option>
+            <option>Recent</option>
+            <option>Contributions</option>
+            <option>Followers</option>
+          </select>
+          <label>Filter:</label>
+          <select>
+            <option>All Levels</option>
+            <option>Legendary (9-10)</option>
+            <option>Advanced (6-8)</option>
+            <option>Intermediate (3-5)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Creatures Grid -->
+      <div class="creatures-grid">
+        <!-- Card 1 -->
+        <div style="position: relative">
+          <span
+            class="badge badge-new"
+            style="top: 4px; right: 4px"
+            title="components/creature-grid-card.tsx"
+            >[NEW] CreatureCard</span
+          >
+          <div class="creature-card">
+            <div class="creature-image">
+              <span class="power-badge">⚡ 4.0</span>
+              [Creature Image]
+            </div>
+            <div class="creature-content">
+              <div class="creature-title">Flesh Golem</div>
+              <div class="creature-username">@poot1542</div>
+              <div class="creature-description">
+                A massive, stitched-together construct animated by a powerful...
+              </div>
+              <div class="creature-stats">
+                <span>👥 4</span>
+                <span>⭐ 2</span>
+                <span>📊 807</span>
+              </div>
+              <div class="creature-actions">
+                <div class="btn btn-primary">View →</div>
+                <div class="btn btn-icon">⚙</div>
               </div>
             </div>
           </div>
-          <div class="featured-card">
-            <div class="featured-image">
-              <span class="featured-badge">FEATURED</span>
-              <span class="power-badge">⚡ 9.8</span>
-              [Featured Creature 380x250]
+        </div>
+
+        <!-- Card 2 -->
+        <div style="position: relative">
+          <span
+            class="badge badge-new"
+            style="top: 4px; right: 4px"
+            title="components/creature-grid-card.tsx"
+            >[NEW] CreatureCard</span
+          >
+          <div class="creature-card">
+            <div class="creature-image">
+              <span class="power-badge">⚡ 6.8</span>
+              [Creature Image]
             </div>
-            <div class="featured-content">
-              <div class="featured-title">Cosmic Phoenix</div>
-              <div class="featured-stats">
-                <span>👥 890</span>
-                <span>⭐ 432</span>
-                <span>📊 12,340</span>
+            <div class="creature-content">
+              <div class="creature-title">Bone Devil</div>
+              <div class="creature-username">@leet567</div>
+              <div class="creature-description">
+                This gaunt, skeletal fiend is a ruthless enforcer of the Nine...
+              </div>
+              <div class="creature-stats">
+                <span>👥 3</span>
+                <span>⭐ 7</span>
+                <span>📊 1,611</span>
+              </div>
+              <div class="creature-actions">
+                <div class="btn btn-primary">View →</div>
+                <div class="btn btn-icon">⚙</div>
               </div>
             </div>
           </div>
-          <div class="featured-card">
-            <div class="featured-image">
-              <span class="featured-badge">FEATURED</span>
-              <span class="power-badge">⚡ 9.5</span>
-              [Featured Creature 380x250]
-            </div>
-            <div class="featured-content">
-              <div class="featured-title">Shadow Assassin</div>
-              <div class="featured-stats">
-                <span>👥 654</span>
-                <span>⭐ 289</span>
-                <span>📊 9,876</span>
-              </div>
-            </div>
-          </div>
-          <div class="featured-card" style="opacity: 0.7;">
-            <div class="featured-image">
-              <span class="power-badge">⚡ 9.2</span>
-              [Featured Creature 380x250]
-            </div>
-            <div class="featured-content">
-              <div class="featured-title">Frost Titan</div>
-              <div class="featured-stats">
-                <span>👥 543</span>
-                <span>⭐ 234</span>
-                <span>📊 8,765</span>
-              </div>
-            </div>
-          </div>
-          <div class="featured-card" style="opacity: 0.5;">
-            <div class="featured-image">[More featured...]</div>
-          </div>
         </div>
-        
-        <!-- Right Navigation Arrow -->
-        <button class="carousel-nav carousel-nav-next">›</button>
+
+        <!-- Placeholder cards -->
+        <div class="creature-card" style="opacity: 0.4">
+          <div class="creature-image">[Card 3...]</div>
+        </div>
+        <div class="creature-card" style="opacity: 0.4">
+          <div class="creature-image">[Card 4...]</div>
+        </div>
+        <div class="creature-card" style="opacity: 0.4">
+          <div class="creature-image">[Cards 5-20...]</div>
+        </div>
       </div>
-      
-      <!-- Carousel Indicators -->
-      <div class="carousel-indicators">
-        <div class="carousel-dot active"></div>
-        <div class="carousel-dot"></div>
-        <div class="carousel-dot"></div>
-        <div class="carousel-dot"></div>
-        <div class="carousel-dot"></div>
-      </div>
-    </section>
-    
-    <!-- Stats Grid -->
-    <!-- REUSABLE: Card from components/ui/card.tsx -->
-    <div style="position: relative;">
-      <span class="badge badge-new" style="top: 8px; right: 8px;" title="components/creatures-stats-summary.tsx">[NEW] StatsCard</span>
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="label">Total Creatures</div>
-          <div class="value">782</div>
-        </div>
-        <div class="stat-box">
-          <div class="label">Avg Power Level</div>
-          <div class="value">5.1</div>
-        </div>
-        <div class="stat-box">
-          <div class="label">New This Week</div>
-          <div class="value">47</div>
-        </div>
-        <div class="stat-box">
-          <div class="label">Top Contributor</div>
-          <div class="value" style="font-size: 16px;">seanpm2001</div>
+
+      <!-- Pagination -->
+      <!-- REUSABLE: Button from components/ui/button.tsx -->
+      <div style="position: relative">
+        <span
+          class="badge badge-reuse"
+          style="top: 8px; left: 50%; margin-left: -40px"
+          title="components/ui/button.tsx"
+          >[REUSE] Button</span
+        >
+        <div class="pagination">
+          <button>← Prev</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>...</button>
+          <button>40</button>
+          <button>Next →</button>
         </div>
       </div>
     </div>
-    
-    <!-- Tabs Navigation -->
-    <!-- NEW COMPONENT: TabNavigation -->
-    <div style="position: relative;">
-      <span class="badge badge-new" style="top: 8px; right: 8px; z-index: 20;" title="To be created at components/tab-navigation.tsx">[NEW] TabNavigation</span>
-      <div class="tabs">
-        <button class="tab active">All Creatures (782)</button>
-        <button class="tab">Top Power (100)</button>
-        <button class="tab">Recent (50)</button>
-        <button class="tab">Most Active (75)</button>
-      </div>
-    </div>
-    
-    <!-- Tab Content Controls -->
-    <div class="tab-controls">
-      <div class="results-count">Showing 20 of 782 creatures</div>
-      <div class="inline-filters">
-        <label>Sort:</label>
-        <!-- REUSABLE: Select from components/ui/select.tsx -->
-        <span class="badge badge-reuse" style="position: relative; top: -20px; right: -90px;" title="components/ui/select.tsx">[REUSE] Select</span>
-        <select>
-          <option>Power Level (High to Low)</option>
-          <option>Recent</option>
-          <option>Contributions</option>
-          <option>Followers</option>
-        </select>
-        <label>Filter:</label>
-        <select>
-          <option>All Levels</option>
-          <option>Legendary (9-10)</option>
-          <option>Advanced (6-8)</option>
-          <option>Intermediate (3-5)</option>
-        </select>
-      </div>
-    </div>
-    
-    <!-- Creatures Grid -->
-    <div class="creatures-grid">
-      <!-- Card 1 -->
-      <div style="position: relative;">
-        <span class="badge badge-new" style="top: 4px; right: 4px;" title="components/creature-grid-card.tsx">[NEW] CreatureCard</span>
-        <div class="creature-card">
-          <div class="creature-image">
-            <span class="power-badge">⚡ 4.0</span>
-            [Creature Image]
-          </div>
-          <div class="creature-content">
-            <div class="creature-title">Flesh Golem</div>
-            <div class="creature-username">@poot1542</div>
-            <div class="creature-description">
-              A massive, stitched-together construct animated by a powerful...
-            </div>
-            <div class="creature-stats">
-              <span>👥 4</span>
-              <span>⭐ 2</span>
-              <span>📊 807</span>
-            </div>
-            <div class="creature-actions">
-              <div class="btn btn-primary">View →</div>
-              <div class="btn btn-icon">⚙</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Card 2 -->
-      <div style="position: relative;">
-        <span class="badge badge-new" style="top: 4px; right: 4px;" title="components/creature-grid-card.tsx">[NEW] CreatureCard</span>
-        <div class="creature-card">
-          <div class="creature-image">
-            <span class="power-badge">⚡ 6.8</span>
-            [Creature Image]
-          </div>
-          <div class="creature-content">
-            <div class="creature-title">Bone Devil</div>
-            <div class="creature-username">@leet567</div>
-            <div class="creature-description">
-              This gaunt, skeletal fiend is a ruthless enforcer of the Nine...
-            </div>
-            <div class="creature-stats">
-              <span>👥 3</span>
-              <span>⭐ 7</span>
-              <span>📊 1,611</span>
-            </div>
-            <div class="creature-actions">
-              <div class="btn btn-primary">View →</div>
-              <div class="btn btn-icon">⚙</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Placeholder cards -->
-      <div class="creature-card" style="opacity: 0.4;">
-        <div class="creature-image">[Card 3...]</div>
-      </div>
-      <div class="creature-card" style="opacity: 0.4;">
-        <div class="creature-image">[Card 4...]</div>
-      </div>
-      <div class="creature-card" style="opacity: 0.4;">
-        <div class="creature-image">[Cards 5-20...]</div>
-      </div>
-    </div>
-    
-    <!-- Pagination -->
-    <!-- REUSABLE: Button from components/ui/button.tsx -->
-    <div style="position: relative;">
-      <span class="badge badge-reuse" style="top: 8px; left: 50%; margin-left: -40px;" title="components/ui/button.tsx">[REUSE] Button</span>
-      <div class="pagination">
-        <button>← Prev</button>
-        <button class="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>...</button>
-        <button>40</button>
-        <button>Next →</button>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

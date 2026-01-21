@@ -53,6 +53,11 @@ function LogEntry({
       <span className="text-muted-foreground">for</span>
       <span className="font-bold text-orange-500">{entry.damage}</span>
       <span className="text-muted-foreground">damage</span>
+      {entry.isSuperEffective && (
+        <Badge className="bg-green-500 text-white text-[10px] px-1 shrink-0">
+          Super Effective!
+        </Badge>
+      )}
       <span
         className={cn(
           "text-xs ml-auto shrink-0",
@@ -129,7 +134,6 @@ export default function BattleLog({
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-2 space-y-3">
         {rounds.map((round) => {
           const entries = groupedByRound[round];
-          const firstEntryTimestamp = entries[0]?.timestamp ?? 0;
 
           // Only show round if at least one entry is visible
           const hasVisibleEntry = entries.some(
@@ -147,7 +151,9 @@ export default function BattleLog({
                 <LogEntry
                   key={entry.timestamp}
                   entry={entry}
-                  isVisible={isComplete || entry.timestamp <= currentActionIndex}
+                  isVisible={
+                    isComplete || entry.timestamp <= currentActionIndex
+                  }
                 />
               ))}
             </div>

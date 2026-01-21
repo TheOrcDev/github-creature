@@ -4,9 +4,9 @@ import { Suspense } from "react";
 import ContributionLeaderboard from "@/components/contribution-leaderboard";
 import FollowersLeaderboard from "@/components/followers-leaderboard";
 import StarsLeaderboard from "@/components/stars-leaderboard";
-import WinsLeaderboard from "@/components/wins-leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import WinsLeaderboard from "@/components/wins-leaderboard";
 
 export const metadata: Metadata = {
   title: "GitHub Creature - Leaderboard",

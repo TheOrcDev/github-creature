@@ -1,8 +1,10 @@
-import { Metadata } from "next";
-import Link from "next/link";
 import { Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Metadata } from "next";
+import Link from "next/link";
 
+import CreatureGridCard from "@/components/creature-grid-card";
+import FeaturedCreaturesCarousel from "@/components/featured-creatures-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,8 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import FeaturedCreaturesCarousel from "@/components/featured-creatures-carousel";
-import CreatureGridCard from "@/components/creature-grid-card";
 import {
   getRandomCreatures,
   getCreaturesStats,

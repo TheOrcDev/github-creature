@@ -8,10 +8,13 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 
+import type { SelectCreature } from "@/db/schema";
+
+import { SubtypeBadgeList } from "@/components/subtype-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { parseSubtypes } from "@/lib/type-effectiveness";
 import { cn } from "@/lib/utils";
-import type { SelectCreature } from "@/db/schema";
 
 function getPowerLevelColor(powerLevel: number): string {
   if (powerLevel >= 10) return "from-purple-500 to-fuchsia-500";
@@ -51,7 +54,8 @@ export default function SelectableCreatureCard({
       className={cn(
         "group relative overflow-hidden transition-all duration-300 cursor-pointer",
         getPowerLevelBorder(creature.powerLevel),
-        isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
+        isSelected &&
+          "ring-2 ring-primary ring-offset-2 ring-offset-background",
         disabled && "opacity-50 cursor-not-allowed",
         !disabled && "hover:shadow-lg hover:-translate-y-1"
       )}
@@ -101,6 +105,9 @@ export default function SelectableCreatureCard({
           </CardTitle>
           <p className="text-xs text-muted-foreground font-mono">@{username}</p>
         </div>
+
+        {/* Subtypes */}
+        <SubtypeBadgeList subtypes={parseSubtypes(creature.subtypes)} />
 
         {/* Quick Stats */}
         <div className="flex items-center gap-2 text-xs text-muted-foreground">

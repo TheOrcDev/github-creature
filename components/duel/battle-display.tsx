@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+
 import BattleLog from "./battle-log";
 
 const ACTION_DELAY_MS = 800;
@@ -249,7 +250,13 @@ export default function BattleDisplay({
     );
 
     return () => clearTimeout(timer);
-  }, [currentActionIndex, battleComplete, battleMode, isPaused, stepNextAction]);
+  }, [
+    currentActionIndex,
+    battleComplete,
+    battleMode,
+    isPaused,
+    stepNextAction,
+  ]);
 
   return (
     <div className="w-full space-y-6">

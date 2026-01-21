@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import CreatureStatsDialog from "@/components/creature-stats-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { parseSubtypes } from "@/lib/type-effectiveness";
 import { cn } from "@/lib/utils";
 import { getCreatureByGithubUsername } from "@/server/creatures";
 
@@ -18,6 +19,7 @@ import LightPillar from "./light-pillar";
 import LiquidChrome from "./liquid-chrome";
 import LiquidEther from "./liquid-ether";
 import Plasma from "./plasma";
+import { SubtypeBadgeList } from "./subtype-badge";
 import { Button } from "./ui/button";
 
 function getPowerLevelTheme(powerLevel: number): {
@@ -355,7 +357,11 @@ export default async function CreatureCard({
                   </span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="px-4 pb-4">
+              <CardContent className="px-4 pb-4 space-y-2">
+                <SubtypeBadgeList
+                  subtypes={parseSubtypes(creature.subtypes)}
+                  size="md"
+                />
                 <p className="leading-relaxed text-balance text-foreground/80">
                   {creature.description}
                 </p>

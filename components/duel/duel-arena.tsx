@@ -162,9 +162,13 @@ export default function DuelArena({ creatures }: DuelArenaProps) {
     // Save battle result to database
     if (battleResult && battleReport) {
       const winnerTeam =
-        battleResult.winner === "player" ? playerBattleTeam : opponentBattleTeam;
+        battleResult.winner === "player"
+          ? playerBattleTeam
+          : opponentBattleTeam;
       const loserTeam =
-        battleResult.winner === "player" ? opponentBattleTeam : playerBattleTeam;
+        battleResult.winner === "player"
+          ? opponentBattleTeam
+          : playerBattleTeam;
 
       // Get the last round number from actions
       const totalRounds =

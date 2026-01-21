@@ -1,5 +1,11 @@
 import type { SelectCreature } from "@/db/schema";
 
+import {
+  type CreatureSubtype,
+  getTypeEffectivenessMultiplier,
+  parseSubtypes,
+} from "@/lib/type-effectiveness";
+
 export type BattleCreature = {
   id: string;
   name: string;
@@ -10,6 +16,7 @@ export type BattleCreature = {
   def: number;
   isKnockedOut: boolean;
   team: "player" | "opponent";
+  subtypes: CreatureSubtype[];
 };
 
 export type BattleAction = {
@@ -19,6 +26,7 @@ export type BattleAction = {
   damage: number;
   targetHpAfter: number;
   isKnockout: boolean;
+  isSuperEffective: boolean;
 };
 
 export type BattleResult = {
@@ -71,6 +79,7 @@ export function createBattleCreature(
     def: stats.def,
     isKnockedOut: false,
     team,
+    subtypes: parseSubtypes(creature.subtypes),
   };
 }
 
@@ -83,13 +92,22 @@ function getLivingCreatures(creatures: BattleCreature[]): BattleCreature[] {
 
 /**
  * Calculate damage dealt by attacker to defender
- * Formula: max(1, attackerATK - (defenderDEF * 0.5))
+ * Formula: max(1, floor(attackerATK - defenderDEF * 0.5)) * typeMultiplier
+ * Returns damage amount and whether the attack was super effective
  */
 function calculateDamage(
   attacker: BattleCreature,
   defender: BattleCreature
-): number {
-  return Math.max(1, Math.floor(attacker.atk - defender.def * 0.5));
+): { damage: number; isSuperEffective: boolean } {
+  const baseDamage = Math.max(1, Math.floor(attacker.atk - defender.def * 0.5));
+  const multiplier = getTypeEffectivenessMultiplier(
+    attacker.subtypes,
+    defender.subtypes
+  );
+  return {
+    damage: Math.floor(baseDamage * multiplier),
+    isSuperEffective: multiplier > 1,
+  };
 }
 
 /**
@@ -163,7 +181,7 @@ export function simulateBattle(
       if (!target) continue;
 
       // Calculate and apply damage
-      const damage = calculateDamage(attacker, target);
+      const { damage, isSuperEffective } = calculateDamage(attacker, target);
       target.hp = Math.max(0, target.hp - damage);
 
       // Check for knockout
@@ -180,6 +198,7 @@ export function simulateBattle(
         damage,
         targetHpAfter: target.hp,
         isKnockout,
+        isSuperEffective,
       });
 
       // Check for victory
@@ -219,6 +238,7 @@ export type BattleLogEntry = {
   targetHpAfter: number;
   targetMaxHp: number;
   isKnockout: boolean;
+  isSuperEffective: boolean;
   timestamp: number;
 };
 
@@ -250,6 +270,7 @@ export function generateBattleReport(
     targetHpAfter: action.targetHpAfter,
     targetMaxHp: action.target.maxHp,
     isKnockout: action.isKnockout,
+    isSuperEffective: action.isSuperEffective,
     timestamp: index,
   }));
 

@@ -7,6 +7,8 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
+import type { CreatureSubtype } from "@/lib/type-effectiveness";
+
 export const creatures = pgTable("creatures", {
   id: uuid("id").primaryKey().defaultRandom(),
   githubProfileUrl: text("github_profile_url").notNull(),
@@ -17,12 +19,14 @@ export const creatures = pgTable("creatures", {
   stars: integer("stars").notNull().default(0),
   powerLevel: real("power_level").notNull().default(0),
   contributions: integer("contributions").notNull().default(0),
+  subtypes: text("subtypes").notNull().default('["beast"]'), // JSON array of CreatureSubtype
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export type SelectCreature = typeof creatures.$inferSelect;
 export type InsertCreature = typeof creatures.$inferInsert;
+export type { CreatureSubtype };
 
 export const battles = pgTable("battles", {
   id: uuid("id").primaryKey().defaultRandom(),

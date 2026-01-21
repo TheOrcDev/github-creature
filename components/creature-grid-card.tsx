@@ -8,6 +8,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { SelectCreature } from "@/db/schema";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +20,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { SelectCreature } from "@/db/schema";
 
 function getPowerLevelColor(powerLevel: number): string {
   if (powerLevel >= 10) return "from-purple-500 to-fuchsia-500";

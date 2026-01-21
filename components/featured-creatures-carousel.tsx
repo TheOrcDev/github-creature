@@ -1,18 +1,16 @@
 "use client";
 
-import {
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
+import type { SelectCreature } from "@/db/schema";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { SelectCreature } from "@/db/schema";
 
 type FeaturedCreaturesCarouselProps = {
   creatures: SelectCreature[];

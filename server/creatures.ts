@@ -1,11 +1,15 @@
 "use server";
 
 import { and, avg, between, count, gt, ilike, sql } from "drizzle-orm";
-
 import { asc, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db/drizzle";
-import { battles, creatures, InsertCreature, SelectCreature } from "@/db/schema";
+import {
+  battles,
+  creatures,
+  InsertCreature,
+  SelectCreature,
+} from "@/db/schema";
 
 export async function getCreatureByGithubUsername(githubUsername: string) {
   const githubUrl = `https://github.com/${githubUsername}`;
@@ -290,7 +294,9 @@ export async function getFilteredCreatures(options: {
 
     // Search by GitHub username
     if (search && search.length > 0) {
-      conditions.push(ilike(creatures.githubProfileUrl, `%github.com/${search}%`));
+      conditions.push(
+        ilike(creatures.githubProfileUrl, `%github.com/${search}%`)
+      );
     }
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
@@ -305,7 +311,8 @@ export async function getFilteredCreatures(options: {
 
     // Build order clause
     const sortColumn = creatures[sortField];
-    const orderClause = sortDirection === "asc" ? asc(sortColumn) : desc(sortColumn);
+    const orderClause =
+      sortDirection === "asc" ? asc(sortColumn) : desc(sortColumn);
 
     // Get paginated creatures
     const offset = (page - 1) * limit;

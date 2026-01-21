@@ -1,5 +1,6 @@
-import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
+
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 import DuelArena from "@/components/duel/duel-arena";

@@ -7,8 +7,10 @@ import Image from "next/image";
 import type { SelectCreature } from "@/db/schema";
 import type { BattleCreature } from "@/lib/battle-engine";
 
+import { SubtypeBadgeList } from "@/components/subtype-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { isSuperEffective, parseSubtypes } from "@/lib/type-effectiveness";
 import { cn } from "@/lib/utils";
 
 function getPowerLevelColor(powerLevel: number): string {
@@ -24,10 +26,17 @@ type MiniCreatureCardProps = {
   creature: SelectCreature;
   label: string;
   stats?: BattleCreature;
+  hasTypeAdvantage?: boolean;
 };
 
-function MiniCreatureCard({ creature, label, stats }: MiniCreatureCardProps) {
+function MiniCreatureCard({
+  creature,
+  label,
+  stats,
+  hasTypeAdvantage,
+}: MiniCreatureCardProps) {
   const username = creature.githubProfileUrl.split("/").pop() || "";
+  const subtypes = parseSubtypes(creature.subtypes);
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -35,7 +44,14 @@ function MiniCreatureCard({ creature, label, stats }: MiniCreatureCardProps) {
         {label}
       </span>
       <div className="relative">
-        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 border-border">
+        <div
+          className={cn(
+            "w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2",
+            hasTypeAdvantage
+              ? "border-green-500 ring-2 ring-green-500/30"
+              : "border-border"
+          )}
+        >
           <Image
             src={creature.image}
             alt={creature.name}
@@ -52,6 +68,11 @@ function MiniCreatureCard({ creature, label, stats }: MiniCreatureCardProps) {
         >
           ⚡ {creature.powerLevel.toFixed(1)}
         </Badge>
+        {hasTypeAdvantage && (
+          <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] px-1">
+            Advantage!
+          </Badge>
+        )}
       </div>
       <div className="text-center mt-1">
         <p className="text-sm font-semibold truncate max-w-[100px]">
@@ -59,6 +80,7 @@ function MiniCreatureCard({ creature, label, stats }: MiniCreatureCardProps) {
         </p>
         <p className="text-xs text-muted-foreground font-mono">@{username}</p>
       </div>
+      <SubtypeBadgeList subtypes={subtypes} className="justify-center" />
       {stats && (
         <div className="flex flex-wrap justify-center gap-1 mt-1">
           <Badge variant="outline" className="text-xs px-1.5 py-0">
@@ -91,6 +113,15 @@ export default function BattleMatchupCard({
   playerStats,
   opponentStats,
 }: BattleMatchupCardProps) {
+  const playerSubtypes = parseSubtypes(playerCreature.subtypes);
+  const opponentSubtypes = parseSubtypes(opponentCreature.subtypes);
+
+  const playerHasAdvantage = isSuperEffective(playerSubtypes, opponentSubtypes);
+  const opponentHasAdvantage = isSuperEffective(
+    opponentSubtypes,
+    playerSubtypes
+  );
+
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-4">
@@ -104,6 +135,7 @@ export default function BattleMatchupCard({
             creature={playerCreature}
             label="You"
             stats={playerStats}
+            hasTypeAdvantage={playerHasAdvantage}
           />
 
           <div className="flex flex-col items-center gap-1">
@@ -120,6 +152,7 @@ export default function BattleMatchupCard({
             creature={opponentCreature}
             label="Opponent"
             stats={opponentStats}
+            hasTypeAdvantage={opponentHasAdvantage}
           />
         </div>
       </CardContent>

@@ -6,6 +6,11 @@ import { redirect } from "next/navigation";
 import z from "zod/v3";
 
 import { db } from "@/db/drizzle";
+import {
+  CREATURE_SUBTYPES,
+  getSubtypeCountForPowerLevel,
+  stringifySubtypes,
+} from "@/lib/type-effectiveness";
 
 import { saveCreature } from "./creatures";
 
@@ -123,6 +128,7 @@ export async function fetchGithubStats(username: string) {
 }
 
 export async function generateCreature(contributions: number) {
+  // First generate the base creature to get power level
   const result = await generateObject({
     model: "google/gemini-2.5-flash",
     schema: z.object({
@@ -130,6 +136,7 @@ export async function generateCreature(contributions: number) {
       description: z.string(),
       imagePrompt: z.string(),
       powerLevel: z.number(),
+      subtypes: z.array(z.enum(CREATURE_SUBTYPES)),
     }),
     prompt: `
         Generate a fantasy creature based on a GitHub user's contributions. Use the following rules:
@@ -139,10 +146,10 @@ export async function generateCreature(contributions: number) {
         Contributions determine base tier / strength:
 
         Instead of using generic examples, select an appropriate creature from the D&D 5e Monster Manual based on Challenge Rating (CR).
-        - Pick a Monster Manual creature whose CR falls in the tier’s CR band.
+        - Pick a Monster Manual creature whose CR falls in the tier's CR band.
         - The visual power should clearly match the tier.
         - You may add original cosmetic details (scars, armor style, aura, environment) to fit the fantasy vibe.
-        
+
         Anti-repetition / randomness rules (CRITICAL):
         - Do NOT default to the same "iconic" monster for the tier.
         - Always pick a DIFFERENT Monster Manual creature each time you run this prompt, even if the inputs are identical.
@@ -175,6 +182,21 @@ export async function generateCreature(contributions: number) {
 
         Power level is a number between 1 and 10, based on the CR band.
 
+        SUBTYPES:
+        Creatures have elemental/class subtypes that determine battle effectiveness.
+        Available subtypes: ${CREATURE_SUBTYPES.join(", ")}
+
+        Subtype count based on power level:
+        - Power 1-3: Choose exactly 1 subtype
+        - Power 4-8: Choose exactly 2 subtypes
+        - Power 9-10: Choose exactly 3 subtypes
+
+        Choose subtypes that thematically match the creature's nature, abilities, and appearance.
+        Examples:
+        - A fire elemental → ["fire"]
+        - A frost giant warrior → ["ice", "beast"]
+        - An ancient shadow dragon → ["dragon", "dark", "arcane"]
+
         Visual Power Scaling Rules:
 
         Creature size, armor, weapons, wings, horns, glow, and environment must scale with tier
@@ -204,7 +226,26 @@ export async function generateCreature(contributions: number) {
         `,
   });
 
-  return result.object;
+  // Validate and fix subtype count if needed
+  const expectedCount = getSubtypeCountForPowerLevel(result.object.powerLevel);
+  let subtypes = result.object.subtypes;
+
+  if (subtypes.length < expectedCount) {
+    // Add random subtypes to meet the requirement
+    const available = CREATURE_SUBTYPES.filter((s) => !subtypes.includes(s));
+    while (subtypes.length < expectedCount && available.length > 0) {
+      const randomIndex = Math.floor(Math.random() * available.length);
+      subtypes = [...subtypes, available.splice(randomIndex, 1)[0]];
+    }
+  } else if (subtypes.length > expectedCount) {
+    // Trim to expected count
+    subtypes = subtypes.slice(0, expectedCount);
+  }
+
+  return {
+    ...result.object,
+    subtypes,
+  };
 }
 
 export async function generateCreatureImage(
@@ -289,9 +330,8 @@ export async function submitGithubForm(githubProfileUrl: string) {
     };
   }
 
-  const { name, description, imagePrompt, powerLevel } = await generateCreature(
-    stats.contributions
-  );
+  const { name, description, imagePrompt, powerLevel, subtypes } =
+    await generateCreature(stats.contributions);
   const image = await generateCreatureImage(imagePrompt, powerLevel);
 
   for (const result of image.content) {
@@ -313,6 +353,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
         stars: stats.stars,
         name: name,
         powerLevel: +powerLevel,
+        subtypes: stringifySubtypes(subtypes),
       });
 
       redirect(`/${username}`);
