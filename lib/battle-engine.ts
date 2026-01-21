@@ -14,6 +14,7 @@ export type BattleCreature = {
   maxHp: number;
   atk: number;
   def: number;
+  critChance: number;
   isKnockedOut: boolean;
   team: "player" | "opponent";
   subtypes: CreatureSubtype[];
@@ -24,6 +25,10 @@ export type BattleAction = {
   attacker: BattleCreature;
   target: BattleCreature;
   damage: number;
+  baseDamage: number;
+  typeMultiplier: number;
+  isCritical: boolean;
+  critMultiplier: number;
   targetHpAfter: number;
   isKnockout: boolean;
   isSuperEffective: boolean;
@@ -77,6 +82,7 @@ export function createBattleCreature(
     maxHp: stats.hp,
     atk: stats.atk,
     def: stats.def,
+    critChance: Math.min(30, 5 + creature.stars / 500), // 5% base + stars/500, capped at 30%
     isKnockedOut: false,
     team,
     subtypes: parseSubtypes(creature.subtypes),
@@ -90,23 +96,40 @@ function getLivingCreatures(creatures: BattleCreature[]): BattleCreature[] {
   return creatures.filter((c) => !c.isKnockedOut);
 }
 
+type DamageResult = {
+  damage: number;
+  baseDamage: number;
+  typeMultiplier: number;
+  isCritical: boolean;
+  critMultiplier: number;
+  isSuperEffective: boolean;
+};
+
 /**
  * Calculate damage dealt by attacker to defender
- * Formula: max(1, floor(attackerATK - defenderDEF * 0.5)) * typeMultiplier
- * Returns damage amount and whether the attack was super effective
+ * Formula: max(1, floor(attackerATK - defenderDEF * 0.5)) * typeMultiplier * critMultiplier
+ * Returns damage amount with full breakdown for combat log
  */
 function calculateDamage(
   attacker: BattleCreature,
   defender: BattleCreature
-): { damage: number; isSuperEffective: boolean } {
+): DamageResult {
   const baseDamage = Math.max(1, Math.floor(attacker.atk - defender.def * 0.5));
-  const multiplier = getTypeEffectivenessMultiplier(
+  const typeMultiplier = getTypeEffectivenessMultiplier(
     attacker.subtypes,
     defender.subtypes
   );
+  const isCritical = Math.random() * 100 < attacker.critChance;
+  const critMultiplier = isCritical ? 1.5 : 1.0;
+  const finalDamage = Math.floor(baseDamage * typeMultiplier * critMultiplier);
+
   return {
-    damage: Math.floor(baseDamage * multiplier),
-    isSuperEffective: multiplier > 1,
+    damage: finalDamage,
+    baseDamage,
+    typeMultiplier,
+    isCritical,
+    critMultiplier,
+    isSuperEffective: typeMultiplier > 1,
   };
 }
 
@@ -181,8 +204,8 @@ export function simulateBattle(
       if (!target) continue;
 
       // Calculate and apply damage
-      const { damage, isSuperEffective } = calculateDamage(attacker, target);
-      target.hp = Math.max(0, target.hp - damage);
+      const damageResult = calculateDamage(attacker, target);
+      target.hp = Math.max(0, target.hp - damageResult.damage);
 
       // Check for knockout
       const isKnockout = target.hp <= 0;
@@ -195,10 +218,14 @@ export function simulateBattle(
         round,
         attacker: { ...attacker },
         target: { ...target },
-        damage,
+        damage: damageResult.damage,
+        baseDamage: damageResult.baseDamage,
+        typeMultiplier: damageResult.typeMultiplier,
+        isCritical: damageResult.isCritical,
+        critMultiplier: damageResult.critMultiplier,
         targetHpAfter: target.hp,
         isKnockout,
-        isSuperEffective,
+        isSuperEffective: damageResult.isSuperEffective,
       });
 
       // Check for victory
@@ -235,6 +262,10 @@ export type BattleLogEntry = {
   targetName: string;
   targetTeam: "player" | "opponent";
   damage: number;
+  baseDamage: number;
+  typeMultiplier: number;
+  isCritical: boolean;
+  critMultiplier: number;
   targetHpAfter: number;
   targetMaxHp: number;
   isKnockout: boolean;
@@ -267,6 +298,10 @@ export function generateBattleReport(
     targetName: action.target.name,
     targetTeam: action.target.team,
     damage: action.damage,
+    baseDamage: action.baseDamage,
+    typeMultiplier: action.typeMultiplier,
+    isCritical: action.isCritical,
+    critMultiplier: action.critMultiplier,
     targetHpAfter: action.targetHpAfter,
     targetMaxHp: action.target.maxHp,
     isKnockout: action.isKnockout,

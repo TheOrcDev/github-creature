@@ -13,6 +13,24 @@ type BattleLogProps = {
   isComplete: boolean;
 };
 
+function DamageBreakdown({ entry }: { entry: BattleLogEntry }) {
+  const hasTypeBonus = entry.typeMultiplier > 1;
+  const hasCrit = entry.isCritical;
+
+  // Only show breakdown if there are multipliers
+  if (!hasTypeBonus && !hasCrit) {
+    return null;
+  }
+
+  return (
+    <span className="text-xs text-muted-foreground">
+      ({entry.baseDamage}
+      {hasTypeBonus && <span className="text-green-500"> ×1.5 type</span>}
+      {hasCrit && <span className="text-yellow-500"> ×1.5 crit</span>})
+    </span>
+  );
+}
+
 function LogEntry({
   entry,
   isVisible,
@@ -30,7 +48,8 @@ function LogEntry({
       className={cn(
         "flex items-start gap-2 py-1.5 px-2 rounded text-sm transition-opacity",
         isPlayerAction ? "bg-blue-500/10" : "bg-red-500/10",
-        entry.isKnockout && "ring-1 ring-yellow-500/50"
+        entry.isKnockout && "ring-1 ring-yellow-500/50",
+        entry.isCritical && "ring-1 ring-yellow-400/70"
       )}
     >
       <span
@@ -51,8 +70,20 @@ function LogEntry({
         {entry.targetName}
       </span>
       <span className="text-muted-foreground">for</span>
-      <span className="font-bold text-orange-500">{entry.damage}</span>
-      <span className="text-muted-foreground">damage</span>
+      <span
+        className={cn(
+          "font-bold",
+          entry.isCritical ? "text-yellow-400" : "text-orange-500"
+        )}
+      >
+        {entry.damage}
+      </span>
+      <DamageBreakdown entry={entry} />
+      {entry.isCritical && (
+        <Badge className="bg-yellow-500 text-black text-[10px] px-1 shrink-0">
+          CRIT!
+        </Badge>
+      )}
       {entry.isSuperEffective && (
         <Badge className="bg-green-500 text-white text-[10px] px-1 shrink-0">
           Super Effective!
