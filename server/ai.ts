@@ -301,6 +301,7 @@ export async function submitGithubForm(githubProfileUrl: string) {
         Buffer.from(result.file.uint8Array),
         {
           access: "public",
+          allowOverwrite: true,
         }
       );
 
