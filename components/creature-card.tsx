@@ -1,9 +1,8 @@
-import type { ReactNode } from "react";
-
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import CreatureStatsDialog from "@/components/creature-stats-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
