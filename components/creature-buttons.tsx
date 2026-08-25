@@ -2,21 +2,25 @@ import { Github } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 
-type CreatureButtonsProps = {
+interface CreatureButtonsProps {
   githubProfileUrl: string;
-};
+}
 
 export default function CreatureButtons({
   githubProfileUrl,
 }: CreatureButtonsProps) {
   return (
-    <div className="flex px-2 gap-2">
-      <Link href={githubProfileUrl} target="_blank" rel="noopener noreferrer">
-        <Button size="icon">
-          <HugeiconsIcon icon={Github} />
-        </Button>
+    <div className="flex gap-2 px-2">
+      <Link
+        aria-label="Open GitHub profile"
+        className={buttonVariants({ size: "icon" })}
+        href={githubProfileUrl}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <HugeiconsIcon icon={Github} />
       </Link>
     </div>
   );

@@ -6,10 +6,10 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 
-type ShareOnXButtonProps = {
+interface ShareOnXButtonProps {
   text: string;
   className?: string;
-};
+}
 
 export default function ShareOnXButton({
   text,
@@ -32,6 +32,7 @@ export default function ShareOnXButton({
     <Button
       variant="outline"
       size="sm"
+      aria-label="Share on X"
       className={className}
       onClick={onClick}
       disabled={!shareUrl}

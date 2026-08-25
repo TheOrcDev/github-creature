@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 import {
   Geist,
   Geist_Mono,
@@ -16,38 +16,39 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 const nunitoSans = Nunito_Sans({ variable: "--font-sans" });
 const islandMoments = Island_Moments({
-  variable: "--font-handwritten",
   subsets: ["latin"],
+  variable: "--font-handwritten",
   weight: "400",
 });
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
-  title: "GitHub Creature - Summon the Creature Behind Your Code",
   description:
     "It's a fun way to showcase your skills and contributions to the open source community. Just enter your GitHub profile URL and get your inner creature.",
   icons: {
     icon: "/github-creature-logo.png",
   },
+  metadataBase: new URL("https://www.githubcreature.com"),
   openGraph: {
     images: [
       {
+        alt: "GitHub Creature",
+        height: 630,
         url: "/github-creature-og.png",
         width: 1200,
-        height: 630,
-        alt: "GitHub Creature",
       },
     ],
   },
+  title: "GitHub Creature - Summon the Creature Behind Your Code",
   twitter: {
     card: "summary_large_image",
     images: ["/github-creature-og.png"],

@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check": "npx ultracite check",
-    "fix": "npx ultracite fix",
+    "check": "oxfmt --check && oxlint",
+    "fix": "oxfmt && oxlint --fix",
     "prepare": "husky"
   },
   "dependencies": {

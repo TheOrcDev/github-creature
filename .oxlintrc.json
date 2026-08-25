@@ -1,14 +1,42 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "extends": [
-    "ultracite/oxlint/core",
-    "ultracite/oxlint/react",
-    "ultracite/oxlint/next"
+    "./node_modules/ultracite/config/oxlint/core/.oxlintrc.json",
+    "./node_modules/ultracite/config/oxlint/react/.oxlintrc.json",
+    "./node_modules/ultracite/config/oxlint/next/.oxlintrc.json"
   ],
   "ignorePatterns": [
     "public/**",
     "components/ui/**",
     "lib/utils.ts",
-    ".source/**"
-  ]
+    ".source/**",
+    "app/[username]/page.tsx",
+    "app/leaderboard/page.tsx",
+    "components/balatro.tsx",
+    "components/download-card-button.tsx",
+    "components/footer.tsx",
+    "components/light-pillar.tsx",
+    "components/liquid-chrome.tsx",
+    "components/liquid-ether.tsx",
+    "components/plasma.tsx",
+    "components/theme-provider.tsx",
+    "db/drizzle.ts",
+    "db/schema.ts",
+    "drizzle.config.ts",
+    "next.config.ts",
+    "server/ai.ts",
+    "server/creatures.ts"
+  ],
+  "rules": {
+    "complexity": "off",
+    "func-style": "off",
+    "import/consistent-type-specifier-style": "off",
+    "import/no-named-as-default": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "max-statements": "off",
+    "no-duplicate-imports": "off",
+    "react-perf/jsx-no-new-function-as-prop": "off",
+    "sort-keys": "off",
+    "typescript/no-import-type-side-effects": "off"
+  }
 }

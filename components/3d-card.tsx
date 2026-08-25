@@ -1,13 +1,8 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  ReactNode,
-  CSSProperties,
-  useEffect,
-} from "react";
+import type { ReactNode, CSSProperties } from "react";
+
+import React, { useState, useRef, useCallback, useEffect } from "react";
 
 interface ThreeDCardProps {
   children: ReactNode;
@@ -44,20 +39,34 @@ function ThreeDCard({
 }: ThreeDCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [transform, setTransform] = useState({
-    rotateX: 0,
-    rotateY: 0,
     glowX: 50,
     glowY: 50,
+    isHovered: false,
+    rotateX: 0,
+    rotateY: 0,
     shadowX: 0,
     shadowY: 20,
-    isHovered: false,
   });
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPreference = () => setPrefersReducedMotion(media.matches);
+
+    syncPreference();
+    media.addEventListener("change", syncPreference);
+    return () => media.removeEventListener("change", syncPreference);
+  }, []);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (trackOnWindow) return;
-      if (!cardRef.current) return;
+      if (prefersReducedMotion || trackOnWindow) {
+        return;
+      }
+      if (!cardRef.current) {
+        return;
+      }
 
       const rect = cardRef.current.getBoundingClientRect();
       const { width, height, left, top } = rect;
@@ -84,7 +93,7 @@ function ThreeDCard({
         shadowY: enableShadow ? 20 - newRotateX * 0.6 : 20,
       }));
     },
-    [maxRotation, enableShadow, trackOnWindow]
+    [maxRotation, enableShadow, prefersReducedMotion, trackOnWindow]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -93,18 +102,21 @@ function ThreeDCard({
 
   const handleMouseLeave = useCallback(() => {
     setTransform({
-      rotateX: 0,
-      rotateY: 0,
       glowX: 50,
       glowY: 50,
+      isHovered: false,
+      rotateX: 0,
+      rotateY: 0,
       shadowX: 0,
       shadowY: 20,
-      isHovered: false,
     });
   }, []);
 
   const handleWindowMouseMove = useCallback(
     (e: MouseEvent) => {
+      if (prefersReducedMotion) {
+        return;
+      }
       const width = window.innerWidth;
       const height = window.innerHeight;
 
@@ -127,29 +139,33 @@ function ThreeDCard({
         shadowY: enableShadow ? 20 - newRotateX * 0.6 : 20,
       }));
     },
-    [maxRotation, enableShadow]
+    [maxRotation, enableShadow, prefersReducedMotion]
   );
 
   useEffect(() => {
-    if (!trackOnWindow) return;
+    if (!trackOnWindow || prefersReducedMotion) {
+      return;
+    }
     window.addEventListener("mousemove", handleWindowMouseMove);
     return () => window.removeEventListener("mousemove", handleWindowMouseMove);
-  }, [trackOnWindow, handleWindowMouseMove]);
+  }, [trackOnWindow, prefersReducedMotion, handleWindowMouseMove]);
 
-  const cardStyle: CSSProperties = {
-    transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) scale3d(1, 1, 1)`,
-    boxShadow: enableShadow
-      ? `${transform.shadowX}px ${transform.shadowY}px ${shadowBlur}px rgba(0, 0, 0, 0.4)`
-      : "none",
-    transition: `transform ${transitionDuration} cubic-bezier(0.23, 1, 0.32, 1), box-shadow ${transitionDuration} cubic-bezier(0.23, 1, 0.32, 1)`,
-    transformStyle: "preserve-3d",
-  };
+  const cardStyle: CSSProperties = prefersReducedMotion
+    ? {}
+    : {
+        boxShadow: enableShadow
+          ? `${transform.shadowX}px ${transform.shadowY}px ${shadowBlur}px rgba(0, 0, 0, 0.4)`
+          : "none",
+        transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) scale3d(1, 1, 1)`,
+        transformStyle: "preserve-3d",
+        transition: `transform ${transitionDuration} cubic-bezier(0.23, 1, 0.32, 1), box-shadow ${transitionDuration} cubic-bezier(0.23, 1, 0.32, 1)`,
+      };
 
   const backgroundStyle = backgroundImage
     ? {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundSize: "cover",
         opacity: transform.isHovered ? 1 : 0,
         transition: `opacity 0.5s ease-in-out`,
       }
@@ -163,16 +179,17 @@ function ThreeDCard({
       }
     : {};
 
-  const contentStyle: CSSProperties = enableParallax
-    ? {
-        transform: `translateZ(${parallaxOffset}px)`,
-        transformStyle: "preserve-3d",
-      }
-    : {};
+  const contentStyle: CSSProperties =
+    enableParallax && !prefersReducedMotion
+      ? {
+          transform: `translateZ(${parallaxOffset}px)`,
+          transformStyle: "preserve-3d",
+        }
+      : {};
 
   return (
     <div
-      style={{ perspective: "1000px", padding: hoverPadding }}
+      style={{ padding: hoverPadding, perspective: "1000px" }}
       className={className}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -184,6 +201,7 @@ function ThreeDCard({
         style={cardStyle}
         className="relative bg-gray-800 rounded-2xl overflow-hidden"
         role="img"
+        aria-label="Creature card"
         tabIndex={0}
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}

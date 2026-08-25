@@ -1,20 +1,24 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+
 import { Suspense } from "react";
 
-import { SubmitGithubForm } from "@/components/forms/github-form";
+import {
+  GithubFormFallback,
+  SubmitGithubForm,
+} from "@/components/forms/github-form";
 import LatestCreatures from "@/components/latest-creatures";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
-  title: "GitHub Creature - Summon your code creature",
   description:
     "Generate a creature based on your GitHub profile. Just enter your GitHub profile URL and get your inner creature.",
+  title: "GitHub Creature - Summon your code creature",
 };
 
-export default async function Page() {
+export default function Page() {
   return (
     <main className="flex flex-col items-center justify-center h-screen gap-5 px-2">
-      <Suspense>
+      <Suspense fallback={<GithubFormFallback />}>
         <SubmitGithubForm />
       </Suspense>
 

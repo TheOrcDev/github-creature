@@ -5,12 +5,17 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-type CreatureStatsDialogProps = {
+interface CreatureStatsDialogProps {
   triggerText?: string;
   children: React.ReactNode;
-};
+}
 
 export default function CreatureStatsDialog({
   triggerText = "Stats",
@@ -21,13 +26,14 @@ export default function CreatureStatsDialog({
       <DialogTrigger
         render={
           <Button variant="outline" size="sm" className="gap-2">
-            <HugeiconsIcon icon={Analytics01Icon} />
+            <HugeiconsIcon data-icon="inline-start" icon={Analytics01Icon} />
             {triggerText}
           </Button>
         }
       />
       <DialogContent className="sm:max-w-md p-0">
-        <div className="p-4 flex flex-col gap-4 justify-center items-center">
+        <DialogTitle className="sr-only">Creature stats</DialogTitle>
+        <div className="flex flex-col items-center justify-center gap-4 p-4">
           {children}
         </div>
       </DialogContent>

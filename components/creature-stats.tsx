@@ -1,9 +1,11 @@
 import Link from "next/link";
 
+import type { SelectCreature } from "@/db/schema";
+
 import DownloadDropdown from "@/components/download-dropdown";
 import ShareOnXButton from "@/components/share-on-x-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -13,13 +15,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SelectCreature } from "@/db/schema";
 import { getCreatureTopPercentage } from "@/server/creatures";
 
-type CreatureStatsProps = {
+interface CreatureStatsProps {
   creature: SelectCreature;
   downloadTargetId?: string;
-};
+}
 
 export default async function CreatureStats({
   creature,
@@ -28,7 +29,7 @@ export default async function CreatureStats({
   const topPercentage = await getCreatureTopPercentage(creature.id);
 
   return (
-    <Card className="w-92 bg-linear-to-b from-primary/6 to-background flex flex-col justify-between min-h-[600px]">
+    <Card className="flex w-full max-w-92 min-h-[600px] flex-col justify-between bg-linear-to-b from-primary/6 to-background">
       <CardHeader className="border-b">
         <CardTitle className="text-lg sm:text-xl font-bold tracking-tight">
           {creature.name}
@@ -46,13 +47,12 @@ export default async function CreatureStats({
       <CardContent className="pt-4">
         <div className="flex flex-col gap-2">
           <Link
+            className={buttonVariants({ size: "sm", variant: "outline" })}
             href={creature.githubProfileUrl}
-            target="_blank"
             rel="noreferrer"
+            target="_blank"
           >
-            <Button variant="outline" size="sm">
-              View on GitHub
-            </Button>
+            View on GitHub
           </Link>
           <div className="rounded-none border border-border/70 bg-background/40 p-3">
             <div className="text-[11px] uppercase tracking-wide text-muted-foreground">

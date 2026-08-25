@@ -9,15 +9,26 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod/v3";
 
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Field, FieldError, FieldGroup } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Skeleton } from "@/components/ui/skeleton";
 import { submitGithubForm } from "@/server/ai";
 
 import { useInitialUsername } from "./github-form-url-state";
 
 const usernameRegex = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/;
+const githubProfileFieldId = "form-rhf-demo-github-profile-url";
+const githubProfileErrorId = `${githubProfileFieldId}-error`;
 
 const formSchema = z.object({
   githubProfileUrl: z
@@ -33,10 +44,13 @@ const formSchema = z.object({
           if (
             url.hostname !== "github.com" &&
             url.hostname !== "www.github.com"
-          )
+          ) {
             return false;
+          }
           const segments = url.pathname.split("/").filter(Boolean);
-          if (segments.length !== 1) return false;
+          if (segments.length !== 1) {
+            return false;
+          }
           const username = decodeURIComponent(segments[0] ?? "").trim();
           return usernameRegex.test(username);
         } catch {
@@ -49,16 +63,25 @@ const formSchema = z.object({
     }, "Please enter a valid GitHub username or profile URL"),
 });
 
+export function GithubFormFallback() {
+  return (
+    <div className="flex w-full max-w-md flex-col items-center gap-5">
+      <Skeleton className="h-8 w-3/4" />
+      <Skeleton className="h-8 w-full" />
+    </div>
+  );
+}
+
 export function SubmitGithubForm() {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const username = useInitialUsername();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
     defaultValues: {
       githubProfileUrl: username ? `https://github.com/${username}` : "",
     },
+    resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
@@ -82,14 +105,18 @@ export function SubmitGithubForm() {
   return (
     <>
       {loading ? (
-        <div className="flex gap-2 items-center">
-          <h2 className="lg:text-4xl text-2xl md:text-xl text-center font-bold">
+        <div className="flex items-center gap-2">
+          <h2 className="text-center font-bold text-2xl md:text-xl lg:text-4xl">
             Summoning your code creature
           </h2>
-          <HugeiconsIcon className="animate-spin" icon={Loading03Icon} />
+          <HugeiconsIcon
+            aria-hidden
+            className="motion-reduce:animate-none animate-spin"
+            icon={Loading03Icon}
+          />
         </div>
       ) : (
-        <h1 className="lg:text-4xl md:text-2xl text-xl text-center font-bold">
+        <h1 className="text-center font-bold text-xl md:text-2xl lg:text-4xl">
           Summon the Creature Behind Your Code
         </h1>
       )}
@@ -105,28 +132,44 @@ export function SubmitGithubForm() {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <ButtonGroup>
-                  <Input
+                <FieldLabel htmlFor={githubProfileFieldId}>
+                  GitHub username or profile URL
+                </FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
                     {...field}
-                    id="form-rhf-demo-github-profile-url"
+                    id={githubProfileFieldId}
+                    aria-describedby={
+                      fieldState.invalid ? githubProfileErrorId : undefined
+                    }
                     aria-invalid={fieldState.invalid}
-                    placeholder="username or https://github.com/username"
                     autoComplete="off"
+                    placeholder="username or https://github.com/username"
                   />
-                  <Button type="submit" form="form-rhf-demo" disabled={loading}>
-                    {loading ? (
-                      <HugeiconsIcon
-                        className="animate-spin"
-                        icon={Loading03Icon}
-                      />
-                    ) : (
-                      "Summon"
-                    )}
-                  </Button>
-                </ButtonGroup>
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      disabled={loading}
+                      form="form-rhf-demo"
+                      type="submit"
+                    >
+                      {loading ? (
+                        <HugeiconsIcon
+                          aria-hidden
+                          className="motion-reduce:animate-none animate-spin"
+                          icon={Loading03Icon}
+                        />
+                      ) : (
+                        "Summon"
+                      )}
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
 
                 {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
+                  <FieldError
+                    id={githubProfileErrorId}
+                    errors={[fieldState.error]}
+                  />
                 )}
               </Field>
             )}

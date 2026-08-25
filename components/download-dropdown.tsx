@@ -9,16 +9,17 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type DownloadDropdownProps = {
+interface DownloadDropdownProps {
   targetId: string;
   originalImageUrl: string;
   fileName?: string;
   pixelRatio?: number;
-};
+}
 
 export default function DownloadDropdown({
   targetId,
@@ -29,8 +30,10 @@ export default function DownloadDropdown({
   const [isDownloading, setIsDownloading] = React.useState(false);
 
   const downloadCardWithEffects = React.useCallback(async () => {
-    const node = document.getElementById(targetId);
-    if (!node) return;
+    const node = document.querySelector(`#${targetId}`);
+    if (!node) {
+      return;
+    }
 
     setIsDownloading(true);
     try {
@@ -41,7 +44,6 @@ export default function DownloadDropdown({
       }
 
       const dataUrl = await domToPng(node, {
-        scale: pixelRatio,
         onCloneNode: (cloned) => {
           if (cloned instanceof HTMLElement) {
             cloned.style.transform = "none";
@@ -49,14 +51,15 @@ export default function DownloadDropdown({
             cloned.style.boxShadow = "none";
           }
         },
+        scale: pixelRatio,
       });
 
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = `${fileName}-card.png`;
       link.click();
-    } catch (err) {
-      console.error("Failed to download card image", err);
+    } catch (error) {
+      console.error("Failed to download card image", error);
     } finally {
       setIsDownloading(false);
     }
@@ -75,8 +78,8 @@ export default function DownloadDropdown({
       link.click();
 
       URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Failed to download original image", err);
+    } catch (error) {
+      console.error("Failed to download original image", error);
     } finally {
       setIsDownloading(false);
     }
@@ -86,9 +89,17 @@ export default function DownloadDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" size="sm" disabled={isDownloading}>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={isDownloading}
+            aria-label="Download creature"
+          >
             {isDownloading ? (
-              <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
+              <HugeiconsIcon
+                icon={Loading03Icon}
+                className="motion-reduce:animate-none animate-spin"
+              />
             ) : (
               <HugeiconsIcon icon={Download01Icon} />
             )}
@@ -96,12 +107,14 @@ export default function DownloadDropdown({
         }
       />
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={downloadCardWithEffects}>
-          Card with effects
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={downloadOriginalImage}>
-          Original image
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={downloadCardWithEffects}>
+            Card with effects
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={downloadOriginalImage}>
+            Original image
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

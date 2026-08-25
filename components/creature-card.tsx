@@ -2,9 +2,10 @@ import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import CreatureStatsDialog from "@/components/creature-stats-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getCreatureByGithubUsername } from "@/server/creatures";
@@ -17,7 +18,6 @@ import LightPillar from "./light-pillar";
 import LiquidChrome from "./liquid-chrome";
 import LiquidEther from "./liquid-ether";
 import Plasma from "./plasma";
-import { Button } from "./ui/button";
 
 function getPowerLevelTheme(powerLevel: number): {
   cardClassName: string;
@@ -27,7 +27,6 @@ function getPowerLevelTheme(powerLevel: number): {
   if (powerLevel >= 10) {
     return {
       cardClassName: "border-purple-500 dark:bg-purple-500/30 bg-purple-500/40",
-      frameClassName: "border-purple-500",
       effects: (
         <LiquidEther
           colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
@@ -47,13 +46,13 @@ function getPowerLevelTheme(powerLevel: number): {
           autoRampDuration={0.6}
         />
       ),
+      frameClassName: "border-purple-500",
     };
   }
 
   if (powerLevel >= 9) {
     return {
       cardClassName: "border-gray-500 dark:bg-gray-500/30 bg-gray-500/40",
-      frameClassName: "border-gray-500",
       effects: (
         <LiquidChrome
           baseColor={[0.1, 0.1, 0.1]}
@@ -63,6 +62,7 @@ function getPowerLevelTheme(powerLevel: number): {
           opacity={0.5}
         />
       ),
+      frameClassName: "border-gray-500",
     };
   }
 
@@ -70,7 +70,6 @@ function getPowerLevelTheme(powerLevel: number): {
   if (powerLevel >= 6) {
     return {
       cardClassName: "border-red-500 dark:bg-red-500/30 bg-red-500/40",
-      frameClassName: "border-red-500",
       effects: (
         <Balatro
           isRotate={false}
@@ -79,16 +78,16 @@ function getPowerLevelTheme(powerLevel: number): {
           opacity={0.3}
         />
       ),
+      frameClassName: "border-red-500",
     };
   }
 
   if (powerLevel >= 4) {
     return {
       cardClassName: "border-orange-500 dark:bg-orange-500/30 bg-orange-500/40",
-      frameClassName: "border-orange-500",
       effects: (
         <Plasma
-          color={"#ff6b35"}
+          color="#ff6b35"
           speed={0.6}
           direction="forward"
           scale={1.1}
@@ -96,6 +95,7 @@ function getPowerLevelTheme(powerLevel: number): {
           mouseInteractive={true}
         />
       ),
+      frameClassName: "border-orange-500",
     };
   }
 
@@ -103,15 +103,14 @@ function getPowerLevelTheme(powerLevel: number): {
     return {
       cardClassName:
         "border-emerald-900 dark:bg-emerald-900/30 bg-emerald-900/40",
-      frameClassName: "border-emerald-900",
       effects: (
         <LightPillar
           topColor="#00FF00"
           bottomColor="#FF9FFC"
-          intensity={1.0}
+          intensity={1}
           rotationSpeed={0.3}
           glowAmount={0.005}
-          pillarWidth={3.0}
+          pillarWidth={3}
           pillarHeight={0.4}
           noiseIntensity={0.5}
           pillarRotation={0}
@@ -120,14 +119,15 @@ function getPowerLevelTheme(powerLevel: number): {
           opacity={0.4}
         />
       ),
+      frameClassName: "border-emerald-900",
     };
   }
 
   // Base tier
   return {
     cardClassName: "",
-    frameClassName: "",
     effects: null,
+    frameClassName: "",
   };
 }
 
@@ -139,11 +139,11 @@ function getEmblemTheme(powerLevel: number): {
 } {
   if (powerLevel >= 10) {
     return {
-      ringClassName:
-        "bg-linear-to-r from-purple-600 via-fuchsia-500 to-cyan-400",
-      glowClassName: "shadow-[0_0_28px_rgba(168,85,247,0.55)]",
       dotClassName:
         "bg-linear-to-r from-fuchsia-300 via-purple-300 to-cyan-200",
+      glowClassName: "shadow-[0_0_28px_rgba(168,85,247,0.55)]",
+      ringClassName:
+        "bg-linear-to-r from-purple-600 via-fuchsia-500 to-cyan-400",
       textClassName:
         "bg-linear-to-r from-purple-200 via-white to-cyan-200 bg-clip-text text-transparent",
     };
@@ -151,9 +151,9 @@ function getEmblemTheme(powerLevel: number): {
 
   if (powerLevel >= 9) {
     return {
-      ringClassName: "bg-linear-to-r from-zinc-200 via-slate-400 to-zinc-200",
-      glowClassName: "shadow-[0_0_18px_rgba(148,163,184,0.35)]",
       dotClassName: "bg-linear-to-r from-zinc-200 via-slate-300 to-zinc-100",
+      glowClassName: "shadow-[0_0_18px_rgba(148,163,184,0.35)]",
+      ringClassName: "bg-linear-to-r from-zinc-200 via-slate-400 to-zinc-200",
       textClassName:
         "bg-linear-to-r from-zinc-100 via-white to-zinc-200 bg-clip-text text-transparent",
     };
@@ -161,9 +161,9 @@ function getEmblemTheme(powerLevel: number): {
 
   if (powerLevel >= 6) {
     return {
-      ringClassName: "bg-linear-to-r from-red-600 via-rose-500 to-amber-400",
-      glowClassName: "shadow-[0_0_18px_rgba(239,68,68,0.35)]",
       dotClassName: "bg-linear-to-r from-red-400 via-rose-400 to-amber-300",
+      glowClassName: "shadow-[0_0_18px_rgba(239,68,68,0.35)]",
+      ringClassName: "bg-linear-to-r from-red-600 via-rose-500 to-amber-400",
       textClassName:
         "bg-linear-to-r from-red-200 via-white to-amber-200 bg-clip-text text-transparent",
     };
@@ -171,11 +171,11 @@ function getEmblemTheme(powerLevel: number): {
 
   if (powerLevel >= 4) {
     return {
-      ringClassName:
-        "bg-linear-to-r from-orange-600 via-amber-400 to-yellow-300",
-      glowClassName: "shadow-[0_0_16px_rgba(249,115,22,0.35)]",
       dotClassName:
         "bg-linear-to-r from-orange-400 via-amber-300 to-yellow-200",
+      glowClassName: "shadow-[0_0_16px_rgba(249,115,22,0.35)]",
+      ringClassName:
+        "bg-linear-to-r from-orange-600 via-amber-400 to-yellow-300",
       textClassName:
         "bg-linear-to-r from-orange-200 via-white to-yellow-200 bg-clip-text text-transparent",
     };
@@ -183,27 +183,27 @@ function getEmblemTheme(powerLevel: number): {
 
   if (powerLevel >= 2) {
     return {
-      ringClassName: "bg-linear-to-r from-emerald-500 via-lime-400 to-cyan-300",
-      glowClassName: "shadow-[0_0_16px_rgba(16,185,129,0.35)]",
       dotClassName: "bg-linear-to-r from-emerald-300 via-lime-300 to-cyan-200",
+      glowClassName: "shadow-[0_0_16px_rgba(16,185,129,0.35)]",
+      ringClassName: "bg-linear-to-r from-emerald-500 via-lime-400 to-cyan-300",
       textClassName:
         "bg-linear-to-r from-emerald-200 via-white to-cyan-200 bg-clip-text text-transparent",
     };
   }
 
   return {
-    ringClassName: "bg-linear-to-r from-slate-500 via-slate-400 to-slate-300",
-    glowClassName: "shadow-[0_0_12px_rgba(148,163,184,0.25)]",
     dotClassName: "bg-linear-to-r from-slate-300 via-slate-200 to-slate-100",
+    glowClassName: "shadow-[0_0_12px_rgba(148,163,184,0.25)]",
+    ringClassName: "bg-linear-to-r from-slate-500 via-slate-400 to-slate-300",
     textClassName:
       "bg-linear-to-r from-slate-100 via-white to-slate-200 bg-clip-text text-transparent",
   };
 }
 
-type CreatureCardProps = {
+interface CreatureCardProps {
   username: string;
   stats?: boolean;
-};
+}
 
 export default async function CreatureCard({
   username,
@@ -220,7 +220,7 @@ export default async function CreatureCard({
         <Image
           alt="GitHub Creature 404"
           height={300}
-          src={"/github-creature-logo.png"}
+          src="/github-creature-logo.png"
           width={300}
         />
 
@@ -232,9 +232,10 @@ export default async function CreatureCard({
           The creature you are looking for does not exist.
         </p>
         <Link
+          className={buttonVariants({ variant: "outline" })}
           href={serializeFormSearchParams("/", { username: usernameLower })}
         >
-          <Button variant={"outline"}>Summon it</Button>
+          Summon it
         </Link>
       </div>
     );
@@ -246,13 +247,17 @@ export default async function CreatureCard({
   const cardDomId = `creature-card-${usernameLower}`;
 
   return (
-    <div className="flex flex-col items-center dark">
-      <div className="flex flex-col sm:flex-row items-start gap-4">
-        <input id={toggleId} type="checkbox" className="peer sr-only" />
+    <div className="flex w-full min-w-0 max-w-full flex-col items-center dark">
+      <div className="relative flex w-full min-w-0 max-w-96 flex-col items-start gap-4 sm:flex-row">
+        <input
+          id={toggleId}
+          type="checkbox"
+          className="peer absolute top-0 left-0 size-px appearance-none border-0 p-0 opacity-0"
+        />
 
         <div
           className={cn(
-            "relative transition-transform duration-500 ease-out",
+            "relative w-full min-w-0 overflow-x-clip transition-transform duration-500 ease-out motion-reduce:transition-none",
             "peer-checked:sm:-translate-x-1",
             "peer-checked:**:data-[state=reveal]:hidden",
             "peer-checked:**:data-[state=hide]:inline",
@@ -283,7 +288,8 @@ export default async function CreatureCard({
                 </span>
                 <HugeiconsIcon
                   icon={ArrowRight01Icon}
-                  className="transition-transform duration-300"
+                  className="transition-transform duration-300 motion-reduce:transition-none"
+                  data-icon="inline-end"
                   data-slot="arrow"
                 />
               </Button>
@@ -292,13 +298,14 @@ export default async function CreatureCard({
 
           <ThreeDCard
             enableShadow={false}
+            hoverPadding={0}
             innerId={cardDomId}
             trackOnWindow
-            className="m-3"
+            className="w-full min-w-0"
           >
             <Card
               className={cn(
-                "p-0 w-96 relative rounded-xl",
+                "relative w-full max-w-full rounded-xl p-0",
                 theme.cardClassName
               )}
             >
@@ -339,7 +346,7 @@ export default async function CreatureCard({
               <CardHeader className="p-0 flex flex-col gap-3">
                 <Image
                   src={creature.image}
-                  alt={creature.name}
+                  alt={creature.name || "GitHub creature"}
                   width={350}
                   height={350}
                   crossOrigin="anonymous"
