@@ -247,151 +247,147 @@ export default async function CreatureCard({
   const cardDomId = `creature-card-${usernameLower}`;
 
   return (
-    <div
-      className={cn(
-        "relative grid w-full min-w-0 justify-items-center dark",
-        stats &&
-          "lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)_minmax(0,1fr)] lg:items-start"
-      )}
-    >
-      {stats ? (
-        <input
-          id={toggleId}
-          type="checkbox"
-          className="peer absolute top-0 left-0 size-px appearance-none border-0 p-0 opacity-0"
-        />
-      ) : null}
-
+    <div className="flex w-full min-w-0 justify-center dark">
       <div
         className={cn(
-          "relative w-full min-w-0 max-w-96",
-          stats &&
-            "lg:col-start-2 peer-checked:**:data-[state=reveal]:hidden peer-checked:**:data-[state=hide]:inline peer-checked:**:data-[slot=arrow]:rotate-180"
+          "relative flex max-w-full flex-col items-center",
+          stats && "lg:flex-row lg:items-start lg:justify-center"
         )}
       >
-        {stats && (
-          <div className="absolute -top-10 right-0 z-10 flex justify-end">
-            <div className="w-full lg:hidden">
-              <CreatureStatsDialog triggerText="View stats">
-                <CreatureStats
-                  creature={creature}
-                  downloadTargetId={cardDomId}
-                />
-              </CreatureStatsDialog>
-            </div>
+        {stats ? (
+          <input
+            id={toggleId}
+            type="checkbox"
+            className="peer absolute top-0 left-0 size-px appearance-none border-0 p-0 opacity-0"
+          />
+        ) : null}
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden lg:inline-flex"
-              nativeButton={false}
-              render={<label htmlFor={toggleId} />}
-            >
-              <span data-state="reveal">Reveal stats</span>
-              <span data-state="hide" className="hidden">
-                Hide stats
-              </span>
-              <HugeiconsIcon
-                icon={ArrowRight01Icon}
-                className="transition-transform duration-300 motion-reduce:transition-none"
-                data-icon="inline-end"
-                data-slot="arrow"
-              />
-            </Button>
-          </div>
-        )}
-
-        <ThreeDCard
-          enableShadow={false}
-          hoverPadding={0}
-          innerId={cardDomId}
-          trackOnWindow
-          className="w-full min-w-0"
-        >
-          <Card
-            className={cn(
-              "relative w-full max-w-full rounded-xl p-0",
-              theme.cardClassName
-            )}
-          >
-            <div className="absolute left-3 top-3 z-20">
-              <Link
-                href={githubProfileUrl}
-                target="_blank"
-                rel="noreferrer"
-                className={cn(
-                  "group relative inline-flex rounded-full p-px",
-                  emblemTheme.ringClassName,
-                  emblemTheme.glowClassName
-                )}
-              >
-                <span
-                  className={cn(
-                    "pointer-events-none absolute -inset-1 rounded-full blur opacity-35 transition-opacity group-hover:opacity-60",
-                    emblemTheme.ringClassName
-                  )}
-                />
-                <span className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs font-semibold backdrop-blur supports-backdrop-filter:bg-background/50">
-                  <span className={cn("font-mono", emblemTheme.textClassName)}>
-                    @{usernameLower}
-                  </span>
-                </span>
-              </Link>
-            </div>
-            <div
-              className={cn(
-                "w-full absolute top-0 left-0 h-full border-3 rounded-[calc(var(--radius)+7px)]",
-                theme.frameClassName
-              )}
-            >
-              {theme.effects}
-            </div>
-            <CardHeader className="p-0 flex flex-col gap-3">
-              <Image
-                src={creature.image}
-                alt={creature.name || "GitHub creature"}
-                width={350}
-                height={350}
-                crossOrigin="anonymous"
-                className="w-full"
-              />
-              <CardTitle
-                data-export="title"
-                className="px-4 text-2xl sm:text-2xl font-bold tracking-normal leading-tight"
-              >
-                <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                  {creature.name}
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-4">
-              <p className="leading-relaxed text-balance text-foreground/80">
-                {creature.description}
-              </p>
-            </CardContent>
-          </Card>
-        </ThreeDCard>
-      </div>
-
-      {stats ? (
         <div
           className={cn(
-            "hidden min-w-0 lg:col-start-3 lg:block lg:justify-self-stretch",
-            "overflow-hidden transition-[max-height,opacity,transform] duration-500 ease-out will-change-[max-height,opacity,transform] motion-reduce:transition-none",
-            "max-h-0 opacity-0 translate-x-2 pointer-events-none",
-            "peer-checked:max-h-[80rem] peer-checked:opacity-100 peer-checked:translate-x-0 peer-checked:pointer-events-auto"
+            "relative w-96 max-w-full shrink-0",
+            stats &&
+              "peer-checked:**:data-[state=reveal]:hidden peer-checked:**:data-[state=hide]:inline peer-checked:**:data-[slot=arrow]:rotate-180"
           )}
         >
-          <div className="p-3">
-            <CreatureStats
-              creature={creature}
-              downloadTargetId={cardDomId}
-              hideIdentity
-              className="max-w-full"
-            />
-          </div>
+          {stats && (
+            <div className="absolute -top-10 right-0 z-10 flex justify-end">
+              <div className="w-full lg:hidden">
+                <CreatureStatsDialog triggerText="View stats">
+                  <CreatureStats
+                    creature={creature}
+                    downloadTargetId={cardDomId}
+                  />
+                </CreatureStatsDialog>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden lg:inline-flex"
+                nativeButton={false}
+                render={<label htmlFor={toggleId} />}
+              >
+                <span data-state="reveal">Reveal stats</span>
+                <span data-state="hide" className="hidden">
+                  Hide stats
+                </span>
+                <HugeiconsIcon
+                  icon={ArrowRight01Icon}
+                  className="transition-transform duration-300 motion-reduce:transition-none"
+                  data-icon="inline-end"
+                  data-slot="arrow"
+                />
+              </Button>
+            </div>
+          )}
+
+          <ThreeDCard
+            enableShadow={false}
+            hoverPadding={0}
+            innerId={cardDomId}
+            trackOnWindow
+            className="w-full min-w-0"
+          >
+            <Card
+              className={cn(
+                "relative w-full max-w-full rounded-xl p-0",
+                theme.cardClassName
+              )}
+            >
+              <div className="absolute left-3 top-3 z-20">
+                <Link
+                  href={githubProfileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(
+                    "group relative inline-flex rounded-full p-px",
+                    emblemTheme.ringClassName,
+                    emblemTheme.glowClassName
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "pointer-events-none absolute -inset-1 rounded-full blur opacity-35 transition-opacity group-hover:opacity-60",
+                      emblemTheme.ringClassName
+                    )}
+                  />
+                  <span className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs font-semibold backdrop-blur supports-backdrop-filter:bg-background/50">
+                    <span
+                      className={cn("font-mono", emblemTheme.textClassName)}
+                    >
+                      @{usernameLower}
+                    </span>
+                  </span>
+                </Link>
+              </div>
+              <div
+                className={cn(
+                  "w-full absolute top-0 left-0 h-full border-3 rounded-[calc(var(--radius)+7px)]",
+                  theme.frameClassName
+                )}
+              >
+                {theme.effects}
+              </div>
+              <CardHeader className="p-0 flex flex-col gap-3">
+                <Image
+                  src={creature.image}
+                  alt={creature.name || "GitHub creature"}
+                  width={350}
+                  height={350}
+                  crossOrigin="anonymous"
+                  className="w-full"
+                />
+                <CardTitle
+                  data-export="title"
+                  className="px-4 text-2xl sm:text-2xl font-bold tracking-normal leading-tight"
+                >
+                  <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                    {creature.name}
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-4">
+                <p className="leading-relaxed text-balance text-foreground/80">
+                  {creature.description}
+                </p>
+              </CardContent>
+            </Card>
+          </ThreeDCard>
         </div>
-      ) : null}
+
+        {stats ? (
+          <aside className="hidden w-92 max-w-full shrink-0 lg:peer-checked:block">
+            <div className="p-3">
+              <CreatureStats
+                creature={creature}
+                downloadTargetId={cardDomId}
+                hideIdentity
+                className="max-w-full"
+              />
+            </div>
+          </aside>
+        ) : null}
+      </div>
     </div>
   );
 }
