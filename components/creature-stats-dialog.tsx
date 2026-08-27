@@ -25,7 +25,11 @@ export default function CreatureStatsDialog({
     <Dialog>
       <DialogTrigger
         render={
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 bg-background text-foreground shadow-sm"
+          >
             <HugeiconsIcon data-icon="inline-start" icon={Analytics01Icon} />
             {triggerText}
           </Button>

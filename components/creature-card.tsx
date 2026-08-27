@@ -247,7 +247,7 @@ export default async function CreatureCard({
   const cardDomId = `creature-card-${usernameLower}`;
 
   return (
-    <div className="flex w-full min-w-0 justify-center dark">
+    <div className="flex w-full min-w-0 justify-center">
       <div
         className={cn(
           "relative flex max-w-full flex-col items-center",
@@ -269,110 +269,114 @@ export default async function CreatureCard({
               "peer-checked:**:data-[state=reveal]:hidden peer-checked:**:data-[state=hide]:inline peer-checked:**:data-[slot=arrow]:rotate-180"
           )}
         >
-          {stats && (
-            <div className="absolute -top-10 right-0 z-10 flex justify-end">
-              <div className="w-full lg:hidden">
-                <CreatureStatsDialog triggerText="View stats">
-                  <CreatureStats
-                    creature={creature}
-                    downloadTargetId={cardDomId}
-                  />
-                </CreatureStatsDialog>
-              </div>
-
-              <Button
-                variant="outline"
-                size="sm"
-                className="hidden lg:inline-flex"
-                nativeButton={false}
-                render={<label htmlFor={toggleId} />}
-              >
-                <span data-state="reveal">Reveal stats</span>
-                <span data-state="hide" className="hidden">
-                  Hide stats
-                </span>
-                <HugeiconsIcon
-                  icon={ArrowRight01Icon}
-                  className="transition-transform duration-300 motion-reduce:transition-none"
-                  data-icon="inline-end"
-                  data-slot="arrow"
-                />
-              </Button>
-            </div>
-          )}
-
-          <ThreeDCard
-            enableShadow={false}
-            hoverPadding={0}
-            innerId={cardDomId}
-            trackOnWindow
-            className="w-full min-w-0"
-          >
-            <Card
-              className={cn(
-                "relative w-full max-w-full rounded-xl p-0",
-                theme.cardClassName
-              )}
+          <div className="relative">
+            <ThreeDCard
+              enableShadow={false}
+              hoverPadding={16}
+              innerId={cardDomId}
+              trackOnWindow
+              className="w-full min-w-0 dark"
             >
-              <div className="absolute left-3 top-3 z-20">
-                <Link
-                  href={githubProfileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "group relative inline-flex rounded-full p-px",
-                    emblemTheme.ringClassName,
-                    emblemTheme.glowClassName
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "pointer-events-none absolute -inset-1 rounded-full blur opacity-35 transition-opacity group-hover:opacity-60",
-                      emblemTheme.ringClassName
-                    )}
-                  />
-                  <span className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs font-semibold backdrop-blur supports-backdrop-filter:bg-background/50">
-                    <span
-                      className={cn("font-mono", emblemTheme.textClassName)}
-                    >
-                      @{usernameLower}
-                    </span>
-                  </span>
-                </Link>
-              </div>
-              <div
+              <Card
                 className={cn(
-                  "w-full absolute top-0 left-0 h-full border-3 rounded-[calc(var(--radius)+7px)]",
-                  theme.frameClassName
+                  "relative w-full max-w-full rounded-xl p-0",
+                  theme.cardClassName
                 )}
               >
-                {theme.effects}
-              </div>
-              <CardHeader className="p-0 flex flex-col gap-3">
-                <Image
-                  src={creature.image}
-                  alt={creature.name || "GitHub creature"}
-                  width={350}
-                  height={350}
-                  crossOrigin="anonymous"
-                  className="w-full"
-                />
-                <CardTitle
-                  data-export="title"
-                  className="px-4 text-2xl sm:text-2xl font-bold tracking-normal leading-tight"
+                <div className="absolute left-3 top-3 z-20">
+                  <Link
+                    href={githubProfileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={cn(
+                      "group relative inline-flex rounded-full p-px",
+                      emblemTheme.ringClassName,
+                      emblemTheme.glowClassName
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "pointer-events-none absolute -inset-1 rounded-full blur opacity-35 transition-opacity group-hover:opacity-60",
+                        emblemTheme.ringClassName
+                      )}
+                    />
+                    <span className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs font-semibold backdrop-blur supports-backdrop-filter:bg-background/50">
+                      <span
+                        className={cn("font-mono", emblemTheme.textClassName)}
+                      >
+                        @{usernameLower}
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+                <div
+                  className={cn(
+                    "absolute inset-0 overflow-hidden rounded-[calc(var(--radius)+7px)] border-3",
+                    theme.frameClassName
+                  )}
                 >
-                  <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                    {creature.name}
+                  <div className="absolute inset-x-0 top-0 aspect-square overflow-hidden">
+                    {theme.effects}
+                  </div>
+                </div>
+                <CardHeader className="p-0 flex flex-col gap-3">
+                  <Image
+                    src={creature.image}
+                    alt={creature.name || "GitHub creature"}
+                    width={350}
+                    height={350}
+                    crossOrigin="anonymous"
+                    className="w-full"
+                  />
+                  <CardTitle
+                    data-export="title"
+                    className="px-4 text-2xl sm:text-2xl font-bold tracking-normal leading-tight"
+                  >
+                    <span className="bg-linear-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                      {creature.name}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-4 pb-4">
+                  <p className="leading-relaxed text-balance text-foreground/80">
+                    {creature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </ThreeDCard>
+
+            {stats ? (
+              <div className="absolute top-7 right-7 z-30">
+                <div className="lg:hidden">
+                  <CreatureStatsDialog triggerText="View stats">
+                    <CreatureStats
+                      creature={creature}
+                      downloadTargetId={cardDomId}
+                    />
+                  </CreatureStatsDialog>
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hidden bg-background text-foreground shadow-sm lg:inline-flex"
+                  nativeButton={false}
+                  render={<label htmlFor={toggleId} />}
+                >
+                  <span data-state="reveal">Reveal stats</span>
+                  <span data-state="hide" className="hidden">
+                    Hide stats
                   </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 pb-4">
-                <p className="leading-relaxed text-balance text-foreground/80">
-                  {creature.description}
-                </p>
-              </CardContent>
-            </Card>
-          </ThreeDCard>
+                  <HugeiconsIcon
+                    icon={ArrowRight01Icon}
+                    className="transition-transform duration-300 motion-reduce:transition-none"
+                    data-icon="inline-end"
+                    data-slot="arrow"
+                  />
+                </Button>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         {stats ? (
