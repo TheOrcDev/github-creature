@@ -376,7 +376,7 @@ export default async function CreatureCard({
         </div>
 
         {stats ? (
-          <aside className="hidden w-92 max-w-full shrink-0 lg:peer-checked:block">
+          <aside className="hidden w-96 max-w-full shrink-0 lg:peer-checked:block">
             <div className="p-3">
               <CreatureStats
                 creature={creature}
