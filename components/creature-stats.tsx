@@ -15,29 +15,45 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { getCreatureTopPercentage } from "@/server/creatures";
 
 interface CreatureStatsProps {
   creature: SelectCreature;
   downloadTargetId?: string;
+  hideIdentity?: boolean;
+  className?: string;
 }
 
 export default async function CreatureStats({
   creature,
   downloadTargetId,
+  hideIdentity,
+  className,
 }: CreatureStatsProps) {
   const topPercentage = await getCreatureTopPercentage(creature.id);
 
   return (
-    <Card className="flex w-full max-w-92 min-h-[600px] flex-col justify-between bg-linear-to-b from-primary/6 to-background">
+    <Card
+      className={cn(
+        "flex w-full max-w-92 min-h-[600px] flex-col justify-between bg-linear-to-b from-primary/6 to-background",
+        className
+      )}
+    >
       <CardHeader className="border-b">
-        <CardTitle className="text-lg sm:text-xl font-bold tracking-tight">
-          {creature.name}
-        </CardTitle>
-        <CardDescription className="text-sm text-foreground/75">
-          {creature.description}
-        </CardDescription>
-        <CardAction>
+        {hideIdentity ? null : (
+          <>
+            <CardTitle className="text-lg sm:text-xl font-bold tracking-tight">
+              {creature.name}
+            </CardTitle>
+            <CardDescription className="text-sm text-foreground/75">
+              {creature.description}
+            </CardDescription>
+          </>
+        )}
+        <CardAction
+          className={hideIdentity ? "col-start-1 row-start-1" : undefined}
+        >
           <Badge variant="secondary" className="whitespace-nowrap">
             Top {topPercentage}%
           </Badge>

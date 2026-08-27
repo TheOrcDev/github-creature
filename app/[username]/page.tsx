@@ -63,7 +63,7 @@ async function CreatureCardWrapper({ params }: { params: Params }) {
 
 export default function CreaturePage({ params }: { params: Params }) {
   return (
-    <main className="flex min-h-svh w-full flex-col items-center justify-center px-5 pt-20 pb-8">
+    <main className="flex min-h-svh w-full flex-col items-center justify-center overflow-x-hidden px-5 pt-20 pb-8">
       <Suspense fallback={<Skeleton className="h-96 w-72" />}>
         <CreatureCardWrapper params={params} />
       </Suspense>
